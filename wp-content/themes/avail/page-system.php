@@ -32,6 +32,10 @@
   <!-- CSS Files -->
   <link href="<?php echo get_template_directory_uri(); ?>/assets/css/bootstrap.min.css" rel="stylesheet" />
   <link href="<?php echo get_template_directory_uri(); ?>/assets/css/now-ui-dashboard.css?v=1.5.0" rel="stylesheet" />
+
+
+
+
   <!-- CSS Just for demo purpose, don't include it in your project -->
   <link href="<?php echo get_template_directory_uri(); ?>/assets/demo/demo.css" rel="stylesheet" />
   <!-- Now Ui Dashboard DEMO methods, don't include it in your project! -->
@@ -170,15 +174,110 @@
         </div>
       </nav>
       <!-- End Navbar -->
-      <div class="panel-header panel-header-lg">
-        <canvas id="bigDashboardChart"></canvas>
-        <script>
-          var canvas = document.getElementById("bigDashboardChart");
-          var ctx = canvas.getContext("2d");
-          new Chart(ctx).Line(data, options);
-        </script>
 
+
+      <div class="panel-header panel-header-lg">
+      <!-- --------------------------------------------------------------------------------------------------------- -->
+        
+
+        <!-- <canvas id="bigDashboardChart"></canvas> -->
+        <!-- <div id="chartContainer" style="height: 270px; max-width: 920px; margin: 0px auto;"></div> -->
+        <div id="chartContainer" style="height: 270px; max-width: 0px auto; margin: 0px auto;"></div>
+        
       </div>
+      <!-- --------------------------------------------------------------------------------------------------------- -->
+
+      <!-- --------------------------------------------------------------------------------------------------------- -->
+<script>
+window.onload = function () {
+
+var chart = new CanvasJS.Chart("chartContainer", {
+  animationEnabled: true,
+  theme: "dark2",
+  backgroundColor: "transparent",
+  title:{
+    text: "Rentabilidad"
+  },
+  axisX:{
+    valueFormatString: "DD MMM YY",
+    crosshair: {
+      enabled: true,
+      snapToDataPoint: true
+    }
+  },
+  axisY: {
+    title: "Numero de Visitas",
+    crosshair: {
+      enabled: true
+    }
+  },
+  toolTip:{
+    shared:true
+  },  
+  legend:{
+    cursor:"pointer",
+    verticalAlign: "bottom",
+    horizontalAlign: "left",
+    dockInsidePlotArea: true,
+    itemclick: toogleDataSeries
+  },
+  data: [{
+    type: "line",
+    showInLegend: true,
+    name: "Rentabilidad",
+    markerType: "square",
+    xValueFormatString: "DD MMM, YY",
+    color: "#FFFFFF",
+    dataPoints: [
+      { x: new Date(2022, 0, 1), y: 4 },
+      { x: new Date(2022, 1, 1), y: 5 },
+      { x: new Date(2022, 2, 1), y: 4 },
+      { x: new Date(2022, 3, 1), y: 5 },
+      { x: new Date(2022, 4, 1), y: 3 },
+      { x: new Date(2022, 5, 1), y: 5 },
+      { x: new Date(2022, 6, 1), y: 5 },
+      { x: new Date(2022, 7, 1), y: 5 },
+      { x: new Date(2022, 8, 1), y: 5 },
+      { x: new Date(2022, 9, 1), y: 5 },
+      { x: new Date(2022, 10, 1), y: 5.7 }
+    ]
+  },
+  {
+    type: "line",
+    showInLegend: true,
+    name: "Rentabilidad Esperada",
+    lineDashType: "dash",
+    dataPoints: [
+      { x: new Date(2022, 0, 1), y: 3 },
+      { x: new Date(2022, 1, 1), y: 2 },
+      { x: new Date(2022, 2, 1), y: 2.1 },
+      { x: new Date(2022, 3, 1), y: 2.2 },
+      { x: new Date(2022, 4, 1), y: 3.1 },
+      { x: new Date(2022, 5, 1), y: 4 },
+      { x: new Date(2022, 6, 1), y: 5 },
+      { x: new Date(2022, 7, 1), y: 6 },
+      { x: new Date(2022, 8, 1), y: 1 },
+      { x: new Date(2022, 9, 1), y: 2.5 },
+      { x: new Date(2022, 10, 1), y: 2 }
+    ]
+  }]
+});
+chart.render();
+
+function toogleDataSeries(e){
+  if (typeof(e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+    e.dataSeries.visible = false;
+  } else{
+    e.dataSeries.visible = true;
+  }
+  chart.render();
+}
+
+}
+</script>
+
+      <!-- --------------------------------------------------------------------------------------------------------- -->
+
 
 
       <div class="content">
@@ -234,6 +333,8 @@
   <script src="<?php echo get_template_directory_uri(); ?>/assets/js/plugins/bootstrap-notify.js"></script>
   <!-- Control Center for Now Ui Dashboard: parallax effects, scripts for the example pages etc -->
   <script src="<?php echo get_template_directory_uri(); ?>/assets/js/now-ui-dashboard.min.js?v=1.5.0" type="text/javascript"></script>
+
+  <script src="<?php echo get_template_directory_uri(); ?>/js/canvasjs.min.js"></script>
 
   <script>
     $(document).ready(function() {
