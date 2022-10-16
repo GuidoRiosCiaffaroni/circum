@@ -1,52 +1,30 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>particles.js</title>
-  <meta name="description" content="particles.js is a lightweight JavaScript library for creating particles.">
-  <meta name="author" content="Vincent Garreau" />
+  <title>Guido System</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <link rel="stylesheet" media="screen" href="<?php echo get_template_directory_uri(); ?>/css/style.css">
   <link rel="stylesheet" media="screen" href="<?php echo get_template_directory_uri(); ?>/css/master.css">
 </head>
 <body>
 
-
-
-
-
-
-<div class="panel" style="display: block;">
-            
-
-                <?php if ( have_posts() ) : while ( have_posts() ) : the_post(); ?>
-                <article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
-                <header class="header">
-                <h1 class="entry-title" itemprop="name"><?php the_title(); ?></h1> <?php edit_post_link(); ?>
-                </header>
-                <div class="entry-content" itemprop="mainContentOfPage">
-                <?php if ( has_post_thumbnail() ) { the_post_thumbnail( 'full', array( 'itemprop' => 'image' ) ); } ?>
-                <?php the_content(); ?>
-                <div class="entry-links"><?php wp_link_pages(); ?></div>
-                </div>
-                </article>
-                <?php if ( comments_open() && !post_password_required() ) { comments_template( '', true ); } ?>
-                <?php endwhile; endif; ?>
-
-            
-        </div>
-
-
-
-
-
-
-
-
-
-
-
-
+  <div class="panel" style="display: block;">
+    <?php if ( have_posts() ) : while ( have_posts() ) : the_post(); ?>
+    <article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
+      <header class="header">
+        <h1 class="entry-title" itemprop="name"><?php the_title(); ?></h1> <?php edit_post_link(); ?>
+      </header>
+      <div class="entry-content" itemprop="mainContentOfPage">
+        <?php if ( has_post_thumbnail() ) { the_post_thumbnail( 'full', array( 'itemprop' => 'image' ) ); } ?>
+        <?php the_content(); ?>
+        <div class="entry-links"><?php wp_link_pages(); ?></div>
+      </div>
+    </article>
+    <?php if ( comments_open() && !post_password_required() ) { comments_template( '', true ); } ?>
+    <?php endwhile; endif; ?>
+  </div>
 
 <!--
 <div class="panel" style="display: block;">
@@ -78,13 +56,9 @@
   <span class="js-count-particles">--</span> particles
 </div>
 
-
-
 <!-- particles.js container -->
 
 <div id="particles-js"></div>
-
-
 
 <!-- scripts -->
 <script src="<?php echo get_template_directory_uri(); ?>/particles.js"></script>
