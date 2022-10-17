@@ -1,13 +1,6 @@
 <?php get_template_part( 'header_system' ); ?>
 <?php get_template_part( 'menu_system' ); ?>
 
-
-
-
-
-
-
-
       <div class="panel-header panel-header-sm">
       </div>
       <div class="content">
@@ -27,72 +20,133 @@
     
         </div>
 
-
         <div class="row">
-          <main id="content" class="site-main" role="main">
-            <h1 class="entry-title"><?php the_archive_title(); ?></h1>
-            <div class="page-content">
-              <?php
-                while ( have_posts() ) : the_post();
-                  printf( '<h2><a href="%s">%s</a></h2>', get_permalink(), get_the_title() );   
-                  the_post_thumbnail();
-                  the_excerpt();
-                  comments_template();
-                endwhile;
-                the_tags( '<span class="tag-links">' . __('Tagged ', 'simentor' ) . NULL, NULL, NULL, '</span>' ) 
+        </div>          
+
+<!-- -------------------------------------------------------------------------------------------------------------------------------- -->        
+        <div class="row">
+          <!--
+          <?php
+          function latest_post() 
+          {
+            $args = array(
+              'posts_per_page' => 3, /* how many post you need to display */
+              'offset' => 0,
+              'orderby' => 'post_date',
+              'order' => 'DESC',
+              'post_type' => 'post', /* your post type name */
+              'post_status' => 'publish'
+            );
+            
+            $query = new WP_Query($args);
+              if ($query->have_posts()) :
+                while ($query->have_posts()) : $query->the_post();
+          ?>
+          <a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
+          <?php 
+            echo get_the_post_thumbnail('thumbnail'); 
+          ?>
+            /* here add code what you need to display like above title, image and more */
+          <?php
+            endwhile;
+            endif;
+            }
+
+            add_shortcode('lastest-post', 'latest_post');
+            latest_post();
+          ?>
+          -->
+        </div> 
+<!-- -------------------------------------------------------------------------------------------------------------------------------- -->
+
+<!-- -------------------------------------------------------------------------------------------------------------------------------- -->
+        <div class="row">
+
+          <?php
+          /*
+            Template Name: Blog posts template
+          */
+          $blog_posts = new WP_Query( array( 'post_type' => 'post', 'post_status’' => 'publish', 'posts_per_page' => -1 ) );
+          ?>
+
+          <div class = "page-container">
+
+            <div class = "main-content">
+              <?php if ( $blog_posts->have_posts() ) : ?>
+              <div class = "blog-posts">
+                <?php while ( $blog_posts->have_posts() ) : $blog_posts->the_post(); ?>
+                
+                <article id = "post-<?php the_ID(); ?>">
+                  
+                  <!-- <a href = "<?php the_permalink(); ?>"> -->
+
+                  <a href="<?php echo home_url();?>/Content/?ID=<?php the_ID(); ?>">
+                    <?php 
+                    if ( has_post_thumbnail() ) 
+                    { 
+                      the_post_thumbnail( get_the_ID(), 'full' );
+                    } 
+                    ?>
+                    <h2 class = "post-title"><?php the_title(); ?></h2>
+                  </a>
+
+                  <div class = "post-category">
+                    <?php the_category(', '); ?>
+                  </div>
+
+                  <div class = "post-excerpt">
+                    <?php wp_kses_post( the_excerpt() ) ?>
+                  </div>
+
+                  <span class = "post-read-more">
+                    <a itemprop = "url" href = "<?php the_permalink(); ?>" target = "_blank">
+                      <?php echo esc_html__( 'Read more', 'theme-domain' ) ?>
+                    </a>
+                  </span>
+                </article>
+
+                <?php endwhile; ?>
+              </div> 
+              
+              <?php else: ?>
+          
+              <p class = "no-blog-posts">
+                <?php esc_html_e('Sorry, no posts matched your criteria.', 'theme-domain'); ?> 
+              </p>
+            
+              <?php 
+                endif; 
+                wp_reset_postdata(); 
               ?>
+            </div>
+          
+            <div class = "sidebar-content"></div>
+          
           </div>
-        </main>
-      </div>          
+        
+        </div>    
+<!-- -------------------------------------------------------------------------------------------------------------------------------- -->
 
+<!-- -------------------------------------------------------------------------------------------------------------------------------- -->   
+<!--     
+        <div class="row">                     
+          <?php 
+            $result = wp_get_recent_posts(array(
+            'numberposts' => 6,
+            'post_status' => 'publish',
+            ));
 
+            foreach( $result as $p )
+            { 
+          ?>
+          — <a href="<?php echo get_permalink($p['ID']) ?>"><?php echo $p['post_title'] ?></a><br />    
+          <?php 
+            } 
+          ?>                             
+        </div>  
+-->        
+<!-- -------------------------------------------------------------------------------------------------------------------------------- -->
 
-
-        <div class="row">
-<?php while ( have_posts() ) : the_post(); ?>
-
-<main id="main" class="site-main" role="main">
-
-  <header class="page-header">
-    <h1 class="entry-title"><?php the_title(); ?></h1>
-  </header>
-
-  <div class="page-content">
-    <?php the_content(); ?>
-  </div>
-  <div class="entry-links"><?php wp_link_pages(); ?></div>
-  <?php global $wp_query; if ( $wp_query->max_num_pages > 1 ) { ?>
-  <nav id="nav-below" class="navigation" role="navigation">
-    <div class="nav-previous"><?php next_posts_link(sprintf( __( '%s older', 'simentor' ), '<span class="meta-nav">&larr;</span>' ) ) ?></div>
-    <div class="nav-next"><?php previous_posts_link(sprintf( __( 'newer %s', 'simentor' ), '<span class="meta-nav">&rarr;</span>' ) ) ?></div>
-  </nav>
-  <?php } ?>
-</main>
-
-<?php endwhile; ?>
-
-      </div>  
-
-
-
-
-
-
-      </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    </div>
 
  <?php get_template_part( 'footer_system' ); ?>
