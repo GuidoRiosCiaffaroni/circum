@@ -48,8 +48,8 @@
           }
           ?>
             <a href="<?php echo home_url();?>/Resume">
-              <i class="now-ui-icons design_app"></i>
-              <p>Dashboard</p>
+              <i class="now-ui-icons education_paper"></i>
+              <p>Resume</p>
             </a>
           </li>
           <!-- --------------------------------------------------------------------- -->
