@@ -1,0 +1,93 @@
+[STEP] [2022-10-18 12:02:43] Looking for PHP CLI executable file.
+[WARN] [2022-10-18 12:02:44] Could not find proper PHP CLI executable, this process may be unstable.
+[WARN] [2022-10-18 12:02:44] PHP CLI file cannot be executed due to unknown reason.
+[STEP] [2022-10-18 12:02:44] Initializing backup...
+[INFO] [2022-10-18 12:02:44] Backup & Migration version: 1.2.2
+[INFO] [2022-10-18 12:02:44] Site which will be backed up: http://localhost/circum
+[INFO] [2022-10-18 12:02:44] PHP Version: 7.4.19
+[INFO] [2022-10-18 12:02:44] WP Version: 6.0.2
+[INFO] [2022-10-18 12:02:44] MySQL Version: 5.7.24
+[INFO] [2022-10-18 12:02:44] MySQL Max Length: 536870912
+[INFO] [2022-10-18 12:02:44] Web server: Apache/2.4.35 (Win64) OpenSSL/1.1.1k PHP/7.4.19
+[INFO] [2022-10-18 12:02:44] Max execution time (in seconds): 259200
+[INFO] [2022-10-18 12:02:44] Max rows per query (this site): 300
+[INFO] [2022-10-18 12:02:44] Checking if backup dir is writable...
+[INFO] [2022-10-18 12:02:44] Initializing custom error handler
+[SUCCESS] [2022-10-18 12:02:44] Yup it is writable...
+[STEP] [2022-10-18 12:02:44] Scanning files...
+[STEP] [2022-10-18 12:02:44] Checking free space, reserving...
+[INFO] [2022-10-18 12:02:44] Requires at least 37654072 bytes. [35.91 MB]
+[INFO] [2022-10-18 12:02:44] Disk free space function is not disabled - using it...
+[INFO] [2022-10-18 12:02:44] Checking this path/partition: C:\laragon\www\circum\wp-content\backup-migration-gsTMpe6LXz\backups
+[SUCCESS] [2022-10-18 12:02:44] There is 37,464.02 MB free. [36.59 GB]
+[SUCCESS] [2022-10-18 12:02:44] Great! We have enough space.
+[SUCCESS] [2022-10-18 12:02:44] Confirmed, there is more than enough space, checked: 37654072 bytes
+[INFO] [2022-10-18 12:02:44] Scanning done - found 1503 files...
+[SUCCESS] [2022-10-18 12:02:44] Backup initialized...
+[STEP] [2022-10-18 12:02:44] Initializing archiving system...
+[SUCCESS] [2022-10-18 12:02:44] Archive system initialized...
+[STEP] [2022-10-18 12:02:44] Preparing map of files...
+[SUCCESS] [2022-10-18 12:02:44] Files prepared.
+[INFO] [2022-10-18 12:02:44] Starting compression process...
+[STEP] [2022-10-18 12:02:44] Smart memory calculation...
+[INFO] [2022-10-18 12:02:44] There is 512 MBs of memory to use
+[INFO] [2022-10-18 12:02:44] WordPress memory limit: 512 MBs
+[SUCCESS] [2022-10-18 12:02:44] Setting the safe limit to 115 MB
+[STEP] [2022-10-18 12:02:44] Making database backup (using v3 engine, requires at least v1.2.2 to restore)
+[INFO] [2022-10-18 12:02:44] Iterating database...
+[INFO] [2022-10-18 12:02:44] Memory usage after initialization: 44.15 MB
+[INFO] [2022-10-18 12:02:44] Scan found 13 tables (404 rows), estimated total size: 2.18 MB.
+[INFO] [2022-10-18 12:02:44] Memory usage after getting table names: 44.16 MB 
+[INFO] [2022-10-18 12:02:44] Getting table recipes...
+[INFO] [2022-10-18 12:02:44] Table recipes have been exported.
+[INFO] [2022-10-18 12:02:44] Memory usage after loading recipes: 44.17 MB 
+[INFO] [2022-10-18 12:02:44] Saving recipes...
+[INFO] [2022-10-18 12:02:44] Recipes saved.
+[INFO] [2022-10-18 12:02:44] Memory usage after recipe off-load: 44.16 MB
+[INFO] [2022-10-18 12:02:44] Exporting table data...
+[INFO] [2022-10-18 12:02:44] Getting data of table: wp_commentmeta (0.05 MB)
+[INFO] [2022-10-18 12:02:44] Table: wp_commentmeta cloned, operation took: 0.00098 ms
+[INFO] [2022-10-18 12:02:44] Getting data of table: wp_comments (0.09 MB)
+[INFO] [2022-10-18 12:02:44] Table: wp_comments cloned, operation took: 0.00270 ms
+[INFO] [2022-10-18 12:02:44] Getting data of table: wp_links (0.03 MB)
+[INFO] [2022-10-18 12:02:44] Table: wp_links cloned, operation took: 0.00131 ms
+[INFO] [2022-10-18 12:02:44] Getting data of table: wp_options (1.50 MB)
+[INFO] [2022-10-18 12:02:44] Table: wp_options cloned, operation took: 0.03580 ms
+[INFO] [2022-10-18 12:02:44] Getting data of table: wp_postmeta (0.05 MB)
+[INFO] [2022-10-18 12:02:44] Table: wp_postmeta cloned, operation took: 0.00483 ms
+[INFO] [2022-10-18 12:02:44] Getting data of table: wp_posts (0.11 MB)
+[INFO] [2022-10-18 12:02:44] Table: wp_posts cloned, operation took: 0.00688 ms
+[INFO] [2022-10-18 12:02:44] Getting data of table: wp_term_relationships (0.03 MB)
+[INFO] [2022-10-18 12:02:44] Table: wp_term_relationships cloned, operation took: 0.00221 ms
+[INFO] [2022-10-18 12:02:44] Getting data of table: wp_term_taxonomy (0.05 MB)
+[INFO] [2022-10-18 12:02:44] Table: wp_term_taxonomy cloned, operation took: 0.00172 ms
+[INFO] [2022-10-18 12:02:44] Getting data of table: wp_termmeta (0.05 MB)
+[INFO] [2022-10-18 12:02:44] Table: wp_termmeta cloned, operation took: 0.00112 ms
+[INFO] [2022-10-18 12:02:44] Getting data of table: wp_terms (0.05 MB)
+[INFO] [2022-10-18 12:02:44] Table: wp_terms cloned, operation took: 0.00196 ms
+[INFO] [2022-10-18 12:02:44] Getting data of table: wp_um_metadata (0.06 MB)
+[INFO] [2022-10-18 12:02:44] Table: wp_um_metadata cloned, operation took: 0.00115 ms
+[INFO] [2022-10-18 12:02:44] Getting data of table: wp_usermeta (0.05 MB)
+[INFO] [2022-10-18 12:02:44] Table: wp_usermeta cloned, operation took: 0.00271 ms
+[INFO] [2022-10-18 12:02:44] Getting data of table: wp_users (0.06 MB)
+[INFO] [2022-10-18 12:02:44] Table: wp_users cloned, operation took: 0.00203 ms
+[INFO] [2022-10-18 12:02:44] Table data exported.
+[INFO] [2022-10-18 12:02:44] Memory usage after data export: 44.14 MB
+[INFO] [2022-10-18 12:02:44] Entire process took: 0.1299 s
+[SUCCESS] [2022-10-18 12:02:44] Database backup finished
+[STEP] [2022-10-18 12:02:44] Making archive
+[INFO] [2022-10-18 12:02:44] Compressing...
+[INFO] [2022-10-18 12:02:44] Using PclZip module to create the backup
+[INFO] [2022-10-18 12:02:44] Legacy setting: Using default modules depending on user server
+[WARN] [2022-10-18 12:02:44] Backup will run as single-request, may be unstable...
+[INFO] [2022-10-18 12:02:44] Chunks contain 250 files.
+[INFO] [2022-10-18 12:02:45] Milestone: 500/1503
+[INFO] [2022-10-18 12:02:46] Milestone: 1000/1503
+[INFO] [2022-10-18 12:02:48] Milestone: 1500/1503
+[INFO] [2022-10-18 12:02:48] Milestone: 1503/1503
+[SUCCESS] [2022-10-18 12:02:48] Compressed 1503 files
+[INFO] [2022-10-18 12:02:48] Archiving of 1503 files took: 3.83s
+[STEP] [2022-10-18 12:02:48] Finalizing backup
+[INFO] [2022-10-18 12:02:48] Adding manifest...
+[STEP] [2022-10-18 12:02:48] Closing files and archives
+[END-CODE] [2022-10-18 12:02:48] #001

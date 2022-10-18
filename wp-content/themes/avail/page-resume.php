@@ -11,56 +11,13 @@
                 <h4 class="card-title"> Simple Table</h4>
               </div>
               <div class="card-body">
+<!--
               <iframe src="https://gat.bolsadesantiago.com/GAT/chartIQ/GAT_Resumen_CIQ.asp?language=es&NEMO=SQM-A" title="iframe Example 1" width="100%" height="400">
                 <p>Your browser does not support iframes.</p>
               </iframe>
-              </div>
-            </div>
-          </div>
-    
-        </div>
+-->
 
-        <div class="row">
-        </div>          
 
-<!-- -------------------------------------------------------------------------------------------------------------------------------- -->        
-        <div class="row">
-          <!--
-          <?php
-          function latest_post() 
-          {
-            $args = array(
-              'posts_per_page' => 3, /* how many post you need to display */
-              'offset' => 0,
-              'orderby' => 'post_date',
-              'order' => 'DESC',
-              'post_type' => 'post', /* your post type name */
-              'post_status' => 'publish'
-            );
-            
-            $query = new WP_Query($args);
-              if ($query->have_posts()) :
-                while ($query->have_posts()) : $query->the_post();
-          ?>
-          <a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
-          <?php 
-            echo get_the_post_thumbnail('thumbnail'); 
-          ?>
-            /* here add code what you need to display like above title, image and more */
-          <?php
-            endwhile;
-            endif;
-            }
-
-            add_shortcode('lastest-post', 'latest_post');
-            latest_post();
-          ?>
-          -->
-        </div> 
-<!-- -------------------------------------------------------------------------------------------------------------------------------- -->
-
-<!-- -------------------------------------------------------------------------------------------------------------------------------- -->
-        <div class="row">
 
           <?php
           /*
@@ -79,7 +36,7 @@
                 <article id = "post-<?php the_ID(); ?>">
                   
                   <!-- <a href = "<?php the_permalink(); ?>"> -->
-
+                  <!--
                   <a href="<?php echo home_url();?>/Content/?ID=<?php the_ID(); ?>">
                     <?php 
                     if ( has_post_thumbnail() ) 
@@ -87,22 +44,61 @@
                       the_post_thumbnail( get_the_ID(), 'full' );
                     } 
                     ?>
-                    <h2 class = "post-title"><?php the_title(); ?></h2>
+                    <h4 class = "post-title"><?php the_title(); ?></h4>
                   </a>
+                  -->
+
+
+ 
+                    <?php 
+                    echo '<b>Titulo   : </b>';
+                    the_title();
+                    ?>
+
+                   
+            
 
                   <div class = "post-category">
-                    <?php the_category(', '); ?>
+                    <?php 
+                    echo '<b>Categorias   : </b>';
+                    the_category(', ');
+                    echo  '<br>';
+                    ?>
                   </div>
-
+ 
                   <div class = "post-excerpt">
-                    <?php wp_kses_post( the_excerpt() ) ?>
+                    <?php 
+                    echo '<b>Información    : </b>';
+                    wp_kses_post( the_excerpt() ) 
+                    ?>
                   </div>
+      
+                  <div class = "post-excerpt">
+              
+                  <a href="<?php echo home_url();?>/Content/?ID=<?php the_ID(); ?>">
+                    <?php 
+                    if ( has_post_thumbnail() ) 
+                    { 
+                      the_post_thumbnail( get_the_ID(), 'full' );
+                    } 
+                    ?>
+                    Leer Más
 
+                  </a>
+                  
+                  </div>
+                  </br>
+                  <!--
                   <span class = "post-read-more">
                     <a itemprop = "url" href = "<?php the_permalink(); ?>" target = "_blank">
-                      <?php echo esc_html__( 'Read more', 'theme-domain' ) ?>
+                      <?php echo esc_html__( 'Leer Más', 'theme-domain' ) ?>
                     </a>
                   </span>
+                -->
+
+
+
+
                 </article>
 
                 <?php endwhile; ?>
@@ -123,28 +119,51 @@
             <div class = "sidebar-content"></div>
           
           </div>
-        
-        </div>    
+
+
+
+
+
+              </div>
+            </div>
+          </div>
+    
+        </div>
+
+        <div class="row">
+        </div>          
+
+<!-- -------------------------------------------------------------------------------------------------------------------------------- --> 
+        <div class="row">
+        </div> 
 <!-- -------------------------------------------------------------------------------------------------------------------------------- -->
 
-<!-- -------------------------------------------------------------------------------------------------------------------------------- -->   
-<!--     
-        <div class="row">                     
-          <?php 
-            $result = wp_get_recent_posts(array(
-            'numberposts' => 6,
-            'post_status' => 'publish',
-            ));
+<!-- -------------------------------------------------------------------------------------------------------------------------------- -->
+        <div class="row">
 
-            foreach( $result as $p )
-            { 
-          ?>
-          — <a href="<?php echo get_permalink($p['ID']) ?>"><?php echo $p['post_title'] ?></a><br />    
-          <?php 
-            } 
-          ?>                             
-        </div>  
--->        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+        </div>    
 <!-- -------------------------------------------------------------------------------------------------------------------------------- -->
 
     </div>
