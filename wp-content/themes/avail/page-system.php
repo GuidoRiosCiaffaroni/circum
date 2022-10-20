@@ -1,9 +1,5 @@
-<?php get_template_part( 'header_system' ); ?>
-<?php get_template_part( 'menu_system' ); ?>
-
-
-
-
+<?php get_template_part( 'system_header' ); ?>
+<?php get_template_part( 'system_menu' ); ?>
 
       <div class="panel-header panel-header-lg">
       <!-- --------------------------------------------------------------------------------------------------------- -->
