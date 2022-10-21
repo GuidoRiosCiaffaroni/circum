@@ -83,6 +83,7 @@
 				  
               <!-- https://developer.wordpress.org/reference/functions/get_the_category/ -->
 
+
       					<div class = "post-category">
                 <?php 
       					
@@ -95,7 +96,7 @@
                   {
       							foreach( $categories as $category ) 
                     {
-      								$output .='<a href='.home_url('/System/?ID=') . $categories[0]->term_id . '>' . esc_html( $category->name ) . '</a>' . $separator;
+      								$output .='<a href='.home_url('/Categories/?ID=') . $categories[0]->term_id . '>' . esc_html( $category->name ) . '</a>' . $separator;
       							}
       							echo trim( $output, $separator );
       						}

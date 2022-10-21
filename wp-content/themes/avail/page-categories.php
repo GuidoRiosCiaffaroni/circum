@@ -12,30 +12,28 @@
               </div>
               <div class="card-body">
 
-
-                <article id="post-<?php the_ID(); ?>" <?php post_class('post-items mb-6'); ?>>
-                  <figure class="post-image">
-       
-                    <div class="post-meta imu">
-                      <span class="post-list">
-                      </span>
-                    </div>
-                  </figure>
-        
-                  <div class="post-content">
+              <!-- https://developer.wordpress.org/reference/functions/get_post/ -->
+              <?php
+                $category_id = $_GET['ID'];  
+              ?>
 
 
-     
-         
 
-<header class="header">
-<h1 class="entry-title" itemprop="name"><?php single_term_title(); ?></h1>
-<div class="archive-meta" itemprop="description"><?php if ( '' != get_the_archive_description() ) { echo esc_html( get_the_archive_description() ); } ?></div>
-</header>
-<?php if ( have_posts() ) : while ( have_posts() ) : the_post(); ?>
-<?php get_template_part( 'entry' ); ?>
-<?php endwhile; endif; ?>
-<?php get_template_part( 'nav', 'below' ); ?>
+<!-- https://developer.wordpress.org/reference/functions/get_posts/ -->
+<ul>
+    <?php
+    $args = array( 'category' => $category_id );
+
+    $myposts = get_posts( $args );
+    foreach ( $myposts as $post ) : setup_postdata( $post ); ?>
+        <li>
+            <a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
+        </li>
+    <?php endforeach; 
+    wp_reset_postdata();?>
+
+
+    </ul>
 
 
 
@@ -55,26 +53,6 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-         
-      
-
-
-
-
-                    <div class="post-meta down">
-                    </div>
-                  </div>
-                </article>
 
 
 
