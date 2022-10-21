@@ -17,47 +17,40 @@
                 $category_id = $_GET['ID'];  
               ?>
 
+              <!-- https://developer.wordpress.org/reference/functions/get_posts/ -->
+              
+              <ul>
+              <?php
+                $args = array( 'category' => $category_id );
+                $myposts = get_posts( $args );
+                foreach ( $myposts as $post ) : setup_postdata( $post ); ?>
+                <li>
+                  <!-- <a href="<?php the_permalink(); ?>"><?php the_title(); ?></a> -->
+                  
 
 
-<!-- https://developer.wordpress.org/reference/functions/get_posts/ -->
-<ul>
-    <?php
-    $args = array( 'category' => $category_id );
+                  <a href="<?php echo home_url();?>/Content/?ID=<?php the_ID(); ?>">
+                    <?php 
+                    if ( has_post_thumbnail() ) 
+                    { 
+                      the_post_thumbnail( get_the_ID(), 'full' );
+                    } 
+                    ?>
+                    <?php the_title(); ?>
 
-    $myposts = get_posts( $args );
-    foreach ( $myposts as $post ) : setup_postdata( $post ); ?>
-        <li>
-            <a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
-        </li>
-    <?php endforeach; 
-    wp_reset_postdata();?>
-
-
-    </ul>
-
-
-
-
-
-
-
-
+                  </a>
 
 
 
 
 
+                  
+                </li>
+              <?php 
+                endforeach; 
+                wp_reset_postdata();?>
+              </ul>
 
-
-
-
-
-
-
-
-
-
-  
               </div>
             </div>
           </div>
