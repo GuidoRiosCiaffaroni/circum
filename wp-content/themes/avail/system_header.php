@@ -43,7 +43,7 @@
   <script src="<?php echo get_template_directory_uri(); ?>/assets/demo/demo.js"></script> 
 
 
-<script src="<?php echo get_template_directory_uri(); ?>/js/canvasjs.min.js"></script>
+  <script src="<?php echo get_template_directory_uri(); ?>/js/canvasjs.min.js"></script>
 
 
 </head>

@@ -29,13 +29,17 @@
                         NUM
                       </th>
                       <th>
-                        ESTADOS
+                        A
+                      </th>
+                      <th>
+                        B
                       </th>
 
                     </thead>
 
                     <tbody>
 
+                      <!-- --------------------------------------------------------------------------------------------- -->
                       <tr>
                         <td>
                           BANCO DE CREDITO E INVERSIONES
@@ -46,15 +50,23 @@
                         <td>
                           Banco Estado
                         </td>
-                        <td class="text-right">
+                        <td class="text-center">
                           2
                         </td>
-                        <td class="text-center">
-                          <a href="http://apiws.bolsadesantiago.com/ifrs/newobtenerpdf.asp?nemo=BCI">Descargar</a>
+                        <td>
+                          <a href="<?php echo home_url();?>/Content/?ID=41">
+                            <i class="now-ui-icons business_globe"></i>
+                          </a>
+                        </td>
+                        <td>
+                          <a href="http://apiws.bolsadesantiago.com/ifrs/newobtenerpdf.asp?nemo=BCI">
+                            <i class="now-ui-icons arrows-1_cloud-download-93"></i>
+                          </a>
                         </td>
                       </tr>
+                      <!-- --------------------------------------------------------------------------------------------- -->
 
-
+                      <!-- --------------------------------------------------------------------------------------------- -->
                       <tr>
                         <td>
                         SOC. INVER. PAMPA CALICHERA S.A. SERIE A
@@ -65,14 +77,22 @@
                         <td>
                           Banco Estado
                         </td>
-                        <td class="text-right">
+                        <td class="text-center">
                           9
                         </td>
-                        <td class="text-center">
-                          <a href="http://apiws.bolsadesantiago.com/ifrs/newobtenerpdf.asp?nemo=CALICHERAA">Descargar</a>
+                        <td>
+                          <a href="<?php echo home_url();?>/Content/?ID=41">
+                            <i class="now-ui-icons business_globe"></i>
+                          </a>
+                        </td>
+                        <td>
+                          <a href="http://apiws.bolsadesantiago.com/ifrs/newobtenerpdf.asp?nemo=CALICHERAA">
+                            <i class="now-ui-icons arrows-1_cloud-download-93"></i></a>
                         </td>
                       </tr>
+                      <!-- --------------------------------------------------------------------------------------------- -->
 
+                      <!-- --------------------------------------------------------------------------------------------- -->
                       <tr>
                         <td>
                           BANCO DE CHILE
@@ -83,14 +103,23 @@
                         <td>
                           Banco Estado
                         </td>
-                        <td class="text-right">
+                        <td class="text-center">
                           957
                         </td>
-                        <td class="text-center">
-                          <a href="http://apiws.bolsadesantiago.com/ifrs/newobtenerpdf.asp?nemo=CHILE">Descargar</a>
+                        <td>
+                          <a href="<?php echo home_url();?>/Content/?ID=41">
+                            <i class="now-ui-icons business_globe"></i>
+                          </a>
+                        </td>                        
+                        <td>
+                          <a href="http://apiws.bolsadesantiago.com/ifrs/newobtenerpdf.asp?nemo=CHILE">
+                            <i class="now-ui-icons arrows-1_cloud-download-93"></i>
+                          </a>
                         </td>
                       </tr>             
+                      <!-- --------------------------------------------------------------------------------------------- -->
 
+                      <!-- --------------------------------------------------------------------------------------------- -->
                       <tr>
                         <td>
                           ENTEL CHILE
@@ -101,14 +130,23 @@
                         <td>
                           Banco Estado
                         </td>
-                        <td class="text-right">
+                        <td class="text-center">
                           861
                         </td>
-                        <td class="text-center">
-                          <a href="http://apiws.bolsadesantiago.com/ifrs/newobtenerpdf.asp?nemo=ENELCHILE">Descargar</a>
+                        <td>
+                          <a href="<?php echo home_url();?>/Content/?ID=41">
+                            <i class="now-ui-icons business_globe"></i>
+                          </a>
+                        </td>                        
+                        <td>
+                          <a href="http://apiws.bolsadesantiago.com/ifrs/newobtenerpdf.asp?nemo=ENELCHILE">
+                            <i class="now-ui-icons arrows-1_cloud-download-93"></i>
+                          </a>
                         </td>
                       </tr> 
+                      <!-- --------------------------------------------------------------------------------------------- -->                      
 
+                      <!-- --------------------------------------------------------------------------------------------- -->
                       <tr>
                         <td>
                           NITRATOS DE CHILE S.A.
@@ -119,14 +157,23 @@
                         <td>
                           Banco Estado
                         </td>
-                        <td class="text-right">
+                        <td class="text-center">
                           667
                         </td>
-                        <td class="text-center">
-                          <a href="http://apiws.bolsadesantiago.com/ifrs/newobtenerpdf.asp?nemo=NITRATOS">Descargar</a>
+                        <td>
+                          <a href="<?php echo home_url();?>/Content/?ID=41">
+                            <i class="now-ui-icons business_globe"></i>
+                          </a>
+                        </td>                        
+                        <td>
+                          <a href="http://apiws.bolsadesantiago.com/ifrs/newobtenerpdf.asp?nemo=NITRATOS">
+                            <i class="now-ui-icons arrows-1_cloud-download-93"></i>
+                          </a>
                         </td>
                       </tr> 
-            
+                      <!-- --------------------------------------------------------------------------------------------- -->        
+
+                      <!-- --------------------------------------------------------------------------------------------- -->
                       <tr>
                         <td>
                           SOCIEDAD DE INVERSIONES ORO BLANCO S.A.
@@ -137,14 +184,23 @@
                         <td>
                           Banco Estado
                         </td>
-                        <td class="text-right">
+                        <td class="text-center">
                           3032
                         </td>
-                        <td class="text-center">
-                          <a href="http://apiws.bolsadesantiago.com/ifrs/newobtenerpdf.asp?nemo=ORO%20BLANCO">Descargar</a>
+                        <td>
+                          <a href="<?php echo home_url();?>/Content/?ID=41">
+                            <i class="now-ui-icons business_globe"></i>
+                          </a>
+                        </td>                        
+                        <td>
+                          <a href="http://apiws.bolsadesantiago.com/ifrs/newobtenerpdf.asp?nemo=ORO%20BLANCO">
+                            <i class="now-ui-icons arrows-1_cloud-download-93"></i>
+                          </a>
                         </td>
                       </tr>            
+                      <!-- --------------------------------------------------------------------------------------------- -->
 
+                      <!-- --------------------------------------------------------------------------------------------- -->
                       <tr>
                         <td>
                           SOC QUIMICA MINERA DE CHILE S.A. SERIE A
@@ -155,14 +211,23 @@
                         <td>
                           Banco Estado
                         </td>
-                        <td class="text-right">
+                        <td class="text-center">
                           1
                         </td>
-                        <td class="text-center">
-                          <a href="http://apiws.bolsadesantiago.com/ifrs/newobtenerpdf.asp?nemo=SQM-A">Descargar</a>
+                        <td>
+                          <a href="<?php echo home_url();?>/Content/?ID=41">
+                            <i class="now-ui-icons business_globe"></i>
+                          </a>
+                        </td>                        
+                        <td>
+                          <a href="http://apiws.bolsadesantiago.com/ifrs/newobtenerpdf.asp?nemo=SQM-A">
+                            <i class="now-ui-icons arrows-1_cloud-download-93"></i>
+                          </a>
                         </td>    
                       </tr>        
+                      <!-- --------------------------------------------------------------------------------------------- -->
 
+                      <!-- --------------------------------------------------------------------------------------------- -->
                       <tr>
                         <td>
                           SOC QUIMICA MINERA DE CHILE S.A. SERIE B
@@ -173,14 +238,23 @@
                         <td>
                           Banco Estado
                         </td>
-                        <td class="text-right">
+                        <td class="text-center">
                           1
                         </td>
-                        <td class="text-center">
-                          <a href="http://apiws.bolsadesantiago.com/ifrs/newobtenerpdf.asp?nemo=SQM-B">Descargar</a>
+                        <td>
+                          <a href="<?php echo home_url();?>/Content/?ID=41">
+                            <i class="now-ui-icons business_globe"></i>
+                          </a>
+                        </td>                        
+                        <td>
+                          <a href="http://apiws.bolsadesantiago.com/ifrs/newobtenerpdf.asp?nemo=SQM-B">
+                            <i class="now-ui-icons arrows-1_cloud-download-93"></i>
+                          </a>
                         </td>  
                       </tr>
+                      <!-- --------------------------------------------------------------------------------------------- -->
 
+                      <!-- --------------------------------------------------------------------------------------------- -->
                       <tr>
                         <td>
                           COMPANIA SUD AMERICANA DE VAPORES S.A.
@@ -191,14 +265,21 @@
                         <td>
                           Banco Estado
                         </td>
-                        <td class="text-right">
+                        <td class="text-center">
                           1
                         </td>
-                        <td class="text-center">
-                          <a href="http://apiws.bolsadesantiago.com/ifrs/newobtenerpdf.asp?nemo=VAPORES">Descargar</a>
+                        <td>
+                          <a href="<?php echo home_url();?>/Content/?ID=41">
+                            <i class="now-ui-icons business_globe"></i>
+                          </a>
+                        </td>                        
+                        <td>
+                          <a href="http://apiws.bolsadesantiago.com/ifrs/newobtenerpdf.asp?nemo=VAPORES">
+                            <i class="now-ui-icons arrows-1_cloud-download-93"></i>
+                          </a>
                         </td>
                       </tr>
-
+                      <!-- --------------------------------------------------------------------------------------------- -->
 
 
                     </tbody>
@@ -217,4 +298,4 @@
         </div>          
     </div>
 
- <?php get_template_part( 'footer_system' ); ?>
+ <?php get_template_part( 'system_footer' ); ?>

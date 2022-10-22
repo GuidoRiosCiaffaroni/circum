@@ -124,4 +124,4 @@
         </div>          
     </div>
 
- <?php get_template_part( 'footer_system' ); ?>
+ <?php get_template_part( 'system_footer' ); ?>

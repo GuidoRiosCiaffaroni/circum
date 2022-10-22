@@ -106,21 +106,18 @@ function toogleDataSeries(e){
 
 
       <div class="content">
+
         <div class="row">
+          <!-- ----------------------------------------------------------------------------- -->
           <div class="col-lg-4">
-
-
-<div class="card  card-tasks">
+            <div class="card  card-tasks">
               <div class="card-header ">
                 <h5 class="card-category">Backend development</h5>
                 <h4 class="card-title">Tasks</h4>
               </div>
               <div class="card-body ">
                 <div class="table-full-width table-responsive">
-                 
-                  
                   <?php echo      get_the_title(); ?>
-
                 </div>
               </div>
               <div class="card-footer ">
@@ -130,19 +127,54 @@ function toogleDataSeries(e){
                 </div>
               </div>
             </div>
-
-
-
-
-
-
-
           </div>
+          <!-- ----------------------------------------------------------------------------- -->
+
+          <!-- ----------------------------------------------------------------------------- -->
           <div class="col-lg-4 col-md-6">
+                        <div class="card  card-tasks">
+              <div class="card-header ">
+                <h5 class="card-category">Backend development</h5>
+                <h4 class="card-title">Tasks</h4>
+              </div>
+              <div class="card-body ">
+                <div class="table-full-width table-responsive">
+                  <?php echo      get_the_title(); ?>
+                </div>
+              </div>
+              <div class="card-footer ">
+                <hr>
+                <div class="stats">
+                  <i class="now-ui-icons loader_refresh spin"></i> Updated 3 minutes ago
+                </div>
+              </div>
+            </div>
           </div>
+          <!-- ----------------------------------------------------------------------------- -->
+          
+          <!-- ----------------------------------------------------------------------------- -->          
           <div class="col-lg-4 col-md-6">
+                        <div class="card  card-tasks">
+              <div class="card-header ">
+                <h5 class="card-category">Backend development</h5>
+                <h4 class="card-title">Tasks</h4>
+              </div>
+              <div class="card-body ">
+                <div class="table-full-width table-responsive">
+                  <?php echo      get_the_title(); ?>
+                </div>
+              </div>
+              <div class="card-footer ">
+                <hr>
+                <div class="stats">
+                  <i class="now-ui-icons loader_refresh spin"></i> Updated 3 minutes ago
+                </div>
+              </div>
+            </div>
           </div>
+          <!-- ----------------------------------------------------------------------------- -->
         </div>
+
       </div>
 
- <?php get_template_part( 'footer_system' ); ?>
+ <?php get_template_part( 'system_footer' ); ?>

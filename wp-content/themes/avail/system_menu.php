@@ -72,15 +72,28 @@
           </li>
           <!-- --------------------------------------------------------------------- -->
 
-
-
-          <!-- 
-          <li>
-            <a href="./icons.html">
-              <i class="now-ui-icons education_atom"></i>
-              <p>Icons</p>
+          <!-- --------------------------------------------------------------------- -->
+          <?php 
+          if ($pagetitle == 'Resume')
+          {
+            echo '<li class="active">';
+          }
+          else
+          {
+            echo '<li>';
+          }
+          ?>
+            <a href="<?php echo home_url();?>/Resume">
+              <i class="now-ui-icons files_box"></i>
+              <p>Watch List</p>
             </a>
           </li>
+          <!-- --------------------------------------------------------------------- -->
+
+
+
+
+          <!--
           <li>
             <a href="./map.html">
               <i class="now-ui-icons location_map-big"></i>
@@ -142,6 +155,7 @@
           </button>
           <div class="collapse navbar-collapse justify-content-end" id="navigation">
             
+            <!--
             <form>
               <div class="input-group no-border">
                 <input type="text" value="" class="form-control" placeholder="Search...">
@@ -152,8 +166,23 @@
                 </div>
               </div>
             </form>
-          
+            -->
+
             <ul class="navbar-nav">
+
+
+              <li class="nav-item">
+                <a class="nav-link" href="#pablo">
+                  <i class="now-ui-icons media-1_button-power"></i>
+                  <p>
+                    <span class="d-lg-none d-md-block">Exit</span>
+                  </p>
+                </a>
+              </li>
+
+
+
+              <!--
               <li class="nav-item">
                 <a class="nav-link" href="#pablo">
                   <i class="now-ui-icons media-2_sound-wave"></i>
@@ -162,7 +191,9 @@
                   </p>
                 </a>
               </li>
+            -->
 
+<!--
               <li class="nav-item">
                 <a class="nav-link" href="#pablo">
                   <i class="now-ui-icons users_single-02"></i>
@@ -171,6 +202,8 @@
                   </p>
                 </a>
               </li>
+-->
+
 
               <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -186,7 +219,6 @@
                 </div>
               </li>
               
-
 
             </ul>
           </div>
