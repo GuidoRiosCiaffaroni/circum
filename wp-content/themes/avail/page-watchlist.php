@@ -13,7 +13,8 @@
               <div class="card-body">
 
                 <iframe src="https://gat.bolsadesantiago.com/GAT/chartIQ/GAT_Resumen_CIQ.asp?language=es&NEMO=SQM-A" title="iframe Example 1" width="100%" height="400">
-                  <p>Your browser does not support iframes.</p>
+
+
                 </iframe>
                 
                 <div class = "page-container">
@@ -52,26 +53,6 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
         </div>    
 <!-- -------------------------------------------------------------------------------------------------------------------------------- -->
 
