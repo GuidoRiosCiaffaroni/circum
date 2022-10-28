@@ -74,7 +74,7 @@
 
           <!-- --------------------------------------------------------------------- -->
           <?php 
-          if ($pagetitle == 'Resume')
+          if ($pagetitle == 'Watchlist')
           {
             echo '<li class="active">';
           }
@@ -83,7 +83,7 @@
             echo '<li>';
           }
           ?>
-            <a href="<?php echo home_url();?>/Resume">
+            <a href="<?php echo home_url();?>/Watchlist">
               <i class="now-ui-icons files_box"></i>
               <p>Watch List</p>
             </a>
