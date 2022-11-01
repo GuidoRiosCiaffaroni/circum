@@ -1,16 +1,8 @@
-<?php get_template_part( 'system_header' ); ?>
+<?php get_header(); ?>
 <?php get_template_part( 'system_menu' ); ?>
 
-      <div class="panel-header panel-header-sm">
-      </div>
-      <div class="content">
-        <div class="row">
-          <div class="col-md-12">
-            <div class="card">
-              <div class="card-header">
-                <h4 class="card-title"> Resume</h4>
-              </div>
-              <div class="card-body">
+
+
               <?php
               /*
                 Template Name: Blog posts template
@@ -25,22 +17,30 @@
                 );
               ?>
 
-                <div class = "page-container">
 
+      <div class="panel-header panel-header-sm">
+      </div>
+      <div class="content">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="card">
+              <div class="card-header">
+                <h4 class="card-title"> Resume</h4>
+              </div>
+              <div class="card-body">
+                <div class = "page-container">
                   <div class = "main-content">
                     <?php if ( $blog_posts->have_posts() ) : ?>
                     <div class = "blog-posts">
                     <?php while ( $blog_posts->have_posts() ) : $blog_posts->the_post(); ?>
-              
                       <article id = "post-<?php the_ID(); ?>">
-                      <?php 
-                      echo '<b>Titulo   : </b>';
-                      the_title();
-                      ?>
-                        <div class = "post-category">
                         <?php 
-      					         echo '<b>Categorias   : </b>';
-      					
+                          echo '<b>Titulo   : </b>';
+                          the_title();
+                        ?>
+                        <div class = "post-category">
+                        <?php
+                          echo '<b>Categorias   : </b>';
                           $categories = get_the_category();
                           $separator = ' ';
       		                $output = '';
@@ -55,12 +55,14 @@
       						        echo  '<br>';
                         ?>
                         </div>
+                        
                         <div class = "post-excerpt">
                         <?php 
                           echo '<b>Información    : </b>';
                           wp_kses_post( the_excerpt() ) 
                         ?>
                         </div>
+
                         <div class = "post-excerpt">
                           <a href="<?php echo home_url();?>/Content/?ID=<?php the_ID(); ?>">
                           <?php 
