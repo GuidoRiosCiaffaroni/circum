@@ -26,13 +26,13 @@
                         TRADER
                       </th>
                       <th>
-                        NUM
-                      </th>
-                      <th>
                         A
                       </th>
                       <th>
                         B
+                      </th>
+                      <th>
+                        C
                       </th>
 
                     </thead>
@@ -51,7 +51,7 @@
                           Banco Estado
                         </td>
                         <td class="text-center">
-                          2
+                          2w
                         </td>
                         <td>
                           <a href="<?php echo home_url();?>/Content/?ID=41">

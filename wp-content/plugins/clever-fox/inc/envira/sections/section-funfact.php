@@ -3,7 +3,7 @@
 	function startkit_funfact_plu() {
 	$hide_show_funfact			= get_theme_mod('hide_show_funfact','1');
 	$funfact_contents			= get_theme_mod('funfact_contents',startkit_get_funfact_default());
-	$funfact_background_setting	= get_theme_mod('funfact_background_setting',CLEVERFOX_PLUGIN_URL . 'inc/envira/images/factbg.jpg');
+	$funfact_background_setting	= get_theme_mod('funfact_background_setting',esc_url(CLEVERFOX_PLUGIN_URL . 'inc/envira/images/factbg.jpg'));
 	$funfact_background_position= get_theme_mod('funfact_background_position','fixed');	
 	if($hide_show_funfact == '1') { 
 if ( ! empty( $funfact_background_setting ) ) { ?>

@@ -155,6 +155,12 @@ class Cleverfox_Activator {
 				require CLEVERFOX_PLUGIN_DIR . 'inc/gradiant/default-widgets/default-widget.php';
 			}
 			
+			if ( 'Eduvert' == $theme->name){
+				require CLEVERFOX_PLUGIN_DIR . 'inc/eduvert/default-pages/upload-media.php';
+				require CLEVERFOX_PLUGIN_DIR . 'inc/eduvert/default-pages/home-page.php';
+				require CLEVERFOX_PLUGIN_DIR . 'inc/eduvert/default-widgets/default-widget.php';
+			}
+			
 			update_option( 'item_details_page', 'Done' );
 		}
 	}
