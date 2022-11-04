@@ -17,6 +17,9 @@
                   <table class="table">
                     <thead class=" text-primary">
                       <th>
+                        ID
+                      </th>                      
+                      <th>
                         NOMBRE
                       </th>
                       <th>
@@ -55,6 +58,9 @@
 
                       <!-- --------------------------------------------------------------------------------------------- -->
                       <tr>
+                                               <td>
+                          1
+                        </td> 
                         <td>
                           BANCO DE CREDITO E INVERSIONES
                         </td>
@@ -159,38 +165,25 @@ global $wpdb;
     if( $query->have_posts()): 
 
     while( $query->have_posts()): $query->the_post();
-
      {
+      echo '<tr>';
+      echo '<td>'. $post->ID .'</td>';
+      echo '<td>'. get_post_meta( $post->ID, 'meta_folio_name', true ) .'</td>';
+      echo '<td><a href="'. get_post_meta( $post->ID, 'meta_folio_url_bstgo', true ) .'" target="_blank">'. get_post_meta( $post->ID, 'meta_folio_name_bstgo', true ) .'</a></td>';
+      echo '<td><a href="'. get_post_meta( $post->ID, 'meta_folio_url_yahoo', true ) .'" target="_blank">'. get_post_meta( $post->ID, 'meta_folio_name_yahoo', true ) .'</a></td>';
+      echo '<td><a href="'. get_post_meta( $post->ID, 'meta_folio_url_google', true ) .'" target="_blank">'. get_post_meta( $post->ID, 'meta_folio_name_google', true ) .'</a></td>';
+      echo '<td><a href="'. get_post_meta( $post->ID, 'meta_folio_url_investing', true ) .'" target="_blank">'. get_post_meta( $post->ID, 'meta_folio_name_investing', true ) .'</a></td>';
      ?>
 
 
 
 
-                      <!-- --------------------------------------------------------------------------------------------- -->
-                      <tr>
-                        <td>
-                          BANCO DE CREDITO E INVERSIONES
-                        </td>
-                        <td>
-                          <a href="">
-                          <?php echo $post->post_title; ?>
-                          </a>
-                        </td>
-                        <td>
-                          <a href="" target="_blank">  
-                          
-                          </a>
-                        </td>
-                        <td>
-                          <a href="">
-    
-                          </a>
-                        </td>
-                        <td>
-                          <a href="" target="_blank">
-                          
-                          </a>
-                        </td>
+                       
+        
+
+         
+             
+               
                         <td>
                           <a href="">
     
@@ -220,11 +213,6 @@ global $wpdb;
                           </a>
                         </td>
                       </tr>
-                      <!-- --------------------------------------------------------------------------------------------- -->
-
-
-
-
 
 
 
