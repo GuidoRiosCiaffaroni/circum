@@ -1694,3 +1694,15 @@ pre.has-background code {
 p.has-text-color em {
     color: inherit;
 }
+
+.post-section #av-primary-content .wp-block-group {
+    padding: 0 20px;
+}
+
+.wp-block-group em {
+    color: inherit;
+}
+
+.wp-block-button a.wp-block-button__link {
+    border-color: inherit;
+}

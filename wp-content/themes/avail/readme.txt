@@ -4,8 +4,8 @@ Contributors: Nayrathemes
 Requires at least: 4.4
 Tested up to: 6.0
 Requires PHP: 5.6
-Stable tag: 1.0.81
-Version: 1.0.81
+Stable tag: 1.0.84
+Version: 1.0.84
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 Tags: one-column, two-columns, right-sidebar, flexible-header, custom-background, custom-colors, custom-header, custom-menu,  custom-logo, featured-image-header, featured-images, footer-widgets, full-width-template, sticky-post, theme-options, threaded-comments, translation-ready, blog, photography, portfolio, editor-style, grid-layout
@@ -95,6 +95,15 @@ License: CC0 Public Domain
 Info Hover, Smile, Shadow & All other Images have been used in images folder, Created by Nayra Themes. Also they are GPL Licensed and free to use and free to redistribute further.
 
 == Changelog ==
+
+@version 1.0.84
+* Block Button Border Color Issue Fixed
+
+@version 1.0.83
+* em Tag Color Issue Fixed
+
+@version 1.0.82
+* Block Group Style Improvements
 
 @version 1.0.81
 * em Tag Color Issue Fixed
