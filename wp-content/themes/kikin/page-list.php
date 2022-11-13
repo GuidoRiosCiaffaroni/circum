@@ -135,17 +135,17 @@ global $wpdb;
 
    
                         <td>
-                          <a href="" target="_blank">
+                          <a href="<?php echo home_url('/locked'); ?>" >
                             <i class="now-ui-icons business_globe"></i>
                           </a>
                         </td>
                         <td>
-                          <a href="">
+                          <a href="<?php echo home_url('/locked'); ?>">
                             <i class="now-ui-icons business_globe"></i>
                           </a>
                         </td>
                         <td>
-                          <a href="">
+                          <a href="<?php echo home_url('/locked'); ?>">
                             <i class="now-ui-icons arrows-1_cloud-download-93"></i>
                           </a>
                         </td>
