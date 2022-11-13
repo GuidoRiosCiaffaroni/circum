@@ -251,8 +251,8 @@
                   </p>
                 </a>
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
-                  <a class="dropdown-item" href="#">Action</a>
-                  <a class="dropdown-item" href="#">Another action</a>
+                  <a class="dropdown-item" href="<?php echo home_url('/locked'); ?>">Perfil</a>
+                  <a class="dropdown-item" href="<?php echo home_url('/locked'); ?>">Edicion</a>
                   <a class="dropdown-item" href="<?php echo wp_logout_url( home_url() ); ?>">Salir</a>
                 </div>
               </li>
