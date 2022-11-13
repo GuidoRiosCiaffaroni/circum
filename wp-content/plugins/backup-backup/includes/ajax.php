@@ -106,6 +106,8 @@
         BMP::res($this->sendTroubleshootingDetails());
       } elseif ($this->post['f'] == 'log-sharing-details') {
         BMP::res($this->logSharing());
+      } elseif ($this->post['f'] == 'get-latest-backup') {
+        BMP::res($this->getLatestBackupFile());
       } elseif ($this->post['f'] == 'debugging') {
         BMP::res($this->debugging());
       } else {
@@ -654,33 +656,47 @@
         return ['status' => 'error', 'bfs' => true];
       }
 
-      if (!$checker->check_free_space($bytes)) {
+      $isSpaceCheckDisabled = Dashboard\bmi_get_config('OTHER:BACKUP:SPACE:CHECKING');
 
-        // Abort backup
-        $zip_progress->log(__("Aborting backup...", 'backup-backup'), 'step');
-        $zip_progress->log(__("There is no space for that backup, checked: ", 'backup-backup') . ($bytes) . __(" bytes", 'backup-backup'), 'error');
+      if ($isSpaceCheckDisabled) {
 
-        // Close backup
-        if (file_exists(BMI_BACKUPS . '/.running')) @unlink(BMI_BACKUPS . '/.running');
-        if (file_exists(BMI_BACKUPS . '/.abort')) @unlink(BMI_BACKUPS . '/.abort');
-        if ($isCLI === true && file_exists($cli_lock)) @unlink($cli_lock);
+        $zip_progress->log(__("Free space checking is disabled by user in settings...", 'backup-backup'), 'warn');
+        $zip_progress->log(__("Backup will continue, trusting there is enough space...", 'backup-backup'), 'warn');
 
-        // Log and close log
-        $zip_progress->log('#002', 'END-CODE');
-        $zip_progress->end();
-
-        if ($isCLI === true) touch($cli_lock_end);
-        $this->actionsAfterProcess();
-
-        // Return error
-        return ['status' => 'error'];
       } else {
-        $zip_progress->log(__("Confirmed, there is more than enough space, checked: ", 'backup-backup') . ($bytes) . __(" bytes", 'backup-backup'), 'success');
-        $zip_progress->bytes = $this->total_size_for_backup;
+
+        if (!$checker->check_free_space($bytes)) {
+
+          // Abort backup
+          $zip_progress->log(__("Aborting backup...", 'backup-backup'), 'step');
+          $zip_progress->log(__("There is no space for that backup, checked: ", 'backup-backup') . ($bytes) . __(" bytes", 'backup-backup'), 'error');
+
+          // Close backup
+          if (file_exists(BMI_BACKUPS . '/.running')) @unlink(BMI_BACKUPS . '/.running');
+          if (file_exists(BMI_BACKUPS . '/.abort')) @unlink(BMI_BACKUPS . '/.abort');
+          if ($isCLI === true && file_exists($cli_lock)) @unlink($cli_lock);
+
+          // Log and close log
+          $zip_progress->log('#002', 'END-CODE');
+          $zip_progress->end();
+
+          if ($isCLI === true) touch($cli_lock_end);
+          $this->actionsAfterProcess();
+
+          // Return error
+          return ['status' => 'error'];
+        } else {
+          $zip_progress->log(__("Confirmed, there is more than enough space, checked: ", 'backup-backup') . ($bytes) . __(" bytes", 'backup-backup'), 'success');
+          $zip_progress->bytes = $this->total_size_for_backup;
+        }
+
       }
 
       if (Dashboard\bmi_get_config('BACKUP:DATABASE') != 'true') {
-        // Do something if db is not selected
+
+        // $zip_progress->log(__("Database won't be backed-up due to user settings, omitting...", 'backup-backup'), 'info');
+        // Commented as message will be shown in database backup module
+
       }
 
       // Log and set files length
@@ -999,7 +1015,6 @@
 
         if (defined('BMI_USING_CLI_FUNCTIONALITY') && BMI_USING_CLI_FUNCTIONALITY === true) {
           $migration->log(__('PHP CLI: Restore process initialized, restoring...', 'backup-backup'), 'success');
-          error_log('running cli');
           touch($lock_cli);
         } else {
           $migration->log(__('Restore process initialized, restoring (non-cli mode)...', 'backup-backup'), 'success');
@@ -1500,6 +1515,8 @@
       $cli_no_exist = __('Path to executable that you provided for PHP CLI does not exist.', 'backup-backup');
       $db_query_too_low = __('The value for query amount cannot be smaller than 15.', 'backup-backup');
       $db_query_too_much = __('The value for query amount cannot be larger than 15000.', 'backup-backup');
+      $db_sr_max_too_much = __('The value for search replace max page cannot be smaller than 10.', 'backup-backup');
+      $db_sr_max_too_low = __('The value for search replace max page cannot be larger than 30000.', 'backup-backup');
 
       $email = sanitize_email(trim($this->post['email'])); // OTHER:EMAIL
       $email_title = sanitize_text_field(trim($this->post['email_title'])); // OTHER:EMAIL:TITLE
@@ -1510,12 +1527,16 @@
       $php_cli_disable_others = $this->post['php_cli_disable_others'] === 'true' ? true : false; // OTHER:CLI:DISABLE
       $normal_timeout = $this->post['normal_timeout'] === 'true' ? true : false; // OTHER:USE:TIMEOUT:NORMAL
       $insecure_download = $this->post['download_technique'] === 'true' ? true : false; // OTHER:DOWNLOAD:DIRECT
-      $db_query_size = isset($this->post['db_queries_amount']) ? trim($this->post['db_queries_amount']) : '300'; // OTHER:DB:QUERIES
+      $db_query_size = isset($this->post['db_queries_amount']) ? trim($this->post['db_queries_amount']) : '2000'; // OTHER:DB:QUERIES
+      $db_search_replace_max = isset($this->post['db_search_replace_max']) ? trim($this->post['db_search_replace_max']) : '300'; // OTHER:DB:SEARCHREPLACE:MAX
       $db_restore_splitting = $this->post['bmi-restore-splitting'] === 'true' ? true : false; // OTHER:RESTORE:SPLITTING
       $db_restore_v3_engine = $this->post['bmi-db-v3-restore-engine'] === 'true' ? true : false; // OTHER:RESTORE:DB:V3
 
       $no_assets_b4_restore = $this->post['remove-assets-before-restore'] === 'true' ? true : false; // OTHER:RESTORE:BEFORE:CLEANUP
       $single_file_db_force = $this->post['bmi-db-single-file-backup'] === 'true' ? true : false; // OTHER:BACKUP:DB:SINGLE:FILE
+      $db_batching_backup = $this->post['bmi-db-batching-backup'] === 'true' ? true : false; // OTHER:BACKUP:DB:BATCHING
+
+      $bmi_disable_space_check = $this->post['bmi-disable-space-check-function'] === 'true' ? true : false; // OTHER:BACKUP:SPACE:CHECKING
 
       $uninstall_config = $this->post['uninstall_config'] === 'true' ? true : false; // OTHER:UNINSTALL:CONFIGS
       $uninstall_backups = $this->post['uninstall_backups'] === 'true' ? true : false; // OTHER:UNINSTALL:BACKUPS
@@ -1530,7 +1551,11 @@
       }
 
       if (!is_numeric($db_query_size) || empty($db_query_size)) {
-        $db_query_size = "1000";
+        $db_query_size = "2000";
+      }
+
+      if (!is_numeric($db_search_replace_max) || empty($db_search_replace_max)) {
+        $db_search_replace_max = "300";
       }
 
       if (strlen($email) <= 0) {
@@ -1556,6 +1581,12 @@
       }
       if (intval($db_query_size) < 15) {
         return ['status' => 'msg', 'why' => $db_query_too_low, 'level' => 'warning'];
+      }
+      if (intval($db_search_replace_max) > 30000) {
+        return ['status' => 'msg', 'why' => $db_sr_max_too_much, 'level' => 'warning'];
+      }
+      if (intval($db_search_replace_max) < 10) {
+        return ['status' => 'msg', 'why' => $db_sr_max_too_low, 'level' => 'warning'];
       }
 
       $error = 0;
@@ -1589,6 +1620,9 @@
       if (!Dashboard\bmi_set_config('OTHER:DB:QUERIES', $db_query_size)) {
         $error++;
       }
+      if (!Dashboard\bmi_set_config('OTHER:DB:SEARCHREPLACE:MAX', $db_search_replace_max)) {
+        $error++;
+      }
       if (!Dashboard\bmi_set_config('OTHER:DOWNLOAD:DIRECT', $insecure_download)) {
         $error++;
       }
@@ -1602,6 +1636,12 @@
         $error++;
       }
       if (!Dashboard\bmi_set_config('OTHER:BACKUP:DB:SINGLE:FILE', $single_file_db_force)) {
+        $error++;
+      }
+      if (!Dashboard\bmi_set_config('OTHER:BACKUP:DB:BATCHING', $db_batching_backup)) {
+        $error++;
+      }
+      if (!Dashboard\bmi_set_config('OTHER:BACKUP:SPACE:CHECKING', $bmi_disable_space_check)) {
         $error++;
       }
       if (!Dashboard\bmi_set_config('OTHER:RESTORE:BEFORE:CLEANUP', $no_assets_b4_restore)) {
@@ -1840,6 +1880,10 @@
       $ignored_paths_default[] = "***ABSPATH***/wp-content/ai1wm-backups";
       $ignored_paths_default[] = "***ABSPATH***/wp-content/uploads/wp-clone";
       $ignored_paths_default[] = "***ABSPATH***/wp-content/updraft";
+      $ignored_paths_default[] = "***ABSPATH***/wp-content/backups-dup-pro";
+      $ignored_paths_default[] = "***ABSPATH***/wp-content/wpvividbackups";
+      $ignored_paths_default[] = "***ABSPATH***/wp-content/backup-guard";
+      $ignored_paths_default[] = "***ABSPATH***/wp-content/backups-dup-lite";
       if (defined('BMI_PRO_ROOT_DIR')) $ignored_paths_default[] = BMI_PRO_ROOT_DIR;
       if ($is && $dpathsis) {
         BMP::merge_arrays($ignored_paths_default, $dpaths);
@@ -1944,7 +1988,9 @@
         $acis = true;
         $ac = [
           '***ABSPATH***/wp-content/uploads/wpforms/.htaccess.cpmh3129', // Binary broken file of wpforms
-          '***ABSPATH***/logs/traffic.html/.md5sums' // Binary broken file of wpforms
+          '***ABSPATH***/wp-content/uploads/gravity_forms/.htaccess.cpmh3129', // Binary broken file of wpforms
+          '***ABSPATH***/logs/traffic.html/.md5sums', // Binary broken file of wpforms
+          '***ABSPATH***/wp-config.php' // Exclude wp-config.php permanently
         ];
       } else {
         $ac[] = '***ABSPATH***/wp-content/uploads/wpforms/.htaccess.cpmh3129'; // Binary broken file of wpforms
@@ -2380,8 +2426,10 @@
       $filesToBeRemoved[] = BMI_INCLUDES . DIRECTORY_SEPARATOR . 'htaccess' . DIRECTORY_SEPARATOR . 'bmi_backup_manifest.json';
       $filesToBeRemoved[] = BMI_INCLUDES . DIRECTORY_SEPARATOR . 'htaccess' . DIRECTORY_SEPARATOR . 'files_latest.list';
 
-      foreach ($filesToBeRemoved as $file) {
-        $this->rrmdir($file);
+      if (is_array($filesToBeRemoved) || is_object($filesToBeRemoved)) {
+        foreach ((array) $filesToBeRemoved as $file) {
+          $this->rrmdir($file);
+        }
       }
 
       return ['status' => 'success'];
@@ -2456,8 +2504,10 @@
       $filesToBeRemoved[] = BMI_INCLUDES . DIRECTORY_SEPARATOR . 'htaccess' . DIRECTORY_SEPARATOR . '.restore_secret';
       $filesToBeRemoved[] = BMI_INCLUDES . DIRECTORY_SEPARATOR . 'htaccess' . DIRECTORY_SEPARATOR . '.table_map';
 
-      foreach ($filesToBeRemoved as $file) {
-        $this->rrmdir($file);
+      if (is_array($filesToBeRemoved) || is_object($filesToBeRemoved)) {
+        foreach ((array) $filesToBeRemoved as $file) {
+          $this->rrmdir($file);
+        }
       }
 
       return ['status' => 'success'];
@@ -2618,6 +2668,36 @@
 
     }
 
+    public function getLatestBackupFile() {
+
+      $dir = BMI_BACKUPS;
+      $backupdir = array_diff(scandir($dir), ['..', '.']);
+      $backups = [];
+      foreach ($backupdir as $index => $name) {
+
+        $ext = pathinfo($dir . DIRECTORY_SEPARATOR . $name, PATHINFO_EXTENSION);
+
+        if ($ext === 'zip') {
+          $backups[] = [
+            'cdate' => filemtime($dir . DIRECTORY_SEPARATOR . $name),
+            'name' => $name
+          ];
+        }
+
+      }
+
+      usort($backups, function ($a, $b) {
+        if (intval($a['cdate']) < intval($b['cdate'])) return 1;
+        else return -1;
+      });
+
+      $backups = array_values($backups);
+
+      return $backups[0]['name'];
+
+    }
+
     public function debugging() {
+
     }
   }

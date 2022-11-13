@@ -53,9 +53,12 @@ class System_Info {
   protected $free_space_after_backup;
 
   public function is_enabled($func) {
-    $disabled = explode(',', ini_get('disable_functions'));
 
-    return !in_array($func, $disabled);
+    $disabled = explode(',', ini_get('disable_functions'));
+    $isDisabled = in_array($func, $disabled);
+    if (!$isDisabled && function_exists($func)) return true;
+    else return false;
+
   }
 
   /**
@@ -223,8 +226,8 @@ class System_Info {
    */
   public function get_disk_free_space() {
     if ($this->is_enabled('disk_free_space')) {
-      if (! isset($this->disk_free_space)) {
-        $this->disk_free_space = disk_free_space(getcwd());
+      if (!isset($this->disk_free_space)) {
+        $this->disk_free_space = \disk_free_space(ABSPATH);
       }
 
       return $this->disk_free_space;

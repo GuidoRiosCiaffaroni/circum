@@ -51,7 +51,7 @@
       </div>
 
       <div class="mm60 f18 center mb mtl">
-        <a href="#" class="modal-closer text-muted" data-close="backup-error-modal"><?php _e('Close window', 'backup-backup') ?></a>
+        <a href="#" class="modal-closer text-muted" data-close="restore-error-modal"><?php _e('Close window', 'backup-backup') ?></a>
       </div>
 
     </div>

@@ -7,6 +7,9 @@
   use BMI\Plugin\BMI_Logger AS Logger;
   use BMI\Plugin\Progress\BMI_ZipProgress AS Output;
   use BMI\Plugin\Checker\System_Info as SI;
+  use BMI\Plugin\Dashboard as Dashboard;
+  use BMI\Plugin\Database\BMI_Database as Database;
+  use BMI\Plugin\Database\BMI_Database_Exporter as BetterDatabaseExport;
 
   // Exit on direct access
   if (!(defined('BMI_CURL_REQUEST') || defined('ABSPATH'))) exit;
@@ -20,9 +23,10 @@
   class BMI_Backup_Heart {
 
     // Prepare the request details
-    function __construct($curl = false, $config = false, $content = false, $backups = false, $abs = false, $dir = false, $url = false, $remote_settings = [], $it = 0) {
+    function __construct($curl = false, $config = false, $content = false, $backups = false, $abs = false, $dir = false, $url = false, $remote_settings = [], $it = 0, $dbit = 0, $dblast = 0) {
 
       $this->it = intval($it);
+      $this->dbit = intval($dbit);
       $this->abs = $abs;
       $this->dir = $dir;
       $this->url = $url;
@@ -30,6 +34,7 @@
       $this->config = $config;
       $this->content = $content;
       $this->backups = $backups;
+      $this->dblast = $dblast;
 
       $this->identy = $remote_settings['identy'];
       $this->manifest = $remote_settings['manifest'];
@@ -57,6 +62,7 @@
       $this->headersSet = false;
       $this->final_made = false;
       $this->final_batch = false;
+      $this->dbitJustFinished = false;
 
       $this->lock_cli = BMI_BACKUPS . '/.backup_cli_lock';
       if ($this->it > 1) @touch($this->lock_cli);
@@ -65,10 +71,12 @@
 
     // Human size from bytes
     public static function humanSize($bytes) {
-      $label = ['B', 'KB', 'MB', 'GB', 'TB', 'PB'];
-      for ($i = 0; $bytes >= 1024 && $i < (count($label) - 1); $bytes /= 1024, $i++);
+      if (is_int($bytes)) {
+        $label = ['B', 'KB', 'MB', 'GB', 'TB', 'PB'];
+        for ($i = 0; $bytes >= 1024 && $i < (count($label) - 1); $bytes /= 1024, $i++);
 
-      return (round($bytes, 2) . " " . $label[$i]);
+        return (round($bytes, 2) . " " . $label[$i]);
+      } else return $bytes;
     }
 
     // Create new process
@@ -96,6 +104,8 @@
           // 'Content-Shareallowed:' . $this->shareallowed,
           'Content-Rev:' . $this->rev,
           'Content-It:' . $this->it,
+          'Content-Dbit:' . $this->dbit,
+          'Content-Dblast:' . $this->dblast,
           'Content-Browser:' . $this->browserSide ? 'true' : 'false'
         );
 
@@ -224,6 +234,8 @@
         // Content finished
         header('Content-Finished: true');
         header('Content-It: ' . ($this->it + 1));
+        header('Content-Dbit: ' . $this->dbit);
+        header('Content-Dblast: ' . $this->dblast);
         header('Content-Filessofar: ' . $this->filessofar);
         http_response_code(200);
         $this->headersSet = true;
@@ -256,6 +268,8 @@
         // Content finished
         header('Content-Finished: false');
         header('Content-It: ' . ($this->it + 1));
+        header('Content-Dbit: ' . $this->dbit);
+        header('Content-Dblast: ' . $this->dblast);
         header('Content-Filessofar: ' . $this->filessofar);
         http_response_code(200);
         $this->headersSet = true;
@@ -286,6 +300,10 @@
 
     // Group files for batches
     public function make_file_groups() {
+
+      if (!(file_exists($this->fileList) && is_readable($this->fileList))) {
+        return $this->send_error('File list is not accessible or does not exist, try to run your backup process once again.', true);
+      }
 
       $this->output->log('Making batches for each process...', 'STEP');
       $list_path = $this->fileList;
@@ -380,17 +398,6 @@
                   fclose($log_file);
 
       $files = [$logs, $this->manifest];
-      if (file_exists($this->dbfile)) {
-        $files[] = $this->dbfile;
-      } elseif (file_exists($this->db_dir_v2) && is_dir($this->db_dir_v2)) {
-        $this->db_v2_engine = true;
-        $db_files = scandir($this->db_dir_v2);
-        foreach ($db_files as $i => $name) {
-          if (!($name == '.' || $name == '..')) {
-            $files[] = $this->db_dir_v2 . '/' . $name;
-          }
-        }
-      }
 
       return $files;
 
@@ -402,7 +409,6 @@
       $this->output->log('Finalizing backup', 'STEP');
       $this->output->log('Closing files and archives', 'STEP');
       $this->output->log('Archiving of ' . $this->total_files . ' files took: ' . number_format(microtime(true) - floatval($this->backupstart), 2) . 's', 'INFO');
-      $this->output->log('#001', 'END-CODE');
 
       if (!BMI_CLI_REQUEST) {
         if (!$this->browserSide) sleep(1);
@@ -420,8 +426,12 @@
     // Load batch
     public function load_batch() {
 
+      if (!(file_exists($this->identyFolder) && is_dir($this->identyFolder))) {
+        return $this->send_error('Temporary directory does not exist, please start the backup once again.', true);
+      }
+
       $allFiles = scandir($this->identyFolder);
-      $files = array_slice($allFiles, 2);
+      $files = array_slice((array) $allFiles, 2);
       if (sizeof($files) > 0) {
 
         $largest = $files[0]; $prev_size = 0;
@@ -473,7 +483,7 @@
     }
 
     // Add files to ZIP – The Backup
-    public function add_files($files = [], $file_list = false, $final = false) {
+    public function add_files($files = [], $file_list = false, $final = false, $dbLog = false) {
 
       try {
 
@@ -489,6 +499,9 @@
             // Show what's in use
             if ($this->it === 1) {
               $this->output->log('Using ZipArchive module to create the Archive.', 'INFO');
+              if ($dbLog == true) {
+                $this->output->log('Adding database SQL file(s) to the backup file.', 'STEP');
+              }
             }
 
             // Open / create ZIP file
@@ -503,15 +516,26 @@
             }
 
             // Final operation
-            if ($final) {
+            if ($final || $dbLog) {
 
               // Add files
               for ($i = 0; $i < sizeof($files); ++$i) {
 
-                // Add the file
-                $this->_zip->addFile($files[$i], $this->cutDir($files[$i]));
-                $this->final_made = true;
+                if (file_exists($files[$i]) && is_readable($files[$i]) && !is_link($files[$i])) {
 
+                  // Add the file
+                  $this->_zip->addFile($files[$i], $this->cutDir($files[$i]));
+
+                } else {
+
+                  $this->output->log('This file is not readable, it will not be included in the backup: ' . $files[$i], 'WARN');
+
+                }
+
+              }
+
+              if ($dbLog === false) {
+                $this->final_made = true;
               }
 
             } else {
@@ -519,11 +543,19 @@
               // Add files
               for ($i = 0; $i < sizeof($files); ++$i) {
 
-                // Calculate Path in ZIP
-                $path = 'wordpress' . DIRECTORY_SEPARATOR . substr($files[$i], strlen(ABSPATH));
+                if (file_exists($files[$i]) && is_readable($files[$i]) && !is_link($files[$i])) {
 
-                // Add the file
-                $this->_zip->addFile($files[$i], $path);
+                  // Calculate Path in ZIP
+                  $path = 'wordpress' . DIRECTORY_SEPARATOR . substr($files[$i], strlen(ABSPATH));
+
+                  // Add the file
+                  $this->_zip->addFile($files[$i], $path);
+
+                } else {
+
+                  $this->output->log('This file is not readable, it will not be included in the backup: ' . $files[$i], 'WARN');
+
+                }
 
               }
 
@@ -649,6 +681,32 @@
     // ZIP one of the grouped files
     public function zip_batch() {
 
+      if ($this->it === 1) {
+
+        $files = [];
+        if (file_exists($this->dbfile)) {
+          $files[] = $this->dbfile;
+        } elseif (file_exists($this->db_dir_v2) && is_dir($this->db_dir_v2)) {
+          $this->db_v2_engine = true;
+          $db_files = scandir($this->db_dir_v2);
+          foreach ($db_files as $i => $name) {
+            if (!($name == '.' || $name == '..')) {
+              $files[] = $this->db_dir_v2 . '/' . $name;
+            }
+          }
+        }
+
+        if (sizeof($files) > 0) {
+          $this->add_files($files, false, false, true);
+          $this->output->log('Database added to the backup file.', 'SUCCESS');
+          $this->output->log('Performing site files backup...', 'STEP');
+          return true;
+        }
+
+        $this->output->log('Performing site files backup...', 'STEP');
+
+      }
+
       $list_file = $this->load_batch();
       if ($list_file === false) return true;
       $files = explode("\r\n", file_get_contents($list_file));
@@ -740,7 +798,9 @@
       if (BMI_CLI_REQUEST) return;
       if (file_exists($this->identyfile)) {
 
-        $this->it += 1;
+        if ($this->dbit === -1 && $this->dbitJustFinished == false) {
+          $this->it += 1;
+        }
 
         // Set header for browser
         if ($this->browserSide && $this->headersSet === false) {
@@ -748,6 +808,8 @@
           // Content finished
           header('Content-Finished: false');
           header('Content-It: ' . $this->it);
+          header('Content-Dbit: ' . $this->dbit);
+          header('Content-Dblast: ' . $this->dblast);
           header('Content-Filessofar: ' . $this->filessofar);
           http_response_code(200);
           $this->headersSet = true;
@@ -800,6 +862,11 @@
         // CLI case
         if (BMI_CLI_REQUEST) {
 
+          $this->output->log('Starting database backup exporter', 'STEP');
+          while ($this->dbit !== -1) {
+            $this->databaseBackupMaker();
+          }
+
           // Log
           $this->output->log("PHP CLI initialized - process ran successfully", 'SUCCESS');
           $this->make_file_groups();
@@ -816,15 +883,142 @@
         } else {
 
           // Background
-          if ($this->it === 0) {
+          if ($this->dbit !== -1) {
 
-            $this->output->log('Background process initialized', 'SUCCESS');
-            $this->make_file_groups();
-            $this->output->log('Making archive...', 'STEP');
+            if ($this->dbit === 0) {
+              $this->output->log('Background process initialized', 'SUCCESS');
+              $this->output->log('Starting database backup exporter', 'STEP');
+            }
 
-          } else $this->zip_batch();
+            $this->databaseBackupMaker();
+
+          } else {
+
+            if ($this->it === 0) {
+
+              $this->make_file_groups();
+              $this->output->log('Making archive...', 'STEP');
+
+            } else $this->zip_batch();
+
+          }
 
         }
+
+      }
+
+    }
+
+    public function fixSlashes($str) {
+      $str = str_replace('\\\\', DIRECTORY_SEPARATOR, $str);
+      $str = str_replace('\\', DIRECTORY_SEPARATOR, $str);
+      $str = str_replace('\/', DIRECTORY_SEPARATOR, $str);
+      $str = str_replace('/', DIRECTORY_SEPARATOR, $str);
+
+      if ($str[strlen($str) - 1] == DIRECTORY_SEPARATOR) {
+        $str = substr($str, 0, -1);
+      }
+
+      return $str;
+    }
+
+    // Database batch maker and dumper
+    // We need WP instance for that to get access to wpdb
+    public function databaseBackupMaker() {
+
+      if ($this->dbit === -1) return;
+
+      define('WP_USE_THEMES', false);
+
+      // Use WP Globals and load WordPress
+      global $wp, $wp_query, $wp_the_query, $wp_rewrite, $wp_did_header;
+      require_once $this->bmi_find_wordpress_base_path() . DIRECTORY_SEPARATOR . 'wp-load.php';
+
+      // DB File Name for that type of backup
+      $dbbackupname = 'bmi_database_backup.sql';
+      $database_file = $this->fixSlashes(BMI_INCLUDES . DIRECTORY_SEPARATOR . 'htaccess' . DIRECTORY_SEPARATOR . $dbbackupname);
+
+      if (Dashboard\bmi_get_config('BACKUP:DATABASE') == 'true') {
+
+        if (Dashboard\bmi_get_config('OTHER:BACKUP:DB:SINGLE:FILE') == 'true') {
+
+          // Require Database Manager
+          require_once BMI_INCLUDES . DIRECTORY_SEPARATOR . 'database' . DIRECTORY_SEPARATOR . 'manager.php';
+
+          // Log what's going on
+          $this->output->log('Making single-file database backup (using deprecated engine, due to used settings)', 'STEP');
+
+          // Get database dump
+          $databaser = new Database(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
+          $databaser->exportDatabase($dbbackupname);
+          $this->output->log("Database size: " . $this->humanSize(filesize($database_file)), 'INFO');
+          $this->output->log('Database (single-file) backup finished.', 'SUCCESS');
+
+          $this->dbitJustFinished = true;
+          $this->dbit = -1;
+          return true;
+
+        } else {
+
+          // Log what's going on
+          if ($this->dbit === 0) {
+            $this->output->log("Making database backup (using v3 engine, requires at least v1.2.2 to restore)", 'STEP');
+            $this->output->log("Iterating database...", 'INFO');
+          }
+
+          // Require Database Manager
+          require_once BMI_INCLUDES . DIRECTORY_SEPARATOR . 'database' . DIRECTORY_SEPARATOR . 'better-backup-v3.php';
+
+          $database_file_dir = $this->fixSlashes((dirname($database_file))) . DIRECTORY_SEPARATOR;
+          $better_database_files_dir = $database_file_dir . 'db_tables';
+
+          if (!is_dir($better_database_files_dir)) @mkdir($better_database_files_dir, 0755, true);
+          $db_exporter = new BetterDatabaseExport($better_database_files_dir, $this->output, $this->dbit, intval($this->backupstart));
+
+          $dbBatchingEnabled = false;
+          if (Dashboard\bmi_get_config('OTHER:BACKUP:DB:BATCHING') == 'true') {
+            $dbBatchingEnabled = true;
+          } else {
+            if ($this->dbit === 0) {
+              $this->output->log("Database batching is disabled in options, consider to use this option if your database backup fails.", 'WARN');
+            }
+          }
+
+          if (BMI_CLI_REQUEST === true || $dbBatchingEnabled === false) {
+
+            $results = $db_exporter->export();
+
+            $this->output->log("Database backup finished", 'SUCCESS');
+            $this->dbitJustFinished = true;
+            $this->dbit = -1;
+            $this->dblast = 0;
+
+          } else {
+
+            $results = $db_exporter->export($this->dbit, $this->dblast);
+
+            $this->dbit = intval($results['batchingStep']);
+            $this->dblast = intval($results['finishedQuery']);
+            $dbFinished = $results['dumpCompleted'];
+
+            if ($dbFinished == true) {
+              $this->output->log("Database backup finished", 'SUCCESS');
+              $this->dbitJustFinished = true;
+              $this->dbit = -1;
+            }
+
+          }
+
+          return true;
+
+        }
+
+      } else {
+
+        $this->output->log('Database will not be dumped due to user settings.', 'INFO');
+        $this->dbitJustFinished = true;
+        $this->dbit = -1;
+        return true;
 
       }
 

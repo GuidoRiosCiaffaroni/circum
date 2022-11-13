@@ -66,7 +66,7 @@ class BMI_Database_Exporter {
    *
    * @return self
    */
-  function __construct($storage, &$logger) {
+  function __construct($storage, &$logger, $batcher = false, $backupStart = false) {
 
     /**
      * WP Global Database variable
@@ -102,8 +102,13 @@ class BMI_Database_Exporter {
     $this->max_query_size = 1 * 1024 * 1024;
 
     $this->table_prefix = time();
+    if ($backupStart && $backupStart !== false && is_numeric($backupStart)) {
+      $this->table_prefix = $backupStart;
+    }
     $this->init_start = microtime(true);
-    $this->logger->log("Memory usage after initialization: " . number_format(memory_get_usage() / 1024 / 1024, 2) . " MB", 'INFO');
+    if ($batcher === false || $batcher === 0) {
+      $this->logger->log("Memory usage after initialization: " . number_format(memory_get_usage() / 1024 / 1024, 2) . " MB", 'INFO');
+    }
 
   }
 
@@ -112,33 +117,47 @@ class BMI_Database_Exporter {
    *
    * @return filename/filenames
    */
-  public function export() {
+  public function export($batchingStep = false, $indexEnded = 0) {
 
     // Table names
-    $this->get_table_names_and_sizes();
-    $this->logger->log("Scan found $this->total_tables tables ($this->total_rows rows), estimated total size: $this->total_size MB.", 'INFO');
-    $this->logger->log("Memory usage after getting table names: " . number_format(memory_get_usage() / 1024 / 1024, 2) . " MB ", 'INFO');
+    $this->get_table_names_and_sizes($batchingStep);
+    if ($batchingStep === false || $batchingStep === 0) {
+      $this->logger->log("Scan found $this->total_tables tables ($this->total_rows rows), estimated total size: $this->total_size MB.", 'INFO');
+      $this->logger->log("Memory usage after getting table names: " . number_format(memory_get_usage() / 1024 / 1024, 2) . " MB ", 'INFO');
+    }
 
     // Recipes
-    $this->logger->log("Getting table recipes...", 'INFO');
-    $this->table_recipes();
-    $this->logger->log("Table recipes have been exported.", 'INFO');
-    $this->logger->log("Memory usage after loading recipes: " . number_format(memory_get_usage() / 1024 / 1024, 2) . " MB ", 'INFO');
+    if ($batchingStep === false || $batchingStep === 0) {
+      $this->logger->log("Getting table recipes...", 'INFO');
+      $this->table_recipes();
+      $this->logger->log("Table recipes have been exported.", 'INFO');
+      $this->logger->log("Memory usage after loading recipes: " . number_format(memory_get_usage() / 1024 / 1024, 2) . " MB ", 'INFO');
+    }
 
     // Save Recipes
-    $this->logger->log("Saving recipes...", 'INFO');
-    $this->save_recipes();
-    $this->logger->log("Recipes saved.", 'INFO');
-    $this->logger->log("Memory usage after recipe off-load: " . number_format(memory_get_usage() / 1024 / 1024, 2) . " MB", 'INFO');
+    if ($batchingStep === false || $batchingStep === 0) {
+      $this->logger->log("Saving recipes...", 'INFO');
+      $this->save_recipes();
+      $this->logger->log("Recipes saved.", 'INFO');
+      $this->logger->log("Memory usage after recipe off-load: " . number_format(memory_get_usage() / 1024 / 1024, 2) . " MB", 'INFO');
+    }
 
     // Tables data
-    $this->logger->log("Exporting table data...", 'INFO');
-    $this->get_tables_data();
-    $this->logger->log("Table data exported.", 'INFO');
-    $this->logger->log("Memory usage after data export: " . number_format(memory_get_usage() / 1024 / 1024, 2) . " MB", 'INFO');
+    if ($batchingStep === false || $batchingStep === 0) {
+      $this->logger->log("Exporting table data...", 'INFO');
+    }
+    $finishedAt = $this->get_tables_data($batchingStep, $indexEnded);
+    if ($batchingStep === false || $finishedAt['dumpCompleted'] === true) {
+      $this->logger->log("Table data exported.", 'INFO');
+      $this->logger->log("Memory usage after data export: " . number_format(memory_get_usage() / 1024 / 1024, 2) . " MB", 'INFO');
+    }
 
-    $end = number_format(microtime(true) - $this->init_start, 4);
-    $this->logger->log("Entire process took: $end s", 'INFO');
+    if ($batchingStep === false) {
+      $end = number_format(microtime(true) - $this->init_start, 4);
+      $this->logger->log("Entire process took: $end s", 'INFO');
+    }
+
+    return $finishedAt;
 
   }
 
@@ -147,24 +166,24 @@ class BMI_Database_Exporter {
    *
    * @return {array} associative array table_name => [size => its size in MB, rows => rows count]
    */
-  private function get_table_names_and_sizes() {
+  private function get_table_names_and_sizes($batchingStep) {
 
     $tables = $this->wpdb->get_results('SHOW TABLES');
     $shouldExcludeTables = Dashboard\bmi_get_config('BACKUP:DATABASE:EXCLUDE');
 
     $excludedTables = [];
-    if (defined('BMI_BACKUP_PRO') && BMI_BACKUP_PRO == 1) {
-      $excludedTables = Dashboard\bmi_get_config('BACKUP:DATABASE:EXCLUDE:LIST');
-      if (!is_array($excludedTables) || empty($excludedTables)) $excludedTables = [];
-    }
+    $excludedTables = Dashboard\bmi_get_config('BACKUP:DATABASE:EXCLUDE:LIST');
+    if (!is_array($excludedTables) || empty($excludedTables)) $excludedTables = [];
 
     foreach ($tables as $table_index => $table_object) {
       foreach ($table_object as $database_name => $table_name) {
 
-        if (in_array($table_name, $excludedTables) && $shouldExcludeTables) {
+        if (in_array($table_name, $excludedTables) && $shouldExcludeTables == 'true') {
           $str = __('Excluding %s table from backup (due to exclusion rules).', 'backup-backup');
           $str = str_replace('%s', $table_name, $str);
-          $this->logger->log($str, 'INFO');
+          if ($batchingStep === false || intval($batchingStep) === 0) {
+            $this->logger->log($str, 'INFO');
+          }
 
           continue;
         }
@@ -176,13 +195,17 @@ class BMI_Database_Exporter {
         $results = $this->wpdb->get_results($this->wpdb->prepare($query, DB_NAME, $table_name));
 
         if (!is_object($results[0])) {
-          $this->logger->log("Could not get info about: $table_name (#01)", 'INFO');
+          if ($batchingStep === false || intval($batchingStep) === 0) {
+            $this->logger->log("Could not get info about: $table_name (#01)", 'WARN');
+          }
           continue;
         }
 
         $table_name_returned = trim($results[0]->table);
         if ($table_name != $table_name_returned || strlen(trim($table_name)) <= 0) {
-          $this->logger->log("Could not get info about: $table_name (#02)", 'INFO');
+          if ($batchingStep === false || intval($batchingStep) === 0) {
+            $this->logger->log("Could not get info about: $table_name (#02)", 'WARN');
+          }
           continue;
         }
 
@@ -310,12 +333,29 @@ class BMI_Database_Exporter {
    *
    * @return {int} Total rows count
    */
-  private function get_tables_data() {
+  private function get_tables_data($batchingStep = false, $indexEnded = 0) {
+
+    $finishedAt = 0;
+    $currentTableIndex = 0;
+    $dumpCompleted = true;
 
     foreach ($this->tables_by_size as $table_name => $table_object) {
 
+      $emptyTable = false;
+      $currentTableIndex = $currentTableIndex + 1;
+
+      if ($batchingStep !== false) {
+        if (intval($currentTableIndex - 1) !== intval($batchingStep)) {
+          continue;
+        } else {
+          $dumpCompleted = false;
+        }
+      }
+
       $start_time = microtime(true);
-      $this->logger->log("Getting data of table: " . $table_name . " (" . number_format ($table_object['size'], 2) . " MB)", 'INFO');
+      if ($batchingStep === false || intval($indexEnded) === 0) {
+        $this->logger->log("Getting data of table: " . $table_name . " (" . $currentTableIndex . "/" . $this->total_tables . ", " . number_format($table_object['size'], 2) . " MB)", 'STEP');
+      }
       $rows = intval($table_object['rows']);
 
       $this->wpdb->query("SET foreign_key_checks = 0;");
@@ -323,43 +363,98 @@ class BMI_Database_Exporter {
       $currentBufferSize = 0;
       $bufferResult = [];
 
-      for ($i = 0; $i < $rows;) {
+      $i = 0;
+      if ($batchingStep !== false) $i = $indexEnded;
 
-        $query = $this->wpdb->prepare("SELECT * FROM `$table_name` LIMIT %d, $this->max_rows", $i);
-        $result = $this->wpdb->get_results($query);
+      if (intval($table_object['rows']) > 0) {
+        for (;$i < $rows;) {
 
-        $valuesSize = $this->getArraySize($result, $currentBufferSize);
-        $rowsAmount = sizeof($result);
-        $valuesBytesSize = $valuesSize['size'] - $currentBufferSize;
-        $valuesMaxRow = $valuesSize['index'];
-        $valuesLimit = $valuesSize['limit'];
+          $query = $this->wpdb->prepare("SELECT * FROM `$table_name` LIMIT %d, $this->max_rows", $i);
+          $result = $this->wpdb->get_results($query);
 
-        if ($valuesMaxRow < $rowsAmount && $valuesMaxRow != 0) $result = array_slice($result, 0, $valuesMaxRow);
+          $valuesSize = $this->getArraySize($result, $currentBufferSize);
+          $rowsAmount = sizeof($result);
+          $valuesBytesSize = $valuesSize['size'] - $currentBufferSize;
+          $valuesMaxRow = $valuesSize['index'];
+          $valuesLimit = $valuesSize['limit'];
 
-        $i += $valuesMaxRow;
-        $currentBufferSize += $valuesBytesSize;
+          if ($valuesMaxRow < $rowsAmount && $valuesMaxRow != 0) $result = array_slice($result, 0, $valuesMaxRow);
 
-        if ($valuesMaxRow != 0) $bufferResult = array_merge($bufferResult, $result);
+          $i += $valuesMaxRow;
+          $currentBufferSize += $valuesBytesSize;
+          $finishedAt = $i;
 
-        if ($currentBufferSize >= $this->max_query_size || $i >= $rows || $valuesLimit == true) {
+          if ($valuesMaxRow != 0) $bufferResult = array_merge($bufferResult, $result);
 
-          $currentBufferSize = 0;
-          $this->save_data($bufferResult, $table_name);
-          unset($bufferResult);
-          $bufferResult = [];
+          if ($currentBufferSize >= $this->max_query_size || $i >= $rows || $valuesLimit == true) {
+
+            $currentBufferSize = 0;
+            $this->save_data($bufferResult, $table_name);
+            unset($bufferResult);
+            $bufferResult = [];
+
+            if ($batchingStep !== false) break;
+
+          }
+
+          unset($result);
 
         }
 
-        unset($result);
+        $percentg = 100;
+        if (intval($table_object['rows']) !== 0 && is_numeric(intval($table_object['rows']))) {
+
+          $percentg = number_format(($i / intval($table_object['rows']) * 100), 2);
+
+        }
+
+        if ($i >= $rows && $batchingStep !== false) {
+
+          $batchingStep = $batchingStep + 1;
+          $finishedAt = 0;
+
+          $this->logger->log("Milestone of table " . $table_name . ": " . $i . "/" . $table_object['rows'] . " rows (" . $percentg . "%, " . number_format((microtime(true) - $start_time), 5) . "s)", 'INFO');
+          $this->logger->log("Table export for: " . $table_name . " finished", 'SUCCESS');
+
+        } else if ($batchingStep !== false) {
+
+          $this->logger->log("Milestone of table " . $table_name . ": " . $i . "/" . $table_object['rows'] . " rows (" . $percentg . "%, " . number_format((microtime(true) - $start_time), 5) . "s)", 'INFO');
+
+        }
+
+        $this->wpdb->query("SET foreign_key_checks = 1;");
+
+        if ($batchingStep === false) {
+
+          $this->logger->log("Table export for: " . $table_name . " finished (" . number_format((microtime(true) - $start_time), 5) . "s)", 'SUCCESS');
+
+        }
+
+        unset($start_time);
+
+      } else {
+
+        $this->logger->log("Table " . $table_name . " is empty, saving only recipe.", 'INFO');
+        $emptyTable = true;
+
+        if ($batchingStep !== false) {
+
+          $batchingStep = $batchingStep + 1;
+          $finishedAt = 0;
+
+        }
 
       }
 
-      $this->wpdb->query("SET foreign_key_checks = 1;");
-
-      $this->logger->log("Table: " . $table_name . " cloned, operation took: " . number_format((microtime(true) - $start_time), 5) . " ms", 'INFO');
-      unset($start_time);
+      if ($batchingStep !== false && $emptyTable === false) break;
 
     }
+
+    return [
+      'finishedQuery' => $finishedAt,
+      'batchingStep' => $batchingStep,
+      'dumpCompleted' => $dumpCompleted
+    ];
 
   }
 

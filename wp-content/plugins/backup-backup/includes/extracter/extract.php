@@ -123,6 +123,27 @@
         $this->conversionStats = $options['conversionStats'];
       }
 
+      $this->tableIndex = 0;
+      $this->replaceStep = 0;
+      $this->totalReplacePage = 0;
+      $this->currentReplacePage = 0;
+      $this->fieldAdjustments = 0;
+      if (isset($options['replaceStep'])) {
+        $this->replaceStep = intval($options['replaceStep']);
+      }
+      if (isset($options['tableIndex'])) {
+        $this->tableIndex = intval($options['tableIndex']);
+      }
+      if (isset($options['currentReplacePage'])) {
+        $this->currentReplacePage = intval($options['currentReplacePage']);
+      }
+      if (isset($options['totalReplacePage'])) {
+        $this->totalReplacePage = intval($options['totalReplacePage']);
+      }
+      if (isset($options['fieldAdjustments'])) {
+        $this->fieldAdjustments = intval($options['fieldAdjustments']);
+      }
+
       // Name
       $this->tmp = untrailingslashit(ABSPATH) . DIRECTORY_SEPARATOR . 'backup-migration_' . $this->tmptime;
       $GLOBALS['bmi_current_tmp_restore'] = $this->tmp;
@@ -201,7 +222,7 @@
         }
 
         $dest = untrailingslashit($dest);
-        if (!file_exists($dest)/* || !is_dir($dest)*/) {
+        if (!file_exists($dest) && !is_dir($dest)) {
           @mkdir($dest, 0755, true);
         }
       }
@@ -228,7 +249,17 @@
           $dest = $this->ABSPATH . $sub . $files[$i];
         }
 
-        if (file_exists($src)) rename($src, $dest);
+        if (file_exists($src)) {
+          $fileDest = BMP::fixSlashes($dest);
+          $dirDest = pathinfo($fileDest);
+          if ($dirDest['dirname']) {
+            $dirDest = $dirDest['dirname'];
+            if (!(is_dir($dirDest) && file_exists($dirDest))) {
+              @mkdir($dirDest, 0755, true);
+            }
+          }
+          rename($src, $fileDest);
+        }
 
         if ($i % 100 === 0) {
           $this->migration->progress(25 + intval((($i / $max) * 100) / 4));
@@ -237,12 +268,33 @@
     }
 
     public function replaceAll($content) {
+
+      update_option('active_plugins', ['backup-backup/backup-backup.php']);
+
+      $themedir = get_theme_root();
+      $tempTheme = $themedir . DIRECTORY_SEPARATOR . 'backup_migration_restoration_in_progress';
+      @mkdir($tempTheme, 0755, true);
+
+      $visitLaterText = __('Site restoration in progress, please visit that website a bit later, thank you! :)', 'backup-backup');
+      file_put_contents($tempTheme . DIRECTORY_SEPARATOR . 'header.php', '<?php wp_head(); show_admin_bar(true);');
+      file_put_contents($tempTheme . DIRECTORY_SEPARATOR . 'footer.php', '<?php wp_footer(); get_footer();');
+      file_put_contents($tempTheme . DIRECTORY_SEPARATOR . 'index.php', '<?php get_header(); wp_body_open(); ?>' . $visitLaterText);
+
+      update_option('template', 'backup_migration_restoration_in_progress');
+      update_option('stylesheet', 'backup_migration_restoration_in_progress');
+
       $this->replacePath($this->tmp, DIRECTORY_SEPARATOR, $content);
+
     }
 
     public function cleanup() {
 
+      $filesToBeRemoved = [];
       $dir = $this->tmp;
+
+      $themedir = get_theme_root();
+      $tempTheme = $themedir . DIRECTORY_SEPARATOR . 'backup_migration_restoration_in_progress';
+      $filesToBeRemoved[] = $tempTheme;
 
       if (is_dir($dir) && file_exists($dir)) {
 
@@ -321,8 +373,10 @@
 
       }
 
-      foreach ($filesToBeRemoved as $file) {
-        $this->rrmdir($file);
+      if (is_array($filesToBeRemoved) || is_object($filesToBeRemoved)) {
+        foreach ((array) $filesToBeRemoved as $file) {
+          $this->rrmdir($file);
+        }
       }
 
     }
@@ -513,10 +567,14 @@
 
     public function makeWPConfigCopy() {
 
-      $abs = untrailingslashit(ABSPATH);
       $this->migration->log(__('Saving wp-config file...', 'backup-backup'), 'STEP');
-      copy($abs . DIRECTORY_SEPARATOR . 'wp-config.php', $abs . DIRECTORY_SEPARATOR . 'wp-config.' . $this->tmptime . '.php');
-      $this->migration->log(__('File wp-config saved', 'backup-backup'), 'SUCCESS');
+      $configData = file_get_contents(ABSPATH . 'wp-config.php');
+      if ($configData && strlen($configData) > 0) {
+        file_put_contents(ABSPATH . 'wp-config.' . $this->tmptime . '.php', $configData);
+        $this->migration->log(__('File wp-config saved', 'backup-backup'), 'SUCCESS');
+      } else {
+        $this->migration->log(__('Could not backup/read wp-config file.', 'backup-backup'), 'WARN');
+      }
 
     }
 
@@ -603,9 +661,29 @@
 
     }
 
+    public function search_replace_v3(&$manifest) {
+
+      $res = false;
+      if (!$this->isCLI || $this->v3Importer == null) {
+        $storage = $this->tmp . DIRECTORY_SEPARATOR . 'db_tables';
+        $importer = new EvenBetterDatabaseImport($storage, false, $manifest, $this->migration, $this->splitting, $this->isCLI);
+        $res = $importer->searchReplace($this->replaceStep, $this->tableIndex, $this->currentReplacePage, $this->totalReplacePage, $this->fieldAdjustments);
+      } else {
+        $res = $this->v3Importer->searchReplace($this->replaceStep, $this->tableIndex, $this->currentReplacePage, $this->totalReplacePage, $this->fieldAdjustments);
+      }
+
+      if ($res && is_array($res) && $res['finished'] == true) {
+        $this->migration->log(__('Database restored', 'backup-backup'), 'SUCCESS');
+      }
+
+      return $res;
+
+    }
+
     public function alter_tables_v3(&$manifest) {
 
       if (!$this->isCLI || $this->v3Importer == null) {
+        $storage = $this->tmp . DIRECTORY_SEPARATOR . 'db_tables';
         $importer = new EvenBetterDatabaseImport($storage, false, $manifest, $this->migration, $this->splitting, $this->isCLI);
         $importer->alter_tables();
       } else {
@@ -716,7 +794,18 @@
 
       if (is_dir($this->tmp . DIRECTORY_SEPARATOR . 'db_tables')) {
 
-        if ($this->v3engine) {
+        $forcev3Engine = false;
+        if (isset($manifest->db_backup_engine) && $manifest->db_backup_engine === 'v4') {
+          if ($this->v3engine == false) {
+            $forcev3Engine = true;
+
+            if ($this->firstDB == true) {
+              $this->migration->log(__('New search replace is disabled, nevertheless your backup does not support it, forcing to use new S&R engine.', 'backup-backup'), 'WARN');
+            }
+          }
+        }
+
+        if ($this->v3engine || $forcev3Engine) {
 
           if (!$this->isCLI) {
 
@@ -885,30 +974,39 @@
       $curr_prefix = $this->table_prefix;
       $new_prefix = $manifest->config->table_prefix;
       $this->migration->log(__('Restoring wp-config file...', 'backup-backup'), 'STEP');
-      $file = file($abs . DIRECTORY_SEPARATOR . 'wp-config.' . $this->tmptime . '.php');
-      rename($abs . DIRECTORY_SEPARATOR . 'wp-config.' . $this->tmptime . '.php', $abs . DIRECTORY_SEPARATOR . 'wp-config.php');
-      $wpconfig = file_get_contents($abs . DIRECTORY_SEPARATOR . 'wp-config.php');
-      if (strpos($wpconfig, '"' . $curr_prefix . '";') !== false) {
-        $wpconfig = str_replace('"' . $curr_prefix . '";', '"' . $new_prefix . '";', $wpconfig);
-      } elseif (strpos($wpconfig, "'" . $curr_prefix . "';") !== false) {
-        $wpconfig = str_replace("'" . $curr_prefix . "';", "'" . $new_prefix . "';", $wpconfig);
-      }
+      $wpconfigDir = $abs . DIRECTORY_SEPARATOR . 'wp-config.' . $this->tmptime . '.php';
+      if (file_exists($wpconfigDir) && is_readable($wpconfigDir) && is_writable($wpconfigDir)) {
 
-      file_put_contents($abs . DIRECTORY_SEPARATOR . 'wp-config.php', $wpconfig);
-      $this->migration->log(__('WP-Config restored', 'backup-backup'), 'SUCCESS');
+        // rename($abs . DIRECTORY_SEPARATOR . 'wp-config.' . $this->tmptime . '.php', $abs . DIRECTORY_SEPARATOR . 'wp-config.php');
+        $wpconfig = file_get_contents($abs . DIRECTORY_SEPARATOR . 'wp-config.php');
+        if (strpos($wpconfig, '"' . $curr_prefix . '";') !== false) {
+          $wpconfig = str_replace('"' . $curr_prefix . '";', '"' . $new_prefix . '";', $wpconfig);
+        } elseif (strpos($wpconfig, "'" . $curr_prefix . "';") !== false) {
+          $wpconfig = str_replace("'" . $curr_prefix . "';", "'" . $new_prefix . "';", $wpconfig);
+        }
+
+        file_put_contents($abs . DIRECTORY_SEPARATOR . 'wp-config.php', $wpconfig);
+
+        $this->migration->log(__('WP-Config restored', 'backup-backup'), 'SUCCESS');
+
+      } else {
+
+        $this->migration->log(__('Cannot write to WP-Config, if you need to change database prefix, please do it manually.', 'backup-backup'), 'WARN');
+
+      }
 
     }
 
     public function restoreOriginalWPConfig($remove = true) {
 
-      $abs = untrailingslashit(ABSPATH);
-      $tmp_file_f = $abs . DIRECTORY_SEPARATOR . 'wp-config.' . $this->tmptime . '.php';
-      if (file_exists($tmp_file_f)) {
-        copy($tmp_file_f, $abs . DIRECTORY_SEPARATOR . 'wp-config.php');
-        if ($remove === true) @unlink($tmp_file_f);
-      }
-
-      wp_load_alloptions(true);
+      // $abs = untrailingslashit(ABSPATH);
+      // $tmp_file_f = $abs . DIRECTORY_SEPARATOR . 'wp-config.' . $this->tmptime . '.php';
+      // if (file_exists($tmp_file_f)) {
+      //   copy($tmp_file_f, $abs . DIRECTORY_SEPARATOR . 'wp-config.php');
+      //   if ($remove === true) @unlink($tmp_file_f);
+      // }
+      //
+      // wp_load_alloptions(true);
 
     }
 
@@ -971,7 +1069,14 @@
     public function finalCleanUP() {
 
       $this->migration->log(__('Cleaning temporary files...', 'backup-backup'), 'STEP');
+      delete_option('tastewp_auto_activated', true);
       update_option('tastewp_auto_activated', true);
+      delete_option('__tastewp_sub_requested', true);
+      update_option('__tastewp_sub_requested', true);
+      delete_option('__tastewp_redirection_performed', true);
+      update_option('auto_smart_tastewp_redirect_performed', 1);
+      delete_option('__tastewp_redirection_performed', true);
+      update_option('auto_smart_tastewp_redirect_performed', 1);
       $this->cleanup();
       $this->removeCleanedThemesAndPlugins();
       $this->migration->log(__('Temporary files cleaned', 'backup-backup'), 'SUCCESS');
@@ -1262,7 +1367,17 @@
           }
 
           $wasDisabled = 0;
-          if ($this->v3engine) {
+          $dbFinishedConv = 'false';
+          $newDataProcess = $this->processData;
+
+          $forcev3Engine = false;
+          if (isset($manifest->db_backup_engine) && $manifest->db_backup_engine === 'v4') {
+            if ($this->v3engine == false) {
+              $forcev3Engine = true;
+            }
+          }
+
+          if ($this->v3engine || $forcev3Engine) {
 
             if ($this->usingDbEngineV4) {
               $this->migration->log(__('Splitting process is disabled because v4 restore engine is enabled.', 'backup-backup'), 'INFO');
@@ -1279,8 +1394,6 @@
 
           } else {
 
-            $newDataProcess = $this->processData;
-            $dbFinishedConv = 'false';
             $db_tables = $this->tmp . DIRECTORY_SEPARATOR . 'db_tables';
 
             if (is_dir($db_tables)) {
@@ -1453,9 +1566,10 @@
         // STEP: 9
         if ($this->isCLI || $this->batchStep == 9) {
 
-          // Rename database from temporary to destination
-          // And do the rest
-          // Step 9 runs only at the end of database import
+          // Get manifest
+          if (!isset($manifest)) {
+            $manifest = $this->getCurrentManifest();
+          }
 
           if (isset($manifest->db_backup_engine) && $manifest->db_backup_engine === 'v4') {
             require_once BMI_INCLUDES . DIRECTORY_SEPARATOR . 'database' . DIRECTORY_SEPARATOR . 'even-better-restore-v4.php';
@@ -1465,9 +1579,112 @@
             $this->usingDbEngineV4 = false;
           }
 
+          $database_exist = $this->databaseExist;
+
+          // Alter all tables
+          $status = false;
+          $tableIndex = $this->tableIndex;
+          $replaceStep = $this->replaceStep;
+          $replaceFinished = false;
+          $currentReplacePage = 0;
+          $totalReplacePage = 0;
+          $fieldAdjustments = 0;
+
+          if ($this->isCLI) {
+
+            $srFinished = false;
+            if ($database_exist && $this->v3RestoreUsed == true) {
+              while (!$srFinished) {
+
+                $status = $this->search_replace_v3($manifest);
+
+                if ($status != false && is_array($status)) {
+                  $this->replaceStep = $status['step'];
+                  $this->tableIndex = $status['tableIndex'];
+                  $this->replaceFinished = $status['finished'];
+                  $this->currentReplacePage = $status['currentPage'];
+                  $this->totalReplacePage = $status['totalPages'];
+                  $this->fieldAdjustments = $status['fieldAdjustments'];
+
+                  if ($this->replaceFinished == true) $srFinished = true;
+                }
+
+              }
+            } else {
+              $this->replaceFinished = true;
+              $this->migration->progress(98);
+            }
+
+          } else {
+
+            if ($database_exist && $this->v3RestoreUsed == true) {
+              $status = $this->search_replace_v3($manifest);
+            } else {
+              $this->replaceFinished = true;
+              $this->migration->progress(98);
+            }
+
+            if ($status != false && is_array($status)) {
+              $this->replaceStep = $status['step'];
+              $this->tableIndex = $status['tableIndex'];
+              $this->replaceFinished = $status['finished'];
+              $this->currentReplacePage = $status['currentPage'];
+              $this->totalReplacePage = $status['totalPages'];
+              $this->fieldAdjustments = $status['fieldAdjustments'];
+            }
+
+          }
+
+          if (!$this->isCLI) {
+
+            BMP::res([
+              'status' => 'restore_ongoing',
+              'tmp' => $this->tmptime,
+              'secret' => $secret,
+              'options' => [
+                'code' => $this->code,
+                'start' => $this->start,
+                'amount' => $this->fileAmount,
+                'databaseExist' => $database_exist === true ? 'true' : 'false',
+                'firstDB' => $this->firstDB,
+                'db_xi' => $this->db_xi,
+                'ini_start' => $this->ini_start,
+                'table_names_alter' => $this->table_names_alter,
+                'conversionStats' => $this->conversionStats,
+                'v3RestoreUsed' => $this->v3RestoreUsed,
+                'replaceStep' => $this->replaceStep,
+                'tableIndex' => $this->tableIndex,
+                'replaceFinished' => $this->replaceFinished,
+                'currentReplacePage' => $this->currentReplacePage,
+                'totalReplacePage' => $this->totalReplacePage,
+                'fieldAdjustments' => $this->fieldAdjustments,
+                'step' => 9
+              ]
+            ]);
+
+            return;
+
+          }
+
+        }
+
+        // STEP: 10
+        if ($this->isCLI || $this->batchStep == 10) {
+
+          // Rename database from temporary to destination
+          // And do the rest
+          // Step 10 runs only at the end of database import
           // Get manifest
           if (!isset($manifest)) {
             $manifest = $this->getCurrentManifest();
+          }
+
+          if (isset($manifest->db_backup_engine) && $manifest->db_backup_engine === 'v4') {
+            require_once BMI_INCLUDES . DIRECTORY_SEPARATOR . 'database' . DIRECTORY_SEPARATOR . 'even-better-restore-v4.php';
+            $this->usingDbEngineV4 = true;
+          } else {
+            require_once BMI_INCLUDES . DIRECTORY_SEPARATOR . 'database' . DIRECTORY_SEPARATOR . 'even-better-restore-v3.php';
+            $this->usingDbEngineV4 = false;
           }
 
           $database_exist = $this->databaseExist;
@@ -1485,6 +1702,12 @@
             // Update TasteWP option
             delete_option('tastewp_auto_activated', true);
             update_option('tastewp_auto_activated', true);
+            delete_option('__tastewp_sub_requested', true);
+            update_option('__tastewp_sub_requested', true);
+            delete_option('__tastewp_redirection_performed', true);
+            update_option('auto_smart_tastewp_redirect_performed', 1);
+            delete_option('__tastewp_redirection_performed', true);
+            update_option('auto_smart_tastewp_redirect_performed', 1);
 
             // Modify the WP Config and replace
             $this->replaceDbPrefixInWPConfig($manifest);

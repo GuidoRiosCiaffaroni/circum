@@ -120,7 +120,9 @@
         'browser' => $fields['content-browser']
         // 'shareallowed' => $fields['content-shareallowed']
       ],
-      $fields['content-it']
+      $fields['content-it'],
+      $fields['content-dbit'],
+      $fields['content-dblast']
     );
 
     // Handle request

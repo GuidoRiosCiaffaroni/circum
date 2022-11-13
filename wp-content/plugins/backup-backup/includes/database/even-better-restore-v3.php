@@ -170,7 +170,7 @@ class BMI_Even_Better_Database_Restore {
       $str = __("Started restoration of %table_name% %total_tables% table", 'backup-backup');
       $str = str_replace('%table_name%', $realTableName, $str);
       $str = str_replace('%total_tables%', $this->getTableProgress(), $str);
-      $this->logger->log($str, 'INFO');
+      $this->logger->log($str, 'STEP');
 
       // Check if file can be cleaned
       $this->filterFile($filePath, basename($filePath));
@@ -320,7 +320,16 @@ class BMI_Even_Better_Database_Restore {
 
   }
 
-  private function performReplace() {
+  private function performReplace($step = 0, $tableIndex = 0, $currentPage = 0, $totalPages = 0, $fieldAdjustments = 0) {
+
+    $status = [
+      'step' => $step,
+      'tableIndex' => $tableIndex,
+      'finished' => false,
+      'currentPage' => $currentPage,
+      'totalPages' => $totalPages,
+      'fieldAdjustments' => $fieldAdjustments
+    ];
 
     require_once BMI_INCLUDES . DIRECTORY_SEPARATOR . 'database' . DIRECTORY_SEPARATOR . 'search-replace.php';
 
@@ -330,100 +339,200 @@ class BMI_Even_Better_Database_Restore {
     $backupDomain = $this->parseDomain($this->manifest->dbdomain);
     $currentDomain = $this->parseDomain(get_option('siteurl'), false);
 
-    $progress = 0;
+    $currentTable = false;
+    $allTables = array_keys($this->map['tables']);
 
-    $replaceEngine = new BMISearchReplace(array_keys($this->map['tables']));
-
-    if ($backupRootDir != $currentRootDir || $currentDomain != $this->parseDomain($backupDomain, false)) {
-      $this->logger->log(__('Performing Search & Replace', 'backup-backup'), 'STEP');
-    } else {
-      $this->logger->log(__('This backup was made on the same site, ommiting search & replace.', 'backup-backup'), 'INFO');
-      $progress = 8;
-      $this->logger->progress(98);
+    if ($tableIndex < sizeof($allTables) && array_key_exists($tableIndex, $allTables)) {
+      $currentTable = $allTables[$tableIndex];
     }
 
-    if ($backupRootDir != $currentRootDir) {
-
-      $dtables = 0; $drows = 0; $dchange = 0; $dupdates = 0;
-
-      $r = $replaceEngine->perform($backupRootDir, $currentRootDir);
-      $dtables += $r['tables']; $drows += $r['rows']; $dchange += $r['change']; $dupdates += $r['updates'];
-
-      $info = __("Searched %tables% tables and %rows% rows for paths, changed %changes%/%updates% rows.", 'backup-backup');
-      $info = str_replace('%tables%', $dtables, $info);
-      $info = str_replace('%rows%', $drows, $info);
-      $info = str_replace('%changes%', $dchange, $info);
-      $info = str_replace('%updates%', $dupdates, $info);
-
-      $this->logger->log($info, 'INFO');
-
-    } else {
-
-      $progress++;
-      $this->logger->progress(90 + $progress);
-
-    }
-
-    if ($currentDomain != $this->parseDomain($backupDomain, false)) {
-      $ssl = is_ssl() == true ? 'https://' : 'http://';
-
-      $dtables = 0; $drows = 0; $dchange = 0; $dupdates = 0;
-
-      $possibleDomainsBackup = [
-        "https://www." . $backupDomain,
-        "http://www." . $backupDomain,
-        "https://" . $backupDomain,
-        "http://" . $backupDomain,
-        $backupDomain
-      ];
-
-      $possibleDomainsCurrent = [
-        $ssl . $currentDomain,
-        $ssl . $currentDomain,
-        $ssl . $currentDomain,
-        $ssl . $currentDomain,
-        $currentDomain
-      ];
-
-      $r = $replaceEngine->perform($possibleDomainsBackup[0], $possibleDomainsCurrent[0]);
-      $dtables += $r['tables']; $drows += $r['rows']; $dchange += $r['change']; $dupdates += $r['updates'];
-      $progress++; $this->logger->progress(90 + $progress);
-
-      $r = $replaceEngine->perform($possibleDomainsBackup[1], $possibleDomainsCurrent[1]);
-      $dchange += $r['change']; $dupdates += $r['updates'];
-      $progress++; $this->logger->progress(90 + $progress);
-
-      $r = $replaceEngine->perform($possibleDomainsBackup[2], $possibleDomainsCurrent[2]);
-      $dchange += $r['change']; $dupdates += $r['updates'];
-      $progress++; $this->logger->progress(90 + $progress);
-
-      $r = $replaceEngine->perform($possibleDomainsBackup[3], $possibleDomainsCurrent[3]);
-      $dchange += $r['change']; $dupdates += $r['updates'];
-      $progress++; $this->logger->progress(90 + $progress);
-
-      if (!(substr($currentDomain, -strlen($backupDomain)) === $backupDomain)) {
-        $r = $replaceEngine->perform($possibleDomainsBackup[4], $possibleDomainsCurrent[4]);
-        $dchange += $r['change']; $dupdates += $r['updates'];
+    if ($currentTable == false && !$currentTable) {
+      if ($backupRootDir != $currentRootDir || $currentDomain != $this->parseDomain($backupDomain, false)) {
+        $this->logger->log(__('Search & Replace finished successfully.', 'backup-backup'), 'SUCCESS');
       }
-      $progress++; $this->logger->progress(90 + $progress);
 
-      $info = __("Searched %tables% tables and %rows% rows for domain, changed %changes%/%updates% rows.", 'backup-backup');
-      $info = str_replace('%tables%', $dtables, $info);
-      $info = str_replace('%rows%', $drows, $info);
-      $info = str_replace('%changes%', $dchange, $info);
-      $info = str_replace('%updates%', $dupdates, $info);
-
-      $this->logger->log($info, 'INFO');
+      $status['finished'] = true;
+      return $status;
     }
 
-    if ($backupRootDir != $currentRootDir || $currentDomain != $this->parseDomain($backupDomain, false)) {
-      $this->logger->log(__('Search & Replace finished successfully.', 'backup-backup'), 'SUCCESS');
+    $replaceEngine = new BMISearchReplace([$currentTable], $currentPage, $totalPages);
+
+    if ($step == 0) {
+      if ($backupRootDir != $currentRootDir || $currentDomain != $this->parseDomain($backupDomain, false)) {
+        $this->logger->log(__('Performing Search & Replace', 'backup-backup'), 'STEP');
+        $pagesize = '?';
+        if (defined('BMI_MAX_SEARCH_REPLACE_PAGE')) $pagesize = BMI_MAX_SEARCH_REPLACE_PAGE;
+        $this->logger->log(__('Page size for that restoration: ', 'backup-backup') . $pagesize, 'INFO');
+        $status['step'] = $step + 1; $step++;
+      } else {
+        $this->logger->log(__('This backup was made on the same site, ommiting search & replace.', 'backup-backup'), 'INFO');
+        $status['finished'] = true;
+        return $status;
+      }
     }
 
-    $this->replaceTableNames($this->map['tables']);
-    $progress += 2; $this->logger->progress(90 + $progress);
+    if ($step == 1) {
+      $replaceProgress = ($tableIndex + 1) . "/" . sizeof($allTables);
+      $replaceProgressPercentage = number_format((($tableIndex + 1) / sizeof($allTables) * 100), 2);
+      $progressLogT = __('Performing database adjustments for table %progress%: %table_name% (%progress_percentage%)', 'backup-backup');
+      $progressLogT = str_replace('%progress%', $replaceProgress, $progressLogT);
+      $progressLogT = str_replace('%table_name%', $currentTable, $progressLogT);
+      $progressLogT = str_replace('%progress_percentage%', $replaceProgressPercentage . '%', $progressLogT);
+      $this->logger->log($progressLogT, 'STEP');
 
-    return true;
+      $percentageProgress = number_format($replaceProgressPercentage, 0);
+      $this->logger->progress(number_format(90 + ($percentageProgress / 100) * 8, 0));
+
+      if ($backupRootDir != $currentRootDir) {
+
+        $dtables = 0; $drows = 0; $dchange = 0; $dupdates = 0;
+
+        $r = $replaceEngine->perform($backupRootDir, $currentRootDir);
+        $dtables += $r['tables']; $drows += $r['rows']; $dchange += $r['change']; $dupdates += $r['updates'];
+
+        $status['currentPage'] = $r['currentPage'];
+        $status['totalPages'] = $r['totalPages'];
+
+        if ($status['totalPages'] > 0) {
+
+          $info = __("Batch for path adjustment (%page%/%allPages%) updated: %updates% fields.", 'backup-backup');
+          $updates = $dupdates;
+          if ($updates == 0) $updates = 1;
+          $info = str_replace('%page%', $status['currentPage'], $info);
+          $info = str_replace('%allPages%', $status['totalPages'], $info);
+          $info = str_replace('%updates%', $updates, $info);
+          $this->logger->log($info, 'INFO');
+          $status['fieldAdjustments']++;
+
+        } else {
+
+          // $this->logger->log(__('Path adjustments are not required for this table.', 'backup-backup'), 'INFO');
+
+        }
+
+        if ($status['currentPage'] >= $status['totalPages']) {
+          $status['currentPage'] = 0;
+          $status['totalPages'] = 0;
+          $status['step'] = $step + 1;
+        }
+        return $status;
+
+      } else {
+
+        $status['step'] = $step + 1; $step++;
+
+      }
+    }
+
+    if ($step == 2 || $step == 3 || $step == 4 || $step == 5 || $step == 6 || $step == 7) {
+      if ($currentDomain != $this->parseDomain($backupDomain, false)) {
+        $ssl = is_ssl() == true ? 'https://' : 'http://';
+
+        $dtables = 0; $drows = 0; $dchange = 0; $dupdates = 0;
+
+        $possibleDomainsBackup = [
+          "https://www." . $backupDomain,
+          "http://www." . $backupDomain,
+          "https://" . $backupDomain,
+          "http://" . $backupDomain,
+          'www.' . $backupDomain,
+          $backupDomain
+        ];
+
+        $possibleDomainsCurrent = [
+          $ssl . $currentDomain,
+          $ssl . $currentDomain,
+          $ssl . $currentDomain,
+          $ssl . $currentDomain,
+          $currentDomain,
+          $currentDomain
+        ];
+
+        if ($step == 2) {
+          $r = $replaceEngine->perform($possibleDomainsBackup[0], $possibleDomainsCurrent[0]);
+          $dtables += $r['tables']; $drows += $r['rows']; $dchange += $r['change']; $dupdates += $r['updates'];
+        }
+
+        if ($step == 3) {
+          $r = $replaceEngine->perform($possibleDomainsBackup[1], $possibleDomainsCurrent[1]);
+          $dtables += $r['tables']; $drows += $r['rows']; $dchange += $r['change']; $dupdates += $r['updates'];
+        }
+
+        if ($step == 4) {
+          $r = $replaceEngine->perform($possibleDomainsBackup[2], $possibleDomainsCurrent[2]);
+          $dtables += $r['tables']; $drows += $r['rows']; $dchange += $r['change']; $dupdates += $r['updates'];
+        }
+
+        if ($step == 5) {
+          $r = $replaceEngine->perform($possibleDomainsBackup[3], $possibleDomainsCurrent[3]);
+          $dtables += $r['tables']; $drows += $r['rows']; $dchange += $r['change']; $dupdates += $r['updates'];
+        }
+
+        if ($step == 6) {
+          $r = $replaceEngine->perform($possibleDomainsBackup[4], $possibleDomainsCurrent[4]);
+          $dchange += $r['change']; $dupdates += $r['updates'];
+        }
+
+        if ($step == 7) {
+          if (!(substr($currentDomain, -strlen($backupDomain)) === $backupDomain)) {
+            $r = $replaceEngine->perform($possibleDomainsBackup[5], $possibleDomainsCurrent[5]);
+            $dchange += $r['change']; $dupdates += $r['updates'];
+          }
+        }
+
+        $status['currentPage'] = $r['currentPage'];
+        $status['totalPages'] = $r['totalPages'];
+
+        $variants = [
+          __('variant A', 'backup-backup'),
+          __('variant B', 'backup-backup'),
+          __('variant C', 'backup-backup'),
+          __('variant D', 'backup-backup'),
+          __('variant E', 'backup-backup'),
+          __('variant F', 'backup-backup')
+        ];
+
+        if ($status['totalPages'] > 0) {
+
+          $info = __("Batch for domain (%variant%) adjustments (%page%/%allPages%) updated: %updates% fields.", 'backup-backup');
+          $updates = $dupdates;
+          if ($updates == 0) $updates = 1;
+          $info = str_replace('%variant%', $variants[$step - 2], $info);
+          $info = str_replace('%page%', $status['currentPage'], $info);
+          $info = str_replace('%allPages%', $status['totalPages'], $info);
+          $info = str_replace('%updates%', $updates, $info);
+          $this->logger->log($info, 'INFO');
+          $status['fieldAdjustments']++;
+
+        } else {
+
+          // $info = __('Domain (%variant%) adjustments are not required for this table.', 'backup-backup');
+          // $info = str_replace('%variant%', $variants[$step - 2], $info);
+          // $this->logger->log($info, 'INFO');
+
+        }
+
+        if ($status['currentPage'] >= $status['totalPages']) {
+          $status['currentPage'] = 0;
+          $status['totalPages'] = 0;
+          $status['step'] = $step + 1;
+        }
+        return $status;
+      }
+    }
+
+    if ($step == 8) {
+      if ($fieldAdjustments === 0) {
+        $this->logger->log(__('Adjustments are not required for this table.', 'backup-backup'), 'INFO');
+      }
+
+      $status['step'] = 1;
+      $status['fieldAdjustments'] = 0;
+      $status['tableIndex'] = $tableIndex + 1;
+      return $status;
+    }
+
+    return $status;
 
   }
 
@@ -437,7 +546,9 @@ class BMI_Even_Better_Database_Restore {
       'bluehost-wordpress-plugin/bluehost-wordpress-plugin.php',
       'sg-cachepress/sg-cachepress.php',
       'wordpress-starter/siteground-wizard.php',
-      'revslider/revslider.php'
+      'revslider/revslider.php',
+      'easy-soundcloud-shortcode/easy-soundcloud-shortcode.php',
+      'easy-soundcloud-shortcode/EasySoundcloudShortcode.php'
     ];
 
     for ($i = 0; $i < sizeof($plugins_copy); ++$i) {
@@ -580,11 +691,18 @@ class BMI_Even_Better_Database_Restore {
 
   }
 
-  public function alter_tables() {
+  public function searchReplace($step = 0, $tableIndex = 0, $currentPage = 0, $totalPages = 0, $fieldAdjustments = 0) {
 
     $this->logger->progress(90);
+    return $this->performReplace($step, $tableIndex, $currentPage, $totalPages, $fieldAdjustments);
+
+  }
+
+  public function alter_tables() {
+
+    $this->logger->progress(98);
     $this->prepareFinalDatabase();
-    $this->performReplace();
+    $this->replaceTableNames($this->map['tables']);
     $this->enablePlugins();
 
   }
@@ -617,7 +735,11 @@ class BMI_Even_Better_Database_Restore {
       $wpdb->query($sql);
 
       $active_plugins = $wpdb->get_results('SELECT option_value FROM `' . $options_table . '` WHERE option_name = "active_plugins"');
-      $active_plugins = $active_plugins[0]->option_value;
+      if ($active_plugins && sizeof($active_plugins) > 0) {
+        $active_plugins = $active_plugins[0]->option_value;
+      } else {
+        $active_plugins = '';
+      }
 
       $this->seek['active_plugins'] = $active_plugins;
 

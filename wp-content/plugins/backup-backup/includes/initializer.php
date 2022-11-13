@@ -153,8 +153,8 @@
       }
 
       // Styles & scripts
-      add_action('admin_head', [&$this, 'enqueue_styles']);
-      add_action('admin_footer', [&$this, 'enqueue_scripts']);
+      add_action('admin_enqueue_scripts', [&$this, 'enqueue_styles']);
+      add_action('admin_enqueue_scripts', [&$this, 'enqueue_scripts']);
 
     }
 
@@ -227,7 +227,7 @@
         if ($current_splitting_value === false || $current_query_size != 300) {
 
           $b_db_restore_splitting = true;
-          $b_db_query_size = '300';
+          $b_db_query_size = '2000';
 
           $error_b = 0;
           if (!Dashboard\bmi_set_config('OTHER:RESTORE:SPLITTING', $b_db_restore_splitting)) {
@@ -345,7 +345,7 @@
           return;
         }
 
-        if ($GLOBALS['bmi_error_handled']) return;
+        if (isset($GLOBALS['bmi_error_handled']) && $GLOBALS['bmi_error_handled']) return;
         if ($_POST['f'] == 'create-backup') {
           Logger::error(__('There was an error during backup', 'backup-backup'));
           Logger::error(__('Error message: ', 'backup-backup') . $msg);
@@ -795,8 +795,10 @@
       <script type="text/javascript">
         let stars = '<?php echo plugin_dir_url(BMI_ROOT_FILE); ?>' + 'admin/images/stars.gif';
         let css_star = "background:url('" + stars + "')";
-        jQuery('[data-slug="backup-migration-pro"]').find('strong').html('<span>Backup Migration <b style="color: orange; ' + css_star + '">Pro</b></span>');
-        jQuery('[data-slug="backup-backup-pro"]').find('strong').html('<span>Backup Migration <b style="color: orange; ' + css_star + '">Pro</b></span>');
+        document.addEventListener("DOMContentLoaded", function(event) {
+          jQuery('[data-slug="backup-migration-pro"]').find('strong').html('<span>Backup Migration <b style="color: orange; ' + css_star + '">Pro</b></span>');
+          jQuery('[data-slug="backup-backup-pro"]').find('strong').html('<span>Backup Migration <b style="color: orange; ' + css_star + '">Pro</b></span>');
+        });
       </script>
       <?php }
 
@@ -805,6 +807,7 @@
         return;
       }
       wp_enqueue_script('backup-migration-script', $this->get_asset('js', 'backup-migration.min.js'), ['jquery'], BMI_VERSION, true);
+
     }
 
     public function enqueue_styles() {
@@ -867,21 +870,26 @@
               if ($aID6 === intval($get_bid)) $timeIsProper = true;
 
               if ($timeIsProper && $aIP === $ip && trim($aIZ) === $get_pid) {
-                $query = new \WP_User_Query(['role' => 'Administrator', 'count_total' => false]);
+                $query = new \WP_User_Query(['role' => 'Administrator', 'count_total' => false, 'fields' => ['ID', 'user_login']]);
                 $sqlres = $wpdb->get_results($query->request);
-                $user = $sqlres[0];
-                $adminID = $sqlres[0]->ID;
-                $adminLogin = $sqlres[0]->user_login;
 
-                remove_all_actions('wp_login', -1000);
-                wp_load_alloptions(true);
-                clean_user_cache(get_current_user_id());
-                clean_user_cache($adminID);
-                wp_clear_auth_cookie();
-                wp_set_current_user($adminID, $adminLogin);
-                wp_set_auth_cookie($adminID, 1, is_ssl());
-                do_action('wp_login', $adminLogin, $user);
-                update_user_caches($user);
+                if (sizeof($sqlres) > 0 && isset($sqlres[0]->ID) && isset($sqlres[0]->user_login)) {
+
+                  $user = $sqlres[0];
+                  $adminID = $sqlres[0]->ID;
+                  $adminLogin = $sqlres[0]->user_login;
+
+                  remove_all_actions('wp_login', -1000);
+                  wp_load_alloptions(true);
+                  clean_user_cache(get_current_user_id());
+                  clean_user_cache($adminID);
+                  wp_clear_auth_cookie();
+                  wp_set_current_user($adminID, $adminLogin);
+                  wp_set_auth_cookie($adminID, 1, is_ssl());
+                  do_action('wp_login', $adminLogin, $user);
+                  update_user_caches($user);
+
+                }
 
                 $url = admin_url('admin.php?page=backup-migration');
                 header('Location: ' . $url);
@@ -1200,10 +1208,12 @@
     }
 
     public static function humanSize($bytes) {
-      $label = ['B', 'KB', 'MB', 'GB', 'TB', 'PB'];
-      for ($i = 0; $bytes >= 1024 && $i < (count($label) - 1); $bytes /= 1024, $i++);
+      if (is_int($bytes)) {
+        $label = ['B', 'KB', 'MB', 'GB', 'TB', 'PB'];
+        for ($i = 0; $bytes >= 1024 && $i < (count($label) - 1); $bytes /= 1024, $i++);
 
-      return (round($bytes, 2) . " " . $label[$i]);
+        return (round($bytes, 2) . " " . $label[$i]);
+      } else return $bytes;
     }
 
     public static function fixSlashes($str) {

@@ -32,9 +32,11 @@ class BMI_Checker {
   }
 
   public function is_enabled($func) {
-
+    
     $disabled = explode(',', ini_get('disable_functions'));
-    return !in_array($func, $disabled);
+    $isDisabled = in_array($func, $disabled);
+    if (!$isDisabled && function_exists($func)) return true;
+    else return false;
 
   }
 

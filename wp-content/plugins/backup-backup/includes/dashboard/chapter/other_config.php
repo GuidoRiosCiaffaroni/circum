@@ -18,6 +18,8 @@
   $sqlsplitting = __('This will split the SQL files (before migration or restore) into parts, which should make the process more stable and also allows to track the progress more precisely.', 'backup-backup');
   $deprecatedsinglefile = __('It will force to use V1 engine (first export function of this plugin), it is usually much quicker but search & replace may not work well for recursively santisized data - but may be recommended for not complex sites.', 'backup-backup');
   $cleanupbeforerestore = __('Advanced details: It will remove all plugins (excluding backup migration) and themes before performing migration. These files during migration will be kept in directory wp-content/backup-migration/clean-ups. If you want to keep them after migration you can use wp-config.php constant BMI_KEEP_CLEANUPS set to TRUE.', 'backup-backup');
+  $disabledspacechecking = __('This option will disable validation of free space on your server i.e. if there is enough space to make the backup. Use it only when you are 100% sure that you have enough space, otherwise backup process may fail with fatal error. In corner cases, if there will not be enough space it may make your site slow or even limit functionality.', 'backup-backup');
+  $dbbatching = __('This option will enable batching for database table export (backup). It will affect only non-default methods of the backup. It will significantly slow down the backup process, but it will make it much more stable.', 'backup-backup');
 
 ?>
 
@@ -387,7 +389,19 @@
       <div class="left">
         <?php $query_amount = sanitize_text_field(bmi_get_config('OTHER:DB:QUERIES')); ?>
         <label for="db_queries_amount">
-          <input type="number" id="db_queries_amount" class="bmi-text-input small" value="<?php echo $query_amount; ?>" placeholder="300" min="15" max="15000" />
+          <input type="number" id="db_queries_amount" class="bmi-text-input small" value="<?php echo $query_amount; ?>" placeholder="2000" min="15" max="15000" />
+        </label>
+      </div>
+    </div>
+
+    <div class="lh40 cf">
+      <div class="left mw250 lh65">
+        <?php _e("Search & Replace max Page Size: ", 'backup-backup'); ?>&nbsp;
+      </div>
+      <div class="left">
+        <?php $sr_max_amount = sanitize_text_field(bmi_get_config('OTHER:DB:SEARCHREPLACE:MAX')); ?>
+        <label for="db_search_replace_max">
+          <input type="number" id="db_search_replace_max" class="bmi-text-input small" value="<?php echo $sr_max_amount; ?>" placeholder="300" min="10" max="30000" />
         </label>
       </div>
     </div>
@@ -407,12 +421,41 @@
     </div>
 
     <div class="lh40">
-      <label for="bmi-db-single-file-backup">
-        <input type="checkbox" id="bmi-db-single-file-backup"<?php bmi_try_checked('OTHER:BACKUP:DB:SINGLE:FILE'); ?> />
-        <span class="relative"><?php _e("Deprecated: Force the plugin to backup all tables into one file.", 'backup-backup'); ?><span class="bmi-info-icon tooltip" tooltip="<?php echo $deprecatedsinglefile; ?>"></span></span>
+      <label for="bmi-db-batching-backup">
+        <input type="checkbox" id="bmi-db-batching-backup"<?php bmi_try_checked('OTHER:BACKUP:DB:BATCHING'); ?> />
+        <span class="relative">
+          <?php _e("Use batching technique for database export (backup).", 'backup-backup'); ?>
+          <span class="bmi-info-icon tooltip" tooltip="<?php echo $dbbatching; ?>"></span>
+        </span>
       </label>
     </div>
 
+    <div class="lh40">
+      <label for="bmi-db-single-file-backup">
+        <input type="checkbox" id="bmi-db-single-file-backup"<?php bmi_try_checked('OTHER:BACKUP:DB:SINGLE:FILE'); ?> />
+        <span class="relative">
+          <?php _e("Deprecated: Force the plugin to backup all tables into one file.", 'backup-backup'); ?>
+          <span class="bmi-info-icon tooltip" tooltip="<?php echo $deprecatedsinglefile; ?>"></span>
+        </span>
+      </label>
+    </div>
+
+  </div>
+
+  <!--  -->
+  <div class="mm mbl">
+    <div class="f20 bold">
+      <?php _e("Trust settings", 'backup-backup'); ?>
+    </div>
+    <div class="mtlll lh40">
+      <label for="bmi-do-not-check-free-space-backup">
+        <input type="checkbox" id="bmi-do-not-check-free-space-backup"<?php bmi_try_checked('OTHER:BACKUP:SPACE:CHECKING'); ?> />
+        <span class="relative">
+          <?php _e("Disable space checking during backup process - please read additional info.", 'backup-backup'); ?>
+          <span class="bmi-info-icon tooltip" tooltip="<?php echo $disabledspacechecking; ?>"></span>
+        </span>
+      </label>
+    </div>
   </div>
 
   <!--  -->

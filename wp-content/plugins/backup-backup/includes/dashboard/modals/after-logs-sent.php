@@ -10,13 +10,15 @@
 
   $bmiSupportForumUrl = "https://wordpress.org/support/plugin/backup-backup/";
   $bmiSupportEmail = "support" . "@" . "backupbliss" . "." . "com";
-  $bmiSupportMessage = __('Now open a new thread in the %s1support forum%s2, and share there your debug code.');
+  $bmiSupportMessage = __('Now open a new thread in the %s1support forum%s2, and share there your debug code.', 'backup-backup');
   $bmiSupportMessage = str_replace('%s1', '<a href="' . $bmiSupportForumUrl . '" class="secondary hoverable" target="_blank">', $bmiSupportMessage);
   $bmiSupportMessage = str_replace('%s2', '</a>', $bmiSupportMessage);
 
   $bmiSupportMessage2 = __('Please email us the code to %s1, so that we can start investigating. Thank you!', 'backup-backup');
   $bmiSupportMessage2 = str_replace('%s1', '<a href="mailto:' . $bmiSupportEmail . '" class="secondary hoverable" target="_blank">' . $bmiSupportEmail . '</a>', $bmiSupportMessage2);
 
+  $bmiSupportMessage3 = __('Please also provide some details like, my migration/backup failed at x%.', 'backup-backup');
+  $bmiSupportMessage4 = __('Otherwise forum moderators may remove the topic.', 'backup-backup');
 ?>
 
 <div class="modal modal-no-close" id="after-logs-sent-modal" data-error-source="manual">
@@ -49,7 +51,9 @@
 
       <?php if (!defined('BMI_BACKUP_PRO')): ?>
       <div class="mm60 f18 mbl">
-        <?php echo $bmiSupportMessage; ?>
+        <?php echo $bmiSupportMessage; ?><br /><br />
+        <?php echo $bmiSupportMessage3; ?><br />
+        <?php echo $bmiSupportMessage4; ?>
 
         <div class="center mbll mtl">
           <a class="btn inline semibold mm60 f16" href="https://wordpress.org/support/plugin/backup-backup/" target="_blank">

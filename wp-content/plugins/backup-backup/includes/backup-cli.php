@@ -78,6 +78,8 @@
         'total_files' => $fields->total_files,
         'browser' => 'cli'
       ],
+      0,
+      0,
       0
     );
 

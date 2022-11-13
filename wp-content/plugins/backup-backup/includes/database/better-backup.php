@@ -295,7 +295,7 @@ class BMI_Database_Exporter {
     foreach ($this->tables_by_size as $table_name => $table_object) {
 
       $start_time = microtime(true);
-      $this->logger->log("Getting data of table: " . $table_name . " (" . number_format ($table_object['size'], 2) . " MB)", 'INFO');
+      $this->logger->log("Getting data of table: " . $table_name . " (" . number_format ($table_object['size'], 2) . " MB)", 'STEP');
       $rows = intval($table_object['rows']);
 
       $this->wpdb->query("SET foreign_key_checks = 0;");

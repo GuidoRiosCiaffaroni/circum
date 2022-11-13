@@ -82,7 +82,7 @@ function conceptly_lite_header_setting( $wp_customize ){
     	'header_phone_number',
     	array(
 	        'default'			=> __('+1 514-286-4242','clever-fox'),
-			'sanitize_callback' => 'conceptly_sanitize_text',
+			'sanitize_callback' => 'conceptly_sanitize_html',
 			'capability' => 'edit_theme_options',
 			'priority' => 4,
 		)
@@ -166,7 +166,7 @@ function conceptly_lite_header_setting( $wp_customize ){
     	'header_email',
     	array(
 	        'default'			=> __('example@example.com','clever-fox'),
-			'sanitize_callback' => 'conceptly_sanitize_text',
+			'sanitize_callback' => 'conceptly_sanitize_html',
 			'capability' => 'edit_theme_options',
 			'priority' => 10,
 		)
@@ -249,7 +249,7 @@ function conceptly_lite_header_setting( $wp_customize ){
     	'header_faq',
     	array(
 	        'default'			=> __('Ask Your Question','clever-fox'),
-			'sanitize_callback' => 'conceptly_sanitize_text',
+			'sanitize_callback' => 'conceptly_sanitize_html',
 			'capability' => 'edit_theme_options',
 			'priority' => 16,
 		)

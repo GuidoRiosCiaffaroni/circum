@@ -4,7 +4,7 @@ Tags: homepage, companion, demo, sections, customizer, widget, settings
 Requires at least: 4.0
 Tested up to: 6.0
 Requires PHP: 5.6
-Stable tag: 14.8
+Stable tag: 14.9
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.en.html
 
@@ -135,6 +135,9 @@ Clever Fox WordPress plugin is licensed under the GPL3 (https://www.gnu.org/lice
 
 
 == Changelog ==
+
+= 14.9 =
+* Fixed Sainitization Issue in Conceptly Theme
 
 = 14.8 =
 * Reduce Eduvert Theme Images Size

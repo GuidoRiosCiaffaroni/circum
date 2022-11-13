@@ -107,7 +107,82 @@ class Zip {
     return true;
   }
 
+  public function createDatabaseDump($dbbackupname, $better_database_files_dir, &$database_file, $database_file_dir, $dbBackupEngine = 'v4') {
+
+    if (Dashboard\bmi_get_config('BACKUP:DATABASE') == 'true') {
+
+      if (Dashboard\bmi_get_config('OTHER:BACKUP:DB:SINGLE:FILE') == 'true') {
+
+        // Require Database Manager
+        require_once BMI_INCLUDES . DIRECTORY_SEPARATOR . 'database' . DIRECTORY_SEPARATOR . 'manager.php';
+
+        // Logs
+        $this->zip_progress->log(__("Making single-file database backup (using deprecated engine, due to used settings)", 'backup-backup'), 'STEP');
+
+        // Get database dump
+        $databaser = new Database(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
+        $databaser->exportDatabase($dbbackupname);
+
+        // Fix for newer version
+        $this->db_exporter_queries = 0;
+        $this->zip_progress->total_queries = 0;
+        $this->db_exporter_files = [];
+
+        $this->dbDumped = true;
+        $this->zip_progress->log(__("Database size: ", 'backup-backup') . BMP::humanSize(filesize($database_file)), 'INFO');
+
+      } else {
+
+        if ($dbBackupEngine == 'v4') {
+
+          // Require Database Manager
+          require_once BMI_INCLUDES . DIRECTORY_SEPARATOR . 'database' . DIRECTORY_SEPARATOR . 'better-backup-v3.php';
+
+          // Get database dump
+          $this->zip_progress->log(__("Making database backup (using v3 engine, requires at least v1.2.2 to restore)", 'backup-backup'), 'STEP');
+
+        } else {
+
+          // Require Database Manager
+          require_once BMI_INCLUDES . DIRECTORY_SEPARATOR . 'database' . DIRECTORY_SEPARATOR . 'better-backup.php';
+
+          // Get database dump
+          $this->zip_progress->log(__("Making database backup (using v2 engine, requires at least v1.1.0 to restore)", 'backup-backup'), 'STEP');
+
+        }
+
+        $this->zip_progress->log(__("Iterating database...", 'backup-backup'), 'INFO');
+
+        if (!is_dir($better_database_files_dir)) @mkdir($better_database_files_dir, 0755, true);
+        $db_exporter = new BetterDatabaseExport($better_database_files_dir, $this->zip_progress);
+        $db_exporter->export();
+        $this->db_exporter_files = $db_exporter->files;
+        $this->db_exporter_queries = $db_exporter->total_queries;
+
+        $this->zip_progress->total_queries = $this->db_exporter_queries;
+
+        $this->dbDumped = true;
+        $this->zip_progress->log(__("Database backup finished", 'backup-backup'), 'SUCCESS');
+
+      }
+
+    } else {
+
+      $this->dbDumped = false;
+      $this->zip_progress->log(__("Omitting database backup (due to settings)...", 'backup-backup'), 'WARN');
+      $database_file = false;
+      $this->db_exporter_files = [];
+      $this->db_exporter_queries = 0;
+      $this->zip_progress->total_queries = 0;
+
+    }
+
+  }
+
   public function zip_end($force_lib = false, $cron = false) {
+
+    // v4 for new one, v3 for old one
+    $dbBackupEngine = 'v4';
 
     // Try to set limit
     $this->zip_progress->log(__("Smart memory calculation...", 'backup-backup'), 'STEP');
@@ -140,71 +215,6 @@ class Zip {
     $database_file_dir = BMP::fixSlashes((dirname($database_file))) . DIRECTORY_SEPARATOR;
     $better_database_files_dir = $database_file_dir . 'db_tables';
 
-    if (Dashboard\bmi_get_config('BACKUP:DATABASE') == 'true') {
-
-      if (Dashboard\bmi_get_config('OTHER:BACKUP:DB:SINGLE:FILE') == 'true') {
-
-        // Require Database Manager
-        require_once BMI_INCLUDES . DIRECTORY_SEPARATOR . 'database' . DIRECTORY_SEPARATOR . 'manager.php';
-
-        // Logs
-        $this->zip_progress->log(__("Making single-file database backup (using deprecated engine, due to used settings)", 'backup-backup'), 'STEP');
-
-        // Get database dump
-        $databaser = new Database(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
-        $databaser->exportDatabase($dbbackupname);
-
-        // Fix for newer version
-        $db_exporter_queries = 0;
-        $this->zip_progress->total_queries = 0;
-        $db_exporter_files = [];
-
-        $this->zip_progress->log(__("Database size: ", 'backup-backup') . BMP::humanSize(filesize($database_file)), 'INFO');
-
-      } else {
-
-        $dbBackupEngine = 'v4';
-
-        if ($dbBackupEngine == 'v4') {
-
-          // Require Database Manager
-          require_once BMI_INCLUDES . DIRECTORY_SEPARATOR . 'database' . DIRECTORY_SEPARATOR . 'better-backup-v3.php';
-
-          // Get database dump
-          $this->zip_progress->log(__("Making database backup (using v3 engine, requires at least v1.2.2 to restore)", 'backup-backup'), 'STEP');
-
-        } else {
-
-          // Require Database Manager
-          require_once BMI_INCLUDES . DIRECTORY_SEPARATOR . 'database' . DIRECTORY_SEPARATOR . 'better-backup.php';
-
-          // Get database dump
-          $this->zip_progress->log(__("Making database backup (using v2 engine, requires at least v1.1.0 to restore)", 'backup-backup'), 'STEP');
-
-        }
-
-        $this->zip_progress->log(__("Iterating database...", 'backup-backup'), 'INFO');
-
-        if (!is_dir($better_database_files_dir)) @mkdir($better_database_files_dir, 0755, true);
-        $db_exporter = new BetterDatabaseExport($better_database_files_dir, $this->zip_progress);
-        $db_exporter->export();
-        $db_exporter_files = $db_exporter->files;
-        $db_exporter_queries = $db_exporter->total_queries;
-
-        $this->zip_progress->total_queries = $db_exporter_queries;
-
-        $this->zip_progress->log(__("Database backup finished", 'backup-backup'), 'SUCCESS');
-
-      }
-
-    } else {
-
-      $this->zip_progress->log(__("Omitting database backup (due to settings)...", 'backup-backup'), 'WARN');
-      $database_file = false;
-      $db_exporter_files = false;
-
-    }
-
     // force usage of specific lib (for testing purposes)
     if ($force_lib === 2) {
 
@@ -216,92 +226,103 @@ class Zip {
 
     }
 
+    $this->dbDumped = false;
+    $this->db_exporter_queries = 0;
+    $this->zip_progress->total_queries = 0;
+    $this->db_exporter_files = [];
+
     // just to make sure.. if the user haven't called the earlier method
     if ($this->lib === 0 || $this->new_file_path === 0) {
       throw new \Exception('PHP-ZIP: zip_start and zip_add haven\'t been called yet');
     }
 
-    // All files
-    $max = sizeof($this->org_files);
-    $this->zip_progress->log(__("Making archive", 'backup-backup'), 'STEP');
-    $this->zip_progress->log(__("Compressing...", 'backup-backup'), 'INFO');
-
     // using zipArchive class
-    if ($this->lib === 1) {
-
-      // Verbose
-      $this->zip_progress->log(__("Using Zlib to create Backup", 'backup-backup'));
-
-      $lib = new \ZipArchive();
-      if (!$lib->open($this->new_file_path, \ZipArchive::CREATE)) {
-        throw new \Exception('PHP-ZIP: Permission Denied or zlib can\'t be found');
-      }
-
-      // Add each file
-      for ($i = 0; $i < $max; $i++) {
-        $file = $this->org_files[$i];
-        $zippath = substr($file, strlen($abs));
-        $lib->addFile($file, 'wordpress' . DIRECTORY_SEPARATOR . $zippath);
-
-        if ($i % 100 === 0) {
-          if (file_exists(BMI_BACKUPS . DIRECTORY_SEPARATOR . '.abort')) {
-            break;
-          }
-          $this->zip_progress->progress($i + 1 . '/' . $max);
-        }
-
-        if (($i + 1) % 500 === 0 || $i == 0) {
-          if (($i + 1) < $max) {
-            $this->zip_progress->log((__("Milestone: ", 'backup-backup') . ($i + 1) . '/' . $max), 'info');
-          }
-        }
-      }
-
-      if (file_exists(BMI_BACKUPS . DIRECTORY_SEPARATOR . '.abort')) {
-
-        // close the archive
-        $lib->close();
-      } else {
-        $this->zip_progress->log((__("Milestone: ", 'backup-backup') . $max . '/' . $max), 'info');
-        $this->zip_progress->log(__("Compressed ", 'backup-backup') . $max . __(" files", 'backup-backup'), 'SUCCESS');
-
-        // Log time of ZIP Process
-        $this->zip_progress->log(__("Archiving of ", 'backup-backup') . $max . __(" files took: ", 'backup-backup') . number_format(microtime(true) - $this->start_zip, 2) . 's');
-
-        $this->zip_progress->log(__("Finalizing backup", 'backup-backup'), 'STEP');
-        $this->zip_progress->log(__("Adding manifest...", 'backup-backup'), 'INFO');
-        $this->zip_progress->log(__("Closing files and archives", 'backup-backup'), 'STEP');
-        $this->zip_progress->log('#001', 'END-CODE');
-
-        $this->zip_progress->end();
-        $logs = file_get_contents(BMI_BACKUPS . DIRECTORY_SEPARATOR . 'latest.log');
-        $this->zip_progress->start(true);
-
-        if ($database_file !== false) {
-          if (Dashboard\bmi_get_config('OTHER:BACKUP:DB:SINGLE:FILE') == 'true') {
-            if (file_exists($database_file)) {
-              $lib->addFile($database_file, 'bmi_database_backup.sql');
-            }
-          } else {
-            if ($db_exporter_files && sizeof($db_exporter_files) > 0) {
-              for ($i = 0; $i < sizeof($db_exporter_files); ++$i) {
-                $lib->addFile($db_exporter_files[$i], 'db_tables' . DIRECTORY_SEPARATOR . basename($db_exporter_files[$i]));
-              }
-            }
-          }
-        }
-
-        $lib->addFromString('bmi_backup_manifest.json', $this->zip_progress->createManifest($dbBackupEngine));
-        $lib->addFromString('bmi_logs_this_backup.log', $logs);
-        $this->zip_progress->progress($max . '/' . $max);
-
-        // close the archive
-        $lib->close();
-      }
-    }
+    // if ($this->lib === 1) {
+    //
+    //   // Create DB Dump
+    //   $this->createDatabaseDump($dbbackupname, $better_database_files_dir, $database_file, $database_file_dir);
+    //
+    //   // All files
+    //   $max = sizeof($this->org_files);
+    //   $this->zip_progress->log(__("Making archive", 'backup-backup'), 'STEP');
+    //   $this->zip_progress->log(__("Compressing...", 'backup-backup'), 'INFO');
+    //
+    //   // Verbose
+    //   $this->zip_progress->log(__("Using Zlib to create Backup", 'backup-backup'));
+    //
+    //   $lib = new \ZipArchive();
+    //   if (!$lib->open($this->new_file_path, \ZipArchive::CREATE)) {
+    //     throw new \Exception('PHP-ZIP: Permission Denied or zlib can\'t be found');
+    //   }
+    //
+    //   // Add each file
+    //   for ($i = 0; $i < $max; $i++) {
+    //     $file = $this->org_files[$i];
+    //     $zippath = substr($file, strlen($abs));
+    //     $lib->addFile($file, 'wordpress' . DIRECTORY_SEPARATOR . $zippath);
+    //
+    //     if ($i % 100 === 0) {
+    //       if (file_exists(BMI_BACKUPS . DIRECTORY_SEPARATOR . '.abort')) {
+    //         break;
+    //       }
+    //       $this->zip_progress->progress($i + 1 . '/' . $max);
+    //     }
+    //
+    //     if (($i + 1) % 500 === 0 || $i == 0) {
+    //       if (($i + 1) < $max) {
+    //         $this->zip_progress->log((__("Milestone: ", 'backup-backup') . ($i + 1) . '/' . $max), 'info');
+    //       }
+    //     }
+    //   }
+    //
+    //   if (file_exists(BMI_BACKUPS . DIRECTORY_SEPARATOR . '.abort')) {
+    //
+    //     // close the archive
+    //     $lib->close();
+    //   } else {
+    //     $this->zip_progress->log((__("Milestone: ", 'backup-backup') . $max . '/' . $max), 'info');
+    //     $this->zip_progress->log(__("Compressed ", 'backup-backup') . $max . __(" files", 'backup-backup'), 'SUCCESS');
+    //
+    //     // Log time of ZIP Process
+    //     $this->zip_progress->log(__("Archiving of ", 'backup-backup') . $max . __(" files took: ", 'backup-backup') . number_format(microtime(true) - $this->start_zip, 2) . 's');
+    //
+    //     $this->zip_progress->log(__("Finalizing backup", 'backup-backup'), 'STEP');
+    //     $this->zip_progress->log(__("Adding manifest...", 'backup-backup'), 'INFO');
+    //     $this->zip_progress->log(__("Closing files and archives", 'backup-backup'), 'STEP');
+    //     $this->zip_progress->log('#001', 'END-CODE');
+    //
+    //     $this->zip_progress->end();
+    //     $logs = file_get_contents(BMI_BACKUPS . DIRECTORY_SEPARATOR . 'latest.log');
+    //     $this->zip_progress->start(true);
+    //
+    //     if ($database_file !== false) {
+    //       if (Dashboard\bmi_get_config('OTHER:BACKUP:DB:SINGLE:FILE') == 'true') {
+    //         if (file_exists($database_file)) {
+    //           $lib->addFile($database_file, 'bmi_database_backup.sql');
+    //         }
+    //       } else {
+    //         if ($db_exporter_files && sizeof($db_exporter_files) > 0) {
+    //           for ($i = 0; $i < sizeof($db_exporter_files); ++$i) {
+    //             $lib->addFile($db_exporter_files[$i], 'db_tables' . DIRECTORY_SEPARATOR . basename($db_exporter_files[$i]));
+    //           }
+    //         }
+    //       }
+    //     }
+    //
+    //     $lib->addFromString('bmi_backup_manifest.json', $this->zip_progress->createManifest($dbBackupEngine));
+    //     $lib->addFromString('bmi_logs_this_backup.log', $logs);
+    //     $this->zip_progress->progress($max . '/' . $max);
+    //
+    //     // close the archive
+    //     $lib->close();
+    //   }
+    // }
 
     // using PclZip
     if ($this->lib === 2) {
+
+      // All files
+      $max = sizeof($this->org_files);
 
       // Verbose
       $legacy = BMI_LEGACY_VERSION;
@@ -312,7 +333,15 @@ class Zip {
       } elseif (!BMI_LEGACY_HARD_VERSION) {
         $this->zip_progress->log(__("Legacy setting: Using user browser as middleware for full capabilities", 'backup-backup'), 'INFO');
       } else {
+
         $this->zip_progress->log(__("Legacy setting: Using default modules depending on user server", 'backup-backup'), 'INFO');
+
+        // Create DB Dump
+        $this->createDatabaseDump($dbbackupname, $better_database_files_dir, $database_file, $database_file_dir, $dbBackupEngine);
+
+        $this->zip_progress->log(__("Making archive", 'backup-backup'), 'STEP');
+        $this->zip_progress->log(__("Compressing...", 'backup-backup'), 'INFO');
+
       }
 
       // Run the backup in background
@@ -336,6 +365,8 @@ class Zip {
           'root_dir' => plugin_dir_path(BMI_ROOT_FILE),
           'browser' => false,
           'shareallowed' => BMP::canShareLogsOrShouldAsk(),
+          'dbiteratio' => 0,
+          'dblast' => 0,
           'url' => $url
         ];
 
@@ -343,32 +374,6 @@ class Zip {
         $Xfiles = glob(BMI_INCLUDES . '/htaccess' . '/.BMI-*');
         foreach ($Xfiles as $xfile) if (is_file($xfile)) unlink($xfile);
         touch(BMI_INCLUDES . '/htaccess' . '/.' . $identy);
-
-        // if (BMI_CLI_ENABLED === true && BMI_FUNCTION_NORMAL === true) {
-        //   file_put_contents($database_file_dir . 'bmi_cli_data.json', json_encode($remote_settings));
-        //   $this->zip_progress->log(__("Running PHP CLI process - it should be confirmed with next messages", 'backup-backup'), 'STEP');
-        //   $fix = false;
-        //
-        //   // ignore_user_abort(true);
-        //   // ob_start();
-        //   // session_write_close();
-        //   // header('Content-Length: ' . ob_get_length());
-        //   // header('Connection: close');
-        //   // ob_end_flush();
-        //   // flush();
-        //   // ob_start();
-        //
-        //   $output = @shell_exec(BMI_CLI_EXECUTABLE . ' -f ' . realpath(BMI_INCLUDES . '/cli-handler.php') . ' bmi_backup');
-        //
-        //   if ($output === '010011010101' || $output === '010011010111') {
-        //     $this->zip_progress->log(__('CLI Failed, trying to save the backup using alternative approaches.', 'backup-backup'), 'WARN');
-        //     $fix = true;
-        //   }
-        //
-        //   if ($output === '100101011101') {
-        //     $this->zip_progress->log(__('PHP CLI response is correct, awaiting lock file.', 'backup-backup'), 'INFO');
-        //   }
-        // }
 
         if ($fix === true) {
           if (BMI_LEGACY_HARD_VERSION === false && $cron === false) {
@@ -414,6 +419,9 @@ class Zip {
       } else {
         if (defined('BMI_USING_CLI_FUNCTIONALITY') && BMI_USING_CLI_FUNCTIONALITY === true) {
           $this->zip_progress->log(__("Backup is running under PHP CLI environment.", 'backup-backup'), 'INFO');
+          if ($this->dbDumped === false) {
+            $this->createDatabaseDump($dbbackupname, $better_database_files_dir, $database_file, $database_file_dir);
+          }
         } else {
           $this->zip_progress->log(__("Backup will run as single-request, may be unstable...", 'backup-backup'), 'WARN');
         }
@@ -440,6 +448,45 @@ class Zip {
       if (!$lib = new \PclZip($this->new_file_path)) {
         throw new \Exception('PHP-ZIP: Permission Denied or zlib can\'t be found');
       }
+
+      if ($this->dbDumped === true) {
+        try {
+
+          $this->zip_progress->log(__('Adding database SQL file(s) to the backup file.', 'backup-backup'), 'STEP');
+
+          $files = [];
+
+          if ($database_file !== false && !($this->db_exporter_files && sizeof($this->db_exporter_files) > 0)) {
+            $files[] = $database_file;
+          }
+
+          if ($this->db_exporter_files && sizeof($this->db_exporter_files) > 0) {
+            for ($i = 0; $i < sizeof($this->db_exporter_files); ++$i) {
+              $files[] = $this->db_exporter_files[$i];
+            }
+          }
+
+          $dbback = $lib->add($files, PCLZIP_OPT_REMOVE_PATH, $database_file_dir);
+
+          if ($dbback == 0) {
+            $this->zip_failed($lib->errorInfo(true));
+            return false;
+          }
+
+        } catch (\Exception $e) {
+          $this->zip_failed($e->getMessage());
+
+          return false;
+        } catch (\Throwable $e) {
+          $this->zip_failed($e->getMessage());
+
+          return false;
+        }
+
+        $this->zip_progress->log(__('Database added to the backup successfully.', 'backup-backup'), 'SUCCESS');
+      }
+
+      $this->zip_progress->log(__('Performing site files backup...', 'backup-backup'), 'STEP');
 
       try {
         $splitby = 200; $milestoneby = 500;
@@ -529,20 +576,35 @@ class Zip {
 
         $this->zip_progress->start(true);
 
-        $files = [$database_file_dir . 'bmi_backup_manifest.json', $database_file_dir . 'bmi_logs_this_backup.log'];
-        if ($database_file !== false && !($db_exporter_files && sizeof($db_exporter_files) > 0)) {
-          $files[] = $database_file;
+        $files = [];
+
+        if (file_exists($database_file_dir . 'bmi_logs_this_backup.log')) $files[] = $database_file_dir . 'bmi_logs_this_backup.log';
+        if (file_exists($database_file_dir . 'bmi_backup_manifest.json')) $files[] = $database_file_dir . 'bmi_backup_manifest.json';
+        else {
+
+          $this->zip_failed('Manifest file could not be added, manifest does not exist.');
+          return false;
+
         }
 
-        if ($db_exporter_files && sizeof($db_exporter_files) > 0) {
-          for ($i = 0; $i < sizeof($db_exporter_files); ++$i) {
-            $files[] = $db_exporter_files[$i];
+        try {
+
+          $maback = $lib->add($files, PCLZIP_OPT_REMOVE_PATH, $database_file_dir);
+
+          if ($maback == 0) {
+            $this->zip_failed($lib->errorInfo(true));
+            return false;
           }
-        }
 
-        // error_log(print_r($files, true));
-        // error_log(print_r($db_exporter_files, true));
-        $lib->add($files, PCLZIP_OPT_REMOVE_PATH, $database_file_dir);
+        } catch (\Exception $e) {
+          $this->zip_failed($e->getMessage());
+
+          return false;
+        } catch (\Throwable $e) {
+          $this->zip_failed($e->getMessage());
+
+          return false;
+        }
 
         if (file_exists($database_file_dir . 'bmi_backup_manifest.json')) {
           @unlink($database_file_dir . 'bmi_backup_manifest.json');
@@ -557,14 +619,14 @@ class Zip {
     }
 
     // Remove Better DB SQL Files
-    if ($db_exporter_files && sizeof($db_exporter_files) > 0) {
-      for ($i = 0; $i < sizeof($db_exporter_files); ++$i) {
-        if (file_exists($db_exporter_files[$i])) @unlink($db_exporter_files[$i]);
+    if ($this->db_exporter_files && sizeof($this->db_exporter_files) > 0) {
+      for ($i = 0; $i < sizeof($this->db_exporter_files); ++$i) {
+        if (file_exists($this->db_exporter_files[$i])) @unlink($this->db_exporter_files[$i]);
       }
       @rmdir($better_database_files_dir);
     }
 
-    if (file_exists($database_file)) @unlink($database_file);
+    if ($database_file && file_exists($database_file)) @unlink($database_file);
     if (!file_exists($this->new_file_path)) {
       throw new \Exception('PHP-ZIP: After doing the zipping file can not be found');
     }

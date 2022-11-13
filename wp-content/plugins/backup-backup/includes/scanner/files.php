@@ -86,8 +86,10 @@
     public static function scanDirectory($path) {
 
       $files = [];
+      if (!is_readable($path) || is_link($path)) return $files;
       foreach (new \DirectoryIterator($path) as $fileInfo) {
 
+        if ($fileInfo->isLink()) continue;
         if ($fileInfo->isDot()) continue;
         if (!$fileInfo->isDir()) {
 
@@ -117,8 +119,10 @@
     public static function scanDirectorySizeOnly($path, $bm) {
 
       $files = [];
+      if (!is_readable($path) || is_link($path)) return $files;
       foreach (new \DirectoryIterator($path) as $fileInfo) {
 
+        if ($fileInfo->isLink()) continue;
         if ($fileInfo->isDot()) continue;
         if (!$fileInfo->isDir()) {
 
@@ -149,8 +153,10 @@
     public static function scanDirectorySizeOnlyAndIgnore($path, $ignored = [], $bm = '') {
 
       $files = [];
+      if (!is_readable($path) || is_link($path)) return $files;
       foreach (new \DirectoryIterator($path) as $fileInfo) {
 
+        if ($fileInfo->isLink()) continue;
         if ($fileInfo->isDot()) continue;
         if (!$fileInfo->isDir()) {
 
@@ -189,8 +195,10 @@
       $files = [];
       try {
 
+        if (!is_readable($path) || is_link($path)) return $files;
         foreach (new \DirectoryIterator($path) as $fileInfo) {
 
+          if ($fileInfo->isLink()) continue;
           if ($fileInfo->isDot()) continue;
           if (!$fileInfo->isDir()) {
 
@@ -235,8 +243,11 @@
     public static function scanDirectoryNameOnly($path) {
 
       $files = [];
+
+      if (!is_readable($path) || is_link($path)) return $files;
       foreach (new \DirectoryIterator($path) as $fileInfo) {
 
+        if ($fileInfo->isLink()) continue;
         if ($fileInfo->isDot()) continue;
         if (!$fileInfo->isDir()) {
 
@@ -264,8 +275,11 @@
     public static function scanDirectoryNameOnlyAndIgnore($path, $ignored = []) {
 
       $files = [];
+
+      if (!is_readable($path) || is_link($path)) return $files;
       foreach (new \DirectoryIterator($path) as $fileInfo) {
 
+        if ($fileInfo->isLink()) continue;
         if ($fileInfo->isDot()) continue;
         if (!$fileInfo->isDir()) {
 
@@ -298,8 +312,11 @@
     public static function scanDirectoryNameOnlyAndIgnoreFBC($path, $ignored_folders = [], $ignored_paths = []) {
 
       $files = [];
+
+      if (!is_readable($path) || is_link($path)) return $files;
       foreach (new \DirectoryIterator($path) as $fileInfo) {
 
+        if ($fileInfo->isLink()) continue;
         if ($fileInfo->isDot()) continue;
         if (!$fileInfo->isDir()) {
 

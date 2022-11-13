@@ -2,8 +2,8 @@
 Contributors: Migrate
 Tags: Backup, Migration, Migrate, Backups, Restore, All In One, Duplicate, Clone, Import, Export, Transfer
 Requires at least: 4.6
-Tested up to: 6.0.1
-Stable tag: 1.2.2
+Tested up to: 6.1
+Stable tag: 1.2.3
 License: GPLv3
 Requires PHP: 5.6
 
@@ -11,11 +11,12 @@ Backup Migrate Restore
 
 == Description ==
 
+**Try it out on your free dummy site: Click here => [https://tastewp.com/plugins/backup-backup](https://demo.tastewp.com/bmi).**
+(this trick works for all plugins in the WP repo - just replace "wordpress" with "tastewp" in the URL)
+
 Creating a backup of your site has never been easier!
 
 Simply install the plugin, click on "Create backup now" - done.
-
-**Try it out on your free dummy site: Click here => [https://tastewp.com/plugins/backup-backup](https://tastewp.com/plugins/backup-backup?redirect-menu=backup-migration)**.
 
 You can also schedule backups, e.g. define that a backup should be taken automatically every week (or every day/month).
 
@@ -142,6 +143,47 @@ Vietnamese: [Tạo sao lưu, khôi phục các bản sao lưu và di chuyển c�
 
 
 == Changelog ==
+
+= 1.2.3 =
+* Permanently excluded link files from the backup (directories and files)
+* Permanently excluded non-readable files from the backup to prevent errors.
+* Applied above exclusion rules to file size calculator in plugin settings
+* Removed unused debug dd() function to prevent conflicts
+* Adjusted bytes to read converter to display proper size value on string data
+* Changed action hook of plugin's settings – script and style
+* Fixed issues with notices/warnings of unaccessible variables (backup)
+* Set new database export engine as default (v4, requires at least v1.2.2 to restore)
+* Added possibility to disable space check step, not recommend but may help in some cases
+* Updated out of the box backup paths of other plugins - exclusion rules (5 new)
+* Fixed temporary files clean-up after restoration (fail and successful)
+* Modified default size of query output – new value: 2000
+* Added support for batching to search & replace step (restoration/migration)
+* Added new option for search & replace, allows to set page size – default 300
+* Removed unused deactivation module from source code
+* Added hints of how to properly create support topic
+* Fixed close button for restoration/migration process error window
+* Adjusted style of logs for database (now current table will be displayed as step)
+* Fixed percentages above 100% for database table progress in logs
+* Adjusted old v3 database engine to support new search replace method
+* Added automatic temporary theme for the time of restoration/migration
+* All other plugins will be now automatically disabled during db migration/restoration
+* Fixed rare issue when wp-config.php was empty after restoration
+* Fixed issues with database restoration of tables with columns using reserved names (like "key")
+* Fixed issues with search & replace of tables with columns using reserved names (like "key")
+* Added improvements for restoration at TasteWP.com
+* Updated v3 restoration engine (old backups) to not activate problematic plugins
+* Added batching for database export during backup process (only alternate backup methods)
+* Added option which allows to toggle batching technique of database export (disabled by default)
+* Fully tested on WordPress 6.1 with PHP 7.4, 8.0 and 8.1
+* Fixed Super-Quick Migration automatic restoration continuation
+* Fixed download URL and Super-Quick Migration URL displayed after backup process
+* Premium: Fixed database table exclusion rules in different backup methods
+* Added additional check for non-readable files in legacy backup methods
+* Minimized possibility of damaged backup with success window
+* Resolved issues with freezing live-log in/with PHP CLI mode
+* Fixed multisite restoration while blog domain used www. while new website don't
+* Adjusted engine selector for compatibility with older restoration methods
+* Adjusted auto-login after restoration to work with forum-like plugins and new version of WP
 
 = 1.2.2 =
 * Fixed some plugin conflicts causing styling issues in our plugin
@@ -403,24 +445,45 @@ Vietnamese: [Tạo sao lưu, khôi phục các bản sao lưu và di chuyển c�
 * Initial release
 
 == Upgrade Notice ==
-= 1.2.2 =
-What's new in 1.2.2?
-* Fixed some plugin conflicts causing styling issues in our plugin
-* Removed unnecessary error logging
-* Resolved issues with PHP 8 and PHP 8.1 internal log format
-* Added more blacklisted tables to restoration process
-* Added pre-loader between calculation and backup load
-* Added new troubleshooting method, allows to share complete logs with one click
-* Added new backup and restoration engine for database (much quicker!)
-* Decreased possibility of out of memory issues during URL adjustment
-* Improved stability of PHP CLI restoration process
-* Fixed issues of too quick restorations, decreasing false-positive errors
-* Added handler for browser-side errors, decreasing chance of frozen process
-* Fixed issues when log in pop-up was display during or after restoration
-* Fixed issues when backed-up wp-config.php was overriding main wp-config.php
-* Adjusted log display to be more smooth (no delays, quicker steps update)
-* Fixed formatting issues in readme file (FAQ)
-* Fixed automatic cleanup of files after migration
-* Fixed issue when restoration was not continued after download (Super-Quick Migration)
-* Modified error windows for backup and restore process
-* Tested with WordPress 6.0.1
+= 1.2.3 =
+What's new in 1.2.3?
+* Permanently excluded link files from the backup (directories and files)
+* Permanently excluded non-readable files from the backup to prevent errors.
+* Applied above exclusion rules to file size calculator in plugin settings
+* Removed unused debug dd() function to prevent conflicts
+* Adjusted bytes to read converter to display proper size value on string data
+* Changed action hook of plugin's settings – script and style
+* Fixed issues with notices/warnings of unaccessible variables (backup)
+* Set new database export engine as default (v4, requires at least v1.2.2 to restore)
+* Added possibility to disable space check step, not recommend but may help in some cases
+* Updated out of the box backup paths of other plugins - exclusion rules (5 new)
+* Fixed temporary files clean-up after restoration (fail and successful)
+* Modified default size of query output – new value: 2000
+* Added support for batching to search & replace step (restoration/migration)
+* Added new option for search & replace, allows to set page size – default 300
+* Removed unused deactivation module from source code
+* Added hints of how to properly create support topic
+* Fixed close button for restoration/migration process error window
+* Adjusted style of logs for database (now current table will be displayed as step)
+* Fixed percentages above 100% for database table progress in logs
+* Adjusted old v3 database engine to support new search replace method
+* Added automatic temporary theme for the time of restoration/migration
+* All other plugins will be now automatically disabled during db migration/restoration
+* Fixed rare issue when wp-config.php was empty after restoration
+* Fixed issues with database restoration of tables with columns using reserved names (like "key")
+* Fixed issues with search & replace of tables with columns using reserved names (like "key")
+* Added improvements for restoration at TasteWP.com
+* Updated v3 restoration engine (old backups) to not activate problematic plugins
+* Added batching for database export during backup process (only alternate backup methods)
+* Added option which allows to toggle batching technique of database export (disabled by default)
+* Fully tested on WordPress 6.1 with PHP 7.4, 8.0 and 8.1
+* Fixed Super-Quick Migration automatic restoration continuation
+* Fixed download URL and Super-Quick Migration URL displayed after backup process
+* Premium: Fixed database table exclusion rules in different backup methods
+* Added additional check for non-readable files in legacy backup methods
+* Minimized possibility of damaged backup with success window
+* Resolved issues with freezing live-log in/with PHP CLI mode
+* Resolved issues with freezing live-log in/with PHP CLI mode
+* Fixed multisite restoration while blog domain used www. while new website don't
+* Adjusted engine selector for compatibility with older restoration methods
+* Adjusted auto-login after restoration to work with forum-like plugins and new version of WP

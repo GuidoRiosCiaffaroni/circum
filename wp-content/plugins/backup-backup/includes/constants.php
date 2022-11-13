@@ -41,18 +41,34 @@
       $db_queries = intval($db_queries);
 
       if ($db_queries > 15000 || $db_queries < 15) {
-        $db_queries = 300;
+        $db_queries = 2000;
       }
     }
 
     if (!isset($db_queries) || is_null($db_queries) || !is_numeric($db_queries)) {
-      $db_queries = 300;
+      $db_queries = 2000;
     }
 
     define('BMI_DB_MAX_ROWS_PER_QUERY', $db_queries);
   }
 
   // Default constants
+  if (!defined('BMI_MAX_SEARCH_REPLACE_PAGE')) {
+    $db_sr_max_page = Dashboard\bmi_get_config('OTHER:DB:SEARCHREPLACE:MAX');
+    if (is_numeric($db_sr_max_page)) {
+      $db_sr_max_page = intval($db_sr_max_page);
+
+      if ($db_sr_max_page > 30000 || $db_sr_max_page < 10) {
+        $db_sr_max_page = 300;
+      }
+    }
+
+    if (!isset($db_sr_max_page) || is_null($db_sr_max_page) || !is_numeric($db_sr_max_page)) {
+      $db_sr_max_page = 300;
+    }
+
+    define('BMI_MAX_SEARCH_REPLACE_PAGE', $db_sr_max_page);
+  }
   if (!defined('BMI_CLI_EXECUTABLE')) {
     $php_cli_path = Dashboard\bmi_get_config('OTHER:CLI:PATH');
     if (strlen(trim($php_cli_path)) > 0) {

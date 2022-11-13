@@ -168,7 +168,7 @@
                 } elseif (is_bool($value)) {
                   echo $value === true ? 'true' : 'false';
                 } else {
-                  if (strlen($value) == '0') {
+                  if (!$value || is_null($value) || strlen($value) == '0') {
                     echo '---';
                   } else {
                     echo $value;
