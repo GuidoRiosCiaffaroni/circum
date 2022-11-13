@@ -116,9 +116,10 @@ function toogleDataSeries(e){
                 <h4 class="card-title">Tasks</h4>
               </div>
               <div class="card-body ">
-                <div class="table-full-width table-responsive">
-                  <?php echo      get_the_title(); ?>
-                </div>
+            
+            
+                                 <iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vTpbgD9LUuK_7Jta-4YpsUMJSYMVqTPUNxhhLr1YdAlgoR-glCaJbDFFffUuXxatemmiAyvMvrUFay8/pubhtml?widget=true&amp;headers=false"></iframe>
+             
               </div>
               <div class="card-footer ">
                 <hr>

@@ -121,6 +121,7 @@ function toogleDataSeries(e){
               <div class="card-body ">
                 <div class="table-full-width table-responsive">
                   <?php echo      get_the_title(); ?>
+   
                 </div>
               </div>
               <div class="card-footer ">
