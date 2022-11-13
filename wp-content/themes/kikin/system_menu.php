@@ -206,7 +206,7 @@
 
 
               <li class="nav-item">
-                <a class="nav-link" href="#pablo">
+                <a class="nav-link" href="<?php echo wp_logout_url( home_url() ); ?>">
                   <i class="now-ui-icons media-1_button-power"></i>
                   <p>
                     <span class="d-lg-none d-md-block">Exit</span>
@@ -249,7 +249,7 @@
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
                   <a class="dropdown-item" href="#">Action</a>
                   <a class="dropdown-item" href="#">Another action</a>
-                  <a class="dropdown-item" href="#">Salir</a>
+                  <a class="dropdown-item" href="<?php echo wp_logout_url( home_url() ); ?>">Salir</a>
                 </div>
               </li>
               
