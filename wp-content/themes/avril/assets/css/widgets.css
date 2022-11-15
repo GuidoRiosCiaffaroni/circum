@@ -1706,3 +1706,7 @@ p.has-text-color em {
 .wp-block-button a.wp-block-button__link {
     border-color: inherit;
 }
+
+.has-text-color em {
+    color: inherit;
+}

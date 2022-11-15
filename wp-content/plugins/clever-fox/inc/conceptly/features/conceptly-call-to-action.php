@@ -130,7 +130,7 @@ $selective_refresh = isset( $wp_customize->selective_refresh ) ? 'postMessage' :
     	'cta_icon',
     	array(
 	        'default'			=> __('fa-shopping-cart','clever-fox'),
-			'sanitize_callback' => 'conceptly_sanitize_text',
+			'sanitize_callback' => 'conceptly_sanitize_html',
 			'capability' => 'edit_theme_options',
 			'transport'         => $selective_refresh,
 			'priority' => 8,
@@ -152,7 +152,7 @@ $selective_refresh = isset( $wp_customize->selective_refresh ) ? 'postMessage' :
     	array(
 	        'default'			=> __('Purchase Now','clever-fox'),
 			'capability'     	=> 'edit_theme_options',
-			'sanitize_callback' => 'conceptly_sanitize_text',
+			'sanitize_callback' => 'conceptly_sanitize_html',
 			'transport'         => $selective_refresh,
 			'priority' => 9,
 		)
