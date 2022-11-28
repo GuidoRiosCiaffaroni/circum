@@ -5,17 +5,12 @@
             <ul>
               <li>
                 <a href="">
-                  Creative Tim
+                  Circum System 1.0
                 </a>
               </li>
               <li>
-                <a href="">
-                  About Us
-                </a>
-              </li>
-              <li>
-                <a href="">
-                  Blog <?php echo get_template_directory_uri(); ?>
+                <a href="wwww.ciaffaroni.cl">
+                  un proyecto de ciaffaroni
                 </a>
               </li>
             </ul>

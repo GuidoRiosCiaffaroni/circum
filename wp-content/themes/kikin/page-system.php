@@ -31,7 +31,7 @@ var chart = new CanvasJS.Chart("chartContainer", {
     }
   },
   axisY: {
-    title: "Numero de Visitas",
+    title: "Rentabilidad %",
     crosshair: {
       enabled: true
     }
@@ -111,20 +111,37 @@ function toogleDataSeries(e){
           <!-- ----------------------------------------------------------------------------- -->
           <div class="col-lg-4">
             <div class="card  card-tasks">
+
+
+              
+
               <div class="card-header ">
-                <h5 class="card-category">Backend development</h5>
-                <h4 class="card-title">Tasks</h4>
+                <h5 class="card-category">Empresas en Estudio</h5>
+                <h4 class="card-title">Estudio</h4>
+
+
+
+
+
               </div>
+
+
+
+
+
               <div class="card-body ">
             
-            
-                                 <iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vTpbgD9LUuK_7Jta-4YpsUMJSYMVqTPUNxhhLr1YdAlgoR-glCaJbDFFffUuXxatemmiAyvMvrUFay8/pubhtml?widget=true&amp;headers=false"></iframe>
-             
+            <div class="table-full-width table-responsive">
+              <iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vTpbgD9LUuK_7Jta-4YpsUMJSYMVqTPUNxhhLr1YdAlgoR-glCaJbDFFffUuXxatemmiAyvMvrUFay8/pubhtml?gid=0&amp;single=true&amp;widget=true&amp;headers=false" width="450" height="400"></iframe>
+             </div>
               </div>
+
+
+
               <div class="card-footer ">
                 <hr>
                 <div class="stats">
-                  <i class="now-ui-icons loader_refresh spin"></i> Updated 3 minutes ago
+                  <i class="now-ui-icons loader_refresh spin"></i> Updated 60 minutes ago
                 </div>
               </div>
             </div>
@@ -135,18 +152,18 @@ function toogleDataSeries(e){
           <div class="col-lg-4 col-md-6">
                         <div class="card  card-tasks">
               <div class="card-header ">
-                <h5 class="card-category">Backend development</h5>
-                <h4 class="card-title">Tasks</h4>
+                <h5 class="card-category">Seguimiento</h5>
+                <h4 class="card-title">Seguimiento NOC</h4>
               </div>
               <div class="card-body ">
                 <div class="table-full-width table-responsive">
-                  <?php echo      get_the_title(); ?>
+          <iframe width="450" height="400" seamless frameborder="0" scrolling="no" src="https://docs.google.com/spreadsheets/d/e/2PACX-1vTpbgD9LUuK_7Jta-4YpsUMJSYMVqTPUNxhhLr1YdAlgoR-glCaJbDFFffUuXxatemmiAyvMvrUFay8/pubchart?oid=380018313&amp;format=interactive"></iframe>
                 </div>
               </div>
               <div class="card-footer ">
                 <hr>
                 <div class="stats">
-                  <i class="now-ui-icons loader_refresh spin"></i> Updated 3 minutes ago
+                  <i class="now-ui-icons loader_refresh spin"></i> Updated 24 hours ago
                 </div>
               </div>
             </div>
@@ -157,24 +174,63 @@ function toogleDataSeries(e){
           <div class="col-lg-4 col-md-6">
                         <div class="card  card-tasks">
               <div class="card-header ">
-                <h5 class="card-category">Backend development</h5>
-                <h4 class="card-title">Tasks</h4>
+                <h5 class="card-category">Datos de estudio</h5>
+                <h4 class="card-title">Variaciones de registros</h4>
               </div>
               <div class="card-body ">
                 <div class="table-full-width table-responsive">
-                  <?php echo      get_the_title(); ?>
+                  <iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vTpbgD9LUuK_7Jta-4YpsUMJSYMVqTPUNxhhLr1YdAlgoR-glCaJbDFFffUuXxatemmiAyvMvrUFay8/pubhtml?gid=285399633&amp;single=true&amp;widget=true&amp;headers=false" width="450" height="400"></iframe>
                 </div>
               </div>
               <div class="card-footer ">
                 <hr>
                 <div class="stats">
-                  <i class="now-ui-icons loader_refresh spin"></i> Updated 3 minutes ago
+                  <i class="now-ui-icons loader_refresh spin"></i> Updated 20 minutes ago
                 </div>
               </div>
             </div>
           </div>
           <!-- ----------------------------------------------------------------------------- -->
+
+
+          <!-- ----------------------------------------------------------------------------- -->          
+          <div class="col-lg-12 col-md-12">
+                        <div class="card  card-tasks">
+              <div class="card-header ">
+                <h5 class="card-category">Backend development</h5>
+                <h4 class="card-title">Tasks</h4>
+              </div>
+              <div class="card-body ">
+                <div class="table-full-width table-responsive">
+    
+
+<iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vTpbgD9LUuK_7Jta-4YpsUMJSYMVqTPUNxhhLr1YdAlgoR-glCaJbDFFffUuXxatemmiAyvMvrUFay8/pubhtml?gid=504304078&amp;single=true&amp;widget=true&amp;headers=false" width="1550" height="400"></iframe>
+
+
+                </div>
+              </div>
+              <div class="card-footer ">
+                <hr>
+                <div class="stats">
+                  <i class="now-ui-icons loader_refresh spin"></i> Updated 20 minutes ago
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- ----------------------------------------------------------------------------- -->
+
+
+
+
+
+
+
         </div>
+
+
+
+
+
 
       </div>
 

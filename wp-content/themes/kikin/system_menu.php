@@ -13,7 +13,7 @@
           GR
         </a>
         <a href="" class="simple-text logo-normal">
-          KIKIN SYSTEM 1.0
+          CIRCUM SYSTEM 1.0
         </a>
       </div>
       <div class="sidebar-wrapper" id="sidebar-wrapper">

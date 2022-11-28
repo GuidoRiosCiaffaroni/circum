@@ -18,3 +18,6 @@
 [2022-11-12 14:02:55] [LOG] Creating backup 
 [2022-11-12 14:02:55] [LOG] Found 1981 files to backup.
 [2022-11-12 14:03:29] [LOG] New backup created and its name is: BM_Backup_2022-11-12_14_02_51_G5yiPNSmxKYAFHwU.zip
+[2022-11-15 00:20:20] [LOG] Creando copia de seguridad 
+[2022-11-15 00:20:20] [LOG] Encontrado 2008 archivos a realizar copia de seguridad.
+[2022-11-15 00:21:27] [LOG] Nueva copia de seguridad creada y su nombre es: BM_Backup_2022-11-15_00_20_13_Q5yVlEnt4fkFGjpa.zip
