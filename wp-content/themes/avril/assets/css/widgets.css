@@ -1707,6 +1707,7 @@ p.has-text-color em {
     border-color: inherit;
 }
 
-.has-text-color em {
+.has-text-color em,
+.has-text-color h2 {
     color: inherit;
 }

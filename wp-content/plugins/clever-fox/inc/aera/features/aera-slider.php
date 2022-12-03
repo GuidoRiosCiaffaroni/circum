@@ -78,7 +78,11 @@ $selective_refresh = isset( $wp_customize->selective_refresh ) ? 'postMessage' :
 			<?php
 				}elseif ( 'Avitech' == $theme->name){
 			?>	
-				<a class="customizer_slider_upgrade_section up-to-pro" href="https://www.nayrathemes.com/avitech-pro/" target="_blank" style="display: none;"><?php _e('Upgrade to Pro','avail'); ?></a>	
+				<a class="customizer_slider_upgrade_section up-to-pro" href="https://www.nayrathemes.com/avitech-pro/" target="_blank" style="display: none;"><?php _e('Upgrade to Pro','avail'); ?></a>
+			<?php
+				}elseif ( 'Varuda' == $theme->name){
+			?>	
+				<a class="customizer_slider_upgrade_section up-to-pro" href="https://www.nayrathemes.com/varuda-pro/" target="_blank" style="display: none;"><?php _e('Upgrade to Pro','avail'); ?></a>		
 			<?php
 				}
 			}
@@ -102,7 +106,7 @@ $selective_refresh = isset( $wp_customize->selective_refresh ) ? 'postMessage' :
 		
 	// slider opacity
 	$theme = wp_get_theme(); // gets the current theme
-	if ( 'Avitech' == $theme->name){
+	if ( 'Avitech' == $theme->name  || 'Varuda' == $theme->name){
 		$default_opacity=0.8;
 	}else{
 		$default_opacity=0.5;

@@ -44,7 +44,7 @@ function avril_get_social_icon_default() {
  * Slider Default
  */
  
- if( 'Avitech' == $theme->name){
+ if( 'Avitech' == $theme->name  || 'Varuda' == $theme->name){
 	 function avril_get_slider_default() {
 		return apply_filters(
 			'avril_get_slider_default', json_encode(

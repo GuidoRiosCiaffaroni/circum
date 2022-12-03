@@ -21,3 +21,19 @@
 [2022-11-15 00:20:20] [LOG] Creando copia de seguridad 
 [2022-11-15 00:20:20] [LOG] Encontrado 2008 archivos a realizar copia de seguridad.
 [2022-11-15 00:21:27] [LOG] Nueva copia de seguridad creada y su nombre es: BM_Backup_2022-11-15_00_20_13_Q5yVlEnt4fkFGjpa.zip
+[2022-12-02 12:59:55] [LOG] Restoring site...
+[2022-12-02 13:09:30] [ERROR] Se ha apagado
+[2022-12-02 13:09:30] [ERROR] Array
+(
+    [type] => 2
+    [message] => fsockopen(): unable to connect to 127.0.0.1:2222 (No se puede establecer una conexión ya que el equipo de destino denegó expresamente dicha conexión.
+)
+    [file] => C:\xampp\htdocs\circum\wp-content\plugins\really-simple-ssl\lets-encrypt\functions.php
+    [line] => 226
+)
+
+[2022-12-02 13:09:30] [ERROR] Ha habido un error antes del cierre de la solicitud (pero no se ha registrado en el registro de copia de seguridad/restauración)
+[2022-12-02 13:09:30] [ERROR] Mensaje de error: fsockopen(): unable to connect to 127.0.0.1:2222 (No se puede establecer una conexión ya que el equipo de destino denegó expresamente dicha conexión.
+)
+[2022-12-02 13:09:30] [ERROR] Archivo/línea del error:C:\xampp\htdocs\circum\wp-content\plugins\really-simple-ssl\lets-encrypt\functions.php|226
+[2022-12-02 13:09:47] [LOG] Site restored...

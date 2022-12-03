@@ -78,7 +78,7 @@ if( ! function_exists( 'cleverfox_avril_dynamic_styles' ) ):
 			}	
 		}
 		
-		if ( 'Avitech' == $theme->name){
+		if ( 'Avitech' == $theme->name  || 'Varuda' == $theme->name){
 			$hdr_info_color 	= get_theme_mod( 'hdr_info_color');
 			$slide_ttl_color 	= get_theme_mod( 'slide_ttl_color');
 			$slide_subttl_color = get_theme_mod( 'slide_subttl_color');
@@ -91,19 +91,19 @@ if( ! function_exists( 'cleverfox_avril_dynamic_styles' ) ):
 			endif;
 			
 			if(!empty($slide_ttl_color)):
-				$output_css .=" .avitech-theme .main-slider .theme-content h3{
+				$output_css .=" .avitech-theme .main-slider .theme-content h3, .varuda-theme .main-slider .theme-content h3{
 						color: " .esc_attr($slide_ttl_color). ";
 					}\n";
 			endif;
 			
 			if(!empty($slide_subttl_color)):
-				$output_css .=" .avitech-theme .theme-content h1 span{
+				$output_css .=" .avitech-theme .theme-content h1 span, .varuda-theme .theme-content h1 span{
 						color: " .esc_attr($slide_subttl_color). ";
 					}\n";
 			endif;
 			
 			if(!empty($slide_desc_color)):
-				$output_css .=" .avitech-theme .main-slider .theme-content p{
+				$output_css .=" .avitech-theme .main-slider .theme-content p, .varuda-theme .main-slider .theme-content p{
 						color: " .esc_attr($slide_desc_color). ";
 					}\n";
 			endif;

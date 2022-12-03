@@ -2,44 +2,47 @@
 function avitech_slider_setting( $wp_customize ) {
 $selective_refresh = isset( $wp_customize->selective_refresh ) ? 'postMessage' : 'refresh';	
 	
-	// Head
-	$wp_customize->add_setting(
-		'hdr_info_clr_head'
-			,array(
-			'capability'     	=> 'edit_theme_options',
-			'sanitize_callback' => 'avril_sanitize_text',
-			'priority' => 8,
-		)
-	);
+	$theme = wp_get_theme(); // gets the current theme
+	if ( 'Avitech' == $theme->name){
+		// Head
+		$wp_customize->add_setting(
+			'hdr_info_clr_head'
+				,array(
+				'capability'     	=> 'edit_theme_options',
+				'sanitize_callback' => 'avril_sanitize_text',
+				'priority' => 8,
+			)
+		);
 
-	$wp_customize->add_control(
-	'hdr_info_clr_head',
-		array(
-			'type' => 'hidden',
-			'label' => __('Colors','clever-fox'),
-			'section' => 'above_header',
-		)
-	);
-	
-	// Info Color
-	$wp_customize->add_setting(
-	'hdr_info_color', 
-	array(
-		'capability' => 'edit_theme_options',
-		'sanitize_callback' => 'sanitize_text_field',
-		'priority' => 8,
-    ));
-	
-	$wp_customize->add_control( 
-		new WP_Customize_Color_Control
-		($wp_customize, 
-			'hdr_info_color', 
+		$wp_customize->add_control(
+		'hdr_info_clr_head',
 			array(
-				'label'      => __( 'Info  Color', 'clever-fox' ),
-				'section'    => 'above_header'
+				'type' => 'hidden',
+				'label' => __('Colors','clever-fox'),
+				'section' => 'above_header',
+			)
+		);
+		
+		// Info Color
+		$wp_customize->add_setting(
+		'hdr_info_color', 
+		array(
+			'capability' => 'edit_theme_options',
+			'sanitize_callback' => 'sanitize_text_field',
+			'priority' => 8,
+		));
+		
+		$wp_customize->add_control( 
+			new WP_Customize_Color_Control
+			($wp_customize, 
+				'hdr_info_color', 
+				array(
+					'label'      => __( 'Info  Color', 'clever-fox' ),
+					'section'    => 'above_header'
+				) 
 			) 
-		) 
-	);
+		);
+	}
 	
 	// Head
 	$wp_customize->add_setting(

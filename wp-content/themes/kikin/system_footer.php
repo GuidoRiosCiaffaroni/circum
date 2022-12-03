@@ -19,7 +19,7 @@
             &copy; 
             <script>
               document.getElementById('copyright').appendChild(document.createTextNode(new Date().getFullYear()))
-            </script>, Designed by <a href="" target="_blank">Invision</a>. Coded by <a href="" target="_blank">Creative Tim</a>.
+            </script><!--, Designed by <a href="" target="_blank">Invision</a>. Coded by <a href="" target="_blank">Creative Tim</a>.-->
           </div>
         </div>
       </footer>

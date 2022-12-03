@@ -2,15 +2,15 @@
 Contributors: nayrathemes
 Tags: homepage, companion, demo, sections, customizer, widget, settings
 Requires at least: 4.0
-Tested up to: 6.0
+Tested up to: 6.1
 Requires PHP: 5.6
-Stable tag: 15.0
+Stable tag: 15.5
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.en.html
 
 == Description ==
 
-Clever Fox plugin to enhance the functionality of free themes made by Nayra Themes. More than 50000+ trusted websites with Nayra Themes. It provides intuitive features to your website. 20+ Themes compatible with Clever Fox. See below free themes listed here. Avril is one of Popular themes in our collections.
+Clever Fox plugin to enhance the functionality of free themes made by Nayra Themes. More than 60000+ trusted websites with Nayra Themes. It provides intuitive features to your website. 20+ Themes compatible with Clever Fox. See below free themes listed here. Avril is one of Popular themes in our collections.
 
 = The Clever Fox plugin features include: =
 
@@ -135,6 +135,22 @@ Clever Fox WordPress plugin is licensed under the GPL3 (https://www.gnu.org/lice
 
 
 == Changelog ==
+
+
+= 15.5 =
+* Tested With WordPress 6.1
+
+= 15.4 =
+* Varuda Theme Upsale Links Added
+
+= 15.3 =
+* Readme Updated
+
+= 15.2 =
+* Varuda Theme Files Added
+
+= 15.1 =
+* Varuda Theme Files Added
 
 = 15.0 =
 * Fixed Sainitization Issue in Conceptly Theme
