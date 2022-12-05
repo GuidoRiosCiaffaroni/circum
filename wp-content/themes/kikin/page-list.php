@@ -18,7 +18,10 @@
                     <thead class=" text-primary">
                       <th>
                         ID
-                      </th>                      
+                      </th>
+                      <th>
+                        R1
+                      </th>                       
                       <th>
                         NOMBRE
                       </th>
@@ -111,6 +114,7 @@ global $wpdb;
     while( $query->have_posts()): $query->the_post();
      {
       echo '<tr>';
+      echo '<td>'. $post->ID .'</td>';
       echo '<td>'. $post->ID .'</td>';
       echo '<td>'. get_post_meta( $post->ID, 'meta_folio_name', true ) .'</td>';
       echo '<td><a href="'. get_post_meta( $post->ID, 'meta_folio_url_bstgo', true ) .'" target="_blank">'. get_post_meta( $post->ID, 'meta_folio_name_bstgo', true ) .'</a></td>';
