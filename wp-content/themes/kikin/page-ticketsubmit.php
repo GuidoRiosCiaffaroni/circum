@@ -9,7 +9,7 @@
         <div class="card">
 
           <div class="card-header">
-            <h4 class="card-title"> Bloqueado </h4>
+            <h4 class="card-title"> <?php if ( have_posts() ) : while ( have_posts() ) : the_post(); ?> </h4>
           </div>
 
           <div class="card-body">
@@ -17,7 +17,7 @@
 
 		  
 		  
-		  <?php if ( have_posts() ) : while ( have_posts() ) : the_post(); ?>
+		  <?php //if ( have_posts() ) : while ( have_posts() ) : the_post(); ?>
 <article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
 <header class="header">
 <h1 class="entry-title" itemprop="name"><?php the_title(); ?></h1> <?php edit_post_link(); ?>
