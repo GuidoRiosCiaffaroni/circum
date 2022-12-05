@@ -2,8 +2,8 @@
 Contributors: Migrate
 Tags: Backup, Migration, Migrate, Backups, Restore, All In One, Duplicate, Clone, Import, Export, Transfer
 Requires at least: 4.6
-Tested up to: 6.1
-Stable tag: 1.2.3
+Tested up to: 6.1.1
+Stable tag: 1.2.7
 License: GPLv3
 Requires PHP: 5.6
 
@@ -143,6 +143,23 @@ Vietnamese: [Tạo sao lưu, khôi phục các bản sao lưu và di chuyển c�
 
 
 == Changelog ==
+
+= 1.2.7 =
+* Adjusted PHP compatibility
+
+= 1.2.6 =
+* Fixed wrong version tag in v1.2.5 (hotfix)
+
+= 1.2.5 =
+* Added black-friday theme (only for that period)
+* Fixed automatic backup for premium extension (sites above 2 GB)
+* Fixed error handling after database export (timeout detection)
+* Tested up to WordPress 6.1.1
+
+= 1.2.4 =
+* Fixed issue with restoration when site was restored on same domain but different server
+* Improved force-stop functionality, it will now clean-up temporary theme after failed restoration
+* Added directory check of temporary theme during restoration
 
 = 1.2.3 =
 * Permanently excluded link files from the backup (directories and files)
@@ -445,45 +462,11 @@ Vietnamese: [Tạo sao lưu, khôi phục các bản sao lưu và di chuyển c�
 * Initial release
 
 == Upgrade Notice ==
-= 1.2.3 =
-What's new in 1.2.3?
-* Permanently excluded link files from the backup (directories and files)
-* Permanently excluded non-readable files from the backup to prevent errors.
-* Applied above exclusion rules to file size calculator in plugin settings
-* Removed unused debug dd() function to prevent conflicts
-* Adjusted bytes to read converter to display proper size value on string data
-* Changed action hook of plugin's settings – script and style
-* Fixed issues with notices/warnings of unaccessible variables (backup)
-* Set new database export engine as default (v4, requires at least v1.2.2 to restore)
-* Added possibility to disable space check step, not recommend but may help in some cases
-* Updated out of the box backup paths of other plugins - exclusion rules (5 new)
-* Fixed temporary files clean-up after restoration (fail and successful)
-* Modified default size of query output – new value: 2000
-* Added support for batching to search & replace step (restoration/migration)
-* Added new option for search & replace, allows to set page size – default 300
-* Removed unused deactivation module from source code
-* Added hints of how to properly create support topic
-* Fixed close button for restoration/migration process error window
-* Adjusted style of logs for database (now current table will be displayed as step)
-* Fixed percentages above 100% for database table progress in logs
-* Adjusted old v3 database engine to support new search replace method
-* Added automatic temporary theme for the time of restoration/migration
-* All other plugins will be now automatically disabled during db migration/restoration
-* Fixed rare issue when wp-config.php was empty after restoration
-* Fixed issues with database restoration of tables with columns using reserved names (like "key")
-* Fixed issues with search & replace of tables with columns using reserved names (like "key")
-* Added improvements for restoration at TasteWP.com
-* Updated v3 restoration engine (old backups) to not activate problematic plugins
-* Added batching for database export during backup process (only alternate backup methods)
-* Added option which allows to toggle batching technique of database export (disabled by default)
-* Fully tested on WordPress 6.1 with PHP 7.4, 8.0 and 8.1
-* Fixed Super-Quick Migration automatic restoration continuation
-* Fixed download URL and Super-Quick Migration URL displayed after backup process
-* Premium: Fixed database table exclusion rules in different backup methods
-* Added additional check for non-readable files in legacy backup methods
-* Minimized possibility of damaged backup with success window
-* Resolved issues with freezing live-log in/with PHP CLI mode
-* Resolved issues with freezing live-log in/with PHP CLI mode
-* Fixed multisite restoration while blog domain used www. while new website don't
-* Adjusted engine selector for compatibility with older restoration methods
-* Adjusted auto-login after restoration to work with forum-like plugins and new version of WP
+= 1.2.7 =
+What's new in 1.2.7?
+* Added black-friday theme (only for that period)
+* Fixed automatic backup for premium extension (sites above 2 GB)
+* Fixed error handling after database export (timeout detection)
+* Tested up to WordPress 6.1.1
+* Fixed wrong version tag in v1.2.5 (hotfix)
+* Adjusted PHP compatibility

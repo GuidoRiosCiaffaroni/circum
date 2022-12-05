@@ -117,6 +117,11 @@
         $review_banner = new \Inisev\Subs\Inisev_Review(BMI_ROOT_FILE, BMI_ROOT_DIR, 'backup-backup', 'Backup & Migration', 'http://bit.ly/3vdk45L', 'backup-migration');
       }
 
+      if (!(class_exists('\Inisev\Subs\InisevBlackFriday') || class_exists('Inisev\Subs\InisevBlackFriday') || class_exists('InisevBlackFriday'))) {
+        require_once BMI_MODULES_DIR . 'blackfriday2022' . DIRECTORY_SEPARATOR . 'bf.php';
+      }
+      $blackfriday_banner = new \Inisev\Subs\InisevBlackFriday('backup-backup', 'Backup & Migration', 'http://bit.ly/3tQgcrW', ['admin.php?page=backup-migration']);
+
       // Deactivation module
       // $bmi_plugin_path = trailingslashit(basename(BMI_ROOT_DIR)) . basename(BMI_ROOT_FILE);
       // if (isset($GLOBALS['IIEV_PLUGINS_DEACTIVATION'])) {

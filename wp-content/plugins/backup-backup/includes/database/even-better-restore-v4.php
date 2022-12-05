@@ -397,10 +397,6 @@ class BMI_Even_Better_Database_Restore {
           $this->logger->log($info, 'INFO');
           $status['fieldAdjustments']++;
 
-        } else {
-
-          // $this->logger->log(__('Path adjustments are not required for this table.', 'backup-backup'), 'INFO');
-
         }
 
         if ($status['currentPage'] >= $status['totalPages']) {
@@ -412,7 +408,8 @@ class BMI_Even_Better_Database_Restore {
 
       } else {
 
-        $status['step'] = $step + 1; $step++;
+        $status['step'] = $step + 1;
+        $step++;
 
       }
     }
@@ -510,7 +507,16 @@ class BMI_Even_Better_Database_Restore {
           $status['totalPages'] = 0;
           $status['step'] = $step + 1;
         }
+
         return $status;
+
+      } else {
+
+        $status['currentPage'] = 0;
+        $status['totalPages'] = 0;
+        $status['step'] = 8;
+        $step = 8;
+
       }
     }
 

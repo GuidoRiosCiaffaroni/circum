@@ -273,7 +273,9 @@
 
       $themedir = get_theme_root();
       $tempTheme = $themedir . DIRECTORY_SEPARATOR . 'backup_migration_restoration_in_progress';
-      @mkdir($tempTheme, 0755, true);
+      if (!(file_exists($tempTheme) && is_dir($tempTheme))) {
+        @mkdir($tempTheme, 0755, true);
+      }
 
       $visitLaterText = __('Site restoration in progress, please visit that website a bit later, thank you! :)', 'backup-backup');
       file_put_contents($tempTheme . DIRECTORY_SEPARATOR . 'header.php', '<?php wp_head(); show_admin_bar(true);');

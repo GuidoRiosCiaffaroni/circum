@@ -2440,6 +2440,10 @@
 
       $filesToBeRemoved = [];
 
+      $themedir = get_theme_root();
+      $tempTheme = $themedir . DIRECTORY_SEPARATOR . 'backup_migration_restoration_in_progress';
+      $filesToBeRemoved[] = $tempTheme;
+
       $tmpDirectory = BMI_ROOT_DIR . DIRECTORY_SEPARATOR . 'tmp';
       if (!is_dir($tmpDirectory)) @mkdir($tmpDirectory, 0755, true);
 

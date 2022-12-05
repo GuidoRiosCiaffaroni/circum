@@ -4,7 +4,7 @@ Tags: homepage, companion, demo, sections, customizer, widget, settings
 Requires at least: 4.0
 Tested up to: 6.1
 Requires PHP: 5.6
-Stable tag: 15.5
+Stable tag: 15.6
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.en.html
 
@@ -60,6 +60,8 @@ Clever Fox plugin to enhance the functionality of free themes made by Nayra Them
 - [Avitech](https://wordpress.org/themes/avitech/)
 - [Colorsy](https://wordpress.org/themes/colorsy/)
 - [Ampark](https://wordpress.org/themes/ampark/)
+- [Eduvert](https://wordpress.org/themes/eduvert/)
+- [Varuda](https://wordpress.org/themes/varuda/)
 
 == Installation ==
 
@@ -118,6 +120,8 @@ Yes, This plugin is specially make for Nayra Themes . You can install theme for 
 - [Avitech](https://wordpress.org/themes/avitech/)
 - [Colorsy](https://wordpress.org/themes/colorsy/)
 - [Ampark](https://wordpress.org/themes/ampark/)
+- [Eduvert](https://wordpress.org/themes/eduvert/)
+- [Varuda](https://wordpress.org/themes/varuda/)
 
 == Screenshots ==
 
@@ -136,6 +140,9 @@ Clever Fox WordPress plugin is licensed under the GPL3 (https://www.gnu.org/lice
 
 == Changelog ==
 
+
+= 15.6 =
+* Readme Updated
 
 = 15.5 =
 * Tested With WordPress 6.1
