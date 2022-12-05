@@ -1,1 +1,115 @@
 [STEP] [2022-11-02 21:58:50] Initializing restore process
+[SUCCESS] [2022-12-05 12:12:11] Todos los archivos restaurados correctamente.
+[INFO] [2022-12-05 12:12:12] El proceso de separación está desactivado ya que el motor de restauración V3 está activado.
+[STEP] [2022-12-05 12:12:12] Comprobando la estructura de la base de datos...
+[INFO] [2022-12-05 12:12:12] Successfully detected backup created with v3 engine, importing...
+[STEP] [2022-12-05 12:12:12] Restaurando base de datos (utilizando el motor V4)...
+[STEP] [2022-12-05 12:12:12] Comenzó la restauración de la tabla wp_commentmeta 1/13 (7.69%)
+[INFO] [2022-12-05 12:12:12] Progreso de wp_commentmeta: 1/2 (50.00%)
+[SUCCESS] [2022-12-05 12:12:12] La restauración de la tabla wp_commentmeta tomó 0.44885 segundos
+[STEP] [2022-12-05 12:12:12] Comenzó la restauración de la tabla wp_comments 2/13 (15.38%)
+[INFO] [2022-12-05 12:12:12] Progreso de wp_comments: 1/3 (33.33%)
+[INFO] [2022-12-05 12:12:13] Progreso de wp_comments: 2/3 (66.67%)
+[SUCCESS] [2022-12-05 12:12:13] La restauración de la tabla wp_comments tomó 1.12025 segundos
+[STEP] [2022-12-05 12:12:13] Comenzó la restauración de la tabla wp_links 3/13 (23.08%)
+[INFO] [2022-12-05 12:12:13] Progreso de wp_links: 1/2 (50.00%)
+[SUCCESS] [2022-12-05 12:12:13] La restauración de la tabla wp_links tomó 0.58144 segundos
+[STEP] [2022-12-05 12:12:13] Comenzó la restauración de la tabla wp_options 4/13 (30.77%)
+[INFO] [2022-12-05 12:12:13] Progreso de wp_options: 1/4 (25.00%)
+[INFO] [2022-12-05 12:12:14] Progreso de wp_options: 2/4 (50.00%)
+[INFO] [2022-12-05 12:12:14] Progreso de wp_options: 3/4 (75.00%)
+[SUCCESS] [2022-12-05 12:12:14] La restauración de la tabla wp_options tomó 1.60412 segundos
+[STEP] [2022-12-05 12:12:14] Comenzó la restauración de la tabla wp_postmeta 5/13 (38.46%)
+[INFO] [2022-12-05 12:12:14] Progreso de wp_postmeta: 1/3 (33.33%)
+[INFO] [2022-12-05 12:12:15] Progreso de wp_postmeta: 2/3 (66.67%)
+[SUCCESS] [2022-12-05 12:12:15] La restauración de la tabla wp_postmeta tomó 1.25890 segundos
+[STEP] [2022-12-05 12:12:15] Comenzó la restauración de la tabla wp_posts 6/13 (46.15%)
+[INFO] [2022-12-05 12:12:15] Progreso de wp_posts: 1/3 (33.33%)
+[INFO] [2022-12-05 12:12:15] Progreso de wp_posts: 2/3 (66.67%)
+[SUCCESS] [2022-12-05 12:12:15] La restauración de la tabla wp_posts tomó 0.91392 segundos
+[STEP] [2022-12-05 12:12:16] Comenzó la restauración de la tabla wp_term_relationships 7/13 (53.85%)
+[INFO] [2022-12-05 12:12:16] Progreso de wp_term_relationships: 1/3 (33.33%)
+[INFO] [2022-12-05 12:12:16] Progreso de wp_term_relationships: 2/3 (66.67%)
+[SUCCESS] [2022-12-05 12:12:16] La restauración de la tabla wp_term_relationships tomó 0.58904 segundos
+[STEP] [2022-12-05 12:12:16] Comenzó la restauración de la tabla wp_term_taxonomy 8/13 (61.54%)
+[INFO] [2022-12-05 12:12:16] Progreso de wp_term_taxonomy: 1/3 (33.33%)
+[INFO] [2022-12-05 12:12:17] Progreso de wp_term_taxonomy: 2/3 (66.67%)
+[SUCCESS] [2022-12-05 12:12:17] La restauración de la tabla wp_term_taxonomy tomó 1.29218 segundos
+[STEP] [2022-12-05 12:12:17] Comenzó la restauración de la tabla wp_termmeta 9/13 (69.23%)
+[INFO] [2022-12-05 12:12:17] Progreso de wp_termmeta: 1/2 (50.00%)
+[SUCCESS] [2022-12-05 12:12:17] La restauración de la tabla wp_termmeta tomó 0.63315 segundos
+[STEP] [2022-12-05 12:12:17] Comenzó la restauración de la tabla wp_terms 10/13 (76.92%)
+[INFO] [2022-12-05 12:12:17] Progreso de wp_terms: 1/3 (33.33%)
+[INFO] [2022-12-05 12:12:18] Progreso de wp_terms: 2/3 (66.67%)
+[SUCCESS] [2022-12-05 12:12:18] La restauración de la tabla wp_terms tomó 1.30788 segundos
+[STEP] [2022-12-05 12:12:18] Comenzó la restauración de la tabla wp_um_metadata 11/13 (84.62%)
+[INFO] [2022-12-05 12:12:18] Progreso de wp_um_metadata: 1/2 (50.00%)
+[SUCCESS] [2022-12-05 12:12:18] La restauración de la tabla wp_um_metadata tomó 0.69759 segundos
+[STEP] [2022-12-05 12:12:19] Comenzó la restauración de la tabla wp_usermeta 12/13 (92.31%)
+[INFO] [2022-12-05 12:12:19] Progreso de wp_usermeta: 1/3 (33.33%)
+[INFO] [2022-12-05 12:12:19] Progreso de wp_usermeta: 2/3 (66.67%)
+[SUCCESS] [2022-12-05 12:12:19] La restauración de la tabla wp_usermeta tomó 0.39527 segundos
+[STEP] [2022-12-05 12:12:19] Comenzó la restauración de la tabla wp_users 13/13 (100.00%)
+[INFO] [2022-12-05 12:12:19] Progreso de wp_users: 1/3 (33.33%)
+[INFO] [2022-12-05 12:12:20] Progreso de wp_users: 2/3 (66.67%)
+[SUCCESS] [2022-12-05 12:12:20] La restauración de la tabla wp_users tomó 1.11201 segundos
+[STEP] [2022-12-05 12:12:20] Performing Search & Replace
+[INFO] [2022-12-05 12:12:20] Page size for that restoration: 300
+[STEP] [2022-12-05 12:12:20] Performing database adjustments for table 1/13: 1670242083_wp_commentmeta (7.69%)
+[INFO] [2022-12-05 12:12:23] Adjustments are not required for this table.
+[STEP] [2022-12-05 12:12:23] Performing database adjustments for table 2/13: 1670242083_wp_comments (15.38%)
+[INFO] [2022-12-05 12:12:25] Adjustments are not required for this table.
+[STEP] [2022-12-05 12:12:26] Performing database adjustments for table 3/13: 1670242083_wp_links (23.08%)
+[INFO] [2022-12-05 12:12:30] Adjustments are not required for this table.
+[STEP] [2022-12-05 12:12:30] Performing database adjustments for table 4/13: 1670242083_wp_options (30.77%)
+[INFO] [2022-12-05 12:12:32] Adjustments are not required for this table.
+[STEP] [2022-12-05 12:12:33] Performing database adjustments for table 5/13: 1670242083_wp_postmeta (38.46%)
+[INFO] [2022-12-05 12:12:35] Adjustments are not required for this table.
+[STEP] [2022-12-05 12:12:35] Performing database adjustments for table 6/13: 1670242083_wp_posts (46.15%)
+[INFO] [2022-12-05 12:12:37] Adjustments are not required for this table.
+[STEP] [2022-12-05 12:12:38] Performing database adjustments for table 7/13: 1670242083_wp_term_relationships (53.85%)
+[INFO] [2022-12-05 12:12:40] Adjustments are not required for this table.
+[STEP] [2022-12-05 12:12:40] Performing database adjustments for table 8/13: 1670242083_wp_term_taxonomy (61.54%)
+[INFO] [2022-12-05 12:12:42] Adjustments are not required for this table.
+[STEP] [2022-12-05 12:12:43] Performing database adjustments for table 9/13: 1670242083_wp_termmeta (69.23%)
+[INFO] [2022-12-05 12:12:45] Adjustments are not required for this table.
+[STEP] [2022-12-05 12:12:45] Performing database adjustments for table 10/13: 1670242083_wp_terms (76.92%)
+[INFO] [2022-12-05 12:12:47] Adjustments are not required for this table.
+[STEP] [2022-12-05 12:12:48] Performing database adjustments for table 11/13: 1670242083_wp_um_metadata (84.62%)
+[INFO] [2022-12-05 12:12:50] Adjustments are not required for this table.
+[STEP] [2022-12-05 12:12:50] Performing database adjustments for table 12/13: 1670242083_wp_usermeta (92.31%)
+[INFO] [2022-12-05 12:12:52] Adjustments are not required for this table.
+[STEP] [2022-12-05 12:12:52] Performing database adjustments for table 13/13: 1670242083_wp_users (100.00%)
+[INFO] [2022-12-05 12:12:55] Adjustments are not required for this table.
+[SUCCESS] [2022-12-05 12:12:55] Buscar y reemplazar finalizó correctamente.
+[SUCCESS] [2022-12-05 12:12:55] Base de datos restaurada
+[STEP] [2022-12-05 12:12:55] Realizando el reemplazo de la tabla
+[INFO] [2022-12-05 12:12:55] Tabla 1670242083_wp_commentmeta reemplazada por wp_commentmeta
+[INFO] [2022-12-05 12:12:55] Tabla 1670242083_wp_comments reemplazada por wp_comments
+[INFO] [2022-12-05 12:12:55] Tabla 1670242083_wp_links reemplazada por wp_links
+[INFO] [2022-12-05 12:12:55] Tabla 1670242083_wp_options reemplazada por wp_options
+[INFO] [2022-12-05 12:12:55] Tabla 1670242083_wp_postmeta reemplazada por wp_postmeta
+[INFO] [2022-12-05 12:12:55] Tabla 1670242083_wp_posts reemplazada por wp_posts
+[INFO] [2022-12-05 12:12:55] Tabla 1670242083_wp_term_relationships reemplazada por wp_term_relationships
+[INFO] [2022-12-05 12:12:55] Tabla 1670242083_wp_term_taxonomy reemplazada por wp_term_taxonomy
+[INFO] [2022-12-05 12:12:55] Tabla 1670242083_wp_termmeta reemplazada por wp_termmeta
+[INFO] [2022-12-05 12:12:55] Tabla 1670242083_wp_terms reemplazada por wp_terms
+[INFO] [2022-12-05 12:12:55] Tabla 1670242083_wp_um_metadata reemplazada por wp_um_metadata
+[INFO] [2022-12-05 12:12:55] Tabla 1670242083_wp_usermeta reemplazada por wp_usermeta
+[INFO] [2022-12-05 12:12:55] Tabla 1670242083_wp_users reemplazada por wp_users
+[SUCCESS] [2022-12-05 12:12:55] Se reemplazaron todas las tablas
+[STEP] [2022-12-05 12:12:55] Plugins habilitantes incluidos en la copia de seguridad
+[SUCCESS] [2022-12-05 12:12:55] Todos los plugins activados, estás listo :)
+[SUCCESS] [2022-12-05 12:12:55] Base de datos restaurada
+[STEP] [2022-12-05 12:12:55] Restaurando archivo wp-config...
+[SUCCESS] [2022-12-05 12:12:55] WP-Config restaurado
+[STEP] [2022-12-05 12:12:55] Creando nueva sesión de acceso
+[SUCCESS] [2022-12-05 12:12:55] El usuario debería estar conectado
+[STEP] [2022-12-05 12:12:55] Limpiando los archivos temporales...
+[INFO] [2022-12-05 12:12:56] Eliminando 767 archivos
+[SUCCESS] [2022-12-05 12:12:56] Limpiados los archivos temporales
+[INFO] [2022-12-05 12:12:56] El proceso de restauración ha tardado:55 seconds.
+[SUCCESS] [2022-12-05 12:12:56] Proceso de restauración completado
+[STEP] [2022-12-05 12:12:56] Finalizando archivos restaurados
+[INFO] [2022-12-05 12:12:56] Desbloqueando la migración
+[END-CODE] [2022-12-05 12:12:56] #001
