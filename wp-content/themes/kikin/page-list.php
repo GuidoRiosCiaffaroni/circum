@@ -18,13 +18,13 @@
                     <thead class=" text-primary">
                       <th>
                         ID
-                      </th>
-                      <th>
-                        R1
-                      </th>                       
+                      </th>                      
                       <th>
                         NOMBRE
                       </th>
+                      <th>
+                        R1
+                      </th> 
                       <th>
                         BSTGO
                       </th>
@@ -115,8 +115,8 @@ global $wpdb;
      {
       echo '<tr>';
       echo '<td>'. $post->ID .'</td>';
-      echo '<td>'. $post->ID .'</td>';
       echo '<td>'. get_post_meta( $post->ID, 'meta_folio_name', true ) .'</td>';
+      echo '<td>'. get_post_meta( $post->ID, 'rank_01', true ) .'</td>';
       echo '<td><a href="'. get_post_meta( $post->ID, 'meta_folio_url_bstgo', true ) .'" target="_blank">'. get_post_meta( $post->ID, 'meta_folio_name_bstgo', true ) .'</a></td>';
       echo '<td><a href="'. get_post_meta( $post->ID, 'meta_folio_url_yahoo', true ) .'" target="_blank">'. get_post_meta( $post->ID, 'meta_folio_name_yahoo', true ) .'</a></td>';
       echo '<td><a href="'. get_post_meta( $post->ID, 'meta_folio_url_google', true ) .'" target="_blank">'. get_post_meta( $post->ID, 'meta_folio_name_google', true ) .'</a></td>';
