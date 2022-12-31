@@ -65,8 +65,9 @@
 <script src="<?php echo get_template_directory_uri(); ?>/js/app.js"></script>
 
 <!-- stats.js -->
-<script src="<?php echo get_template_directory_uri(); ?>/js/lib/stats.js"></script>
+<script src="<?php //echo get_template_directory_uri(); ?>/js/lib/stats.js"></script>
 <script>
+/*
   var count_particles, stats, update;
   stats = new Stats;
   stats.setMode(0);
@@ -84,6 +85,7 @@
     requestAnimationFrame(update);
   };
   requestAnimationFrame(update);
+  */
 </script>
 
 </body>

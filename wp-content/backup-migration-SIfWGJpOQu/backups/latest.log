@@ -1,0 +1,108 @@
+[STEP] [2022-12-30 14:34:19] Buscando archivo ejecutable PHP CLI.
+[WARN] [2022-12-30 14:34:20] No se pudo encontrar el ejecutable PHP CLI adecuado, este proceso podría ser inestable.
+[WARN] [2022-12-30 14:34:20] El archivo PHP CLI no se puede ejecutar por una razón desconocida.
+[STEP] [2022-12-30 14:34:20] Iniciando la copia de seguridad...
+[INFO] [2022-12-30 14:34:20] Versión de Backup & Migration: 1.2.7
+[INFO] [2022-12-30 14:34:20] Sitio al que se hará la copia de seguridad: http://circum.cl
+[INFO] [2022-12-30 14:34:20] Versión de PHP: 8.2.0
+[INFO] [2022-12-30 14:34:20] Versión de WP:6.1.1
+[INFO] [2022-12-30 14:34:20] Versión de MySQL:8.0.16
+[INFO] [2022-12-30 14:34:20] Extensión máxima de MySQL:1048576000
+[INFO] [2022-12-30 14:34:20] Servidor web: Apache
+[INFO] [2022-12-30 14:34:20] Tiempo máximo de ejecución (en segundos): 259200
+[INFO] [2022-12-30 14:34:20] Máximo de filas por consulta (este sitio): 300
+[INFO] [2022-12-30 14:34:20] Comprobando si el directorio de la copia de seguridad tiene permisos de escritura...
+[INFO] [2022-12-30 14:34:20] Inicializando el gestor de errores personalizado
+[SUCCESS] [2022-12-30 14:34:20] Sí, tiene permiso de escritura...
+[STEP] [2022-12-30 14:34:20] Explorando archivos...
+[WARN] [2022-12-30 14:34:20] Eliminando el archivo de la copia de seguridad (debido a las reglas de ruta): /home/www/circum.cl/wp-config.php
+[STEP] [2022-12-30 14:34:20] Comprobando espacio libre, reservando...
+[INFO] [2022-12-30 14:34:20] Necesita, al menos, 294811486 bytes. [281.15 MB]
+[INFO] [2022-12-30 14:34:20] La función de espacio libre en el disco no está desactivada - usándola...
+[INFO] [2022-12-30 14:34:20] Comprobando esta ruta o partición: /home/www/circum.cl/wp-content/backup-migration-SIfWGJpOQu/backups
+[SUCCESS] [2022-12-30 14:34:20] Hay 2,315,641.15 MB libres. [2.21 TB]
+[SUCCESS] [2022-12-30 14:34:20] ¡Genial! Tenemos espacio suficiente.
+[SUCCESS] [2022-12-30 14:34:20] Confirmado, hay espacio más que suficiente, comprobados: 294811486 bytes
+[INFO] [2022-12-30 14:34:20] Exploración completa - encontrados 8767 archivos...
+[SUCCESS] [2022-12-30 14:34:20] Copia de seguridad iniciada...
+[STEP] [2022-12-30 14:34:20] Iniciando sistema de archivo...
+[SUCCESS] [2022-12-30 14:34:20] Sistema de archivo iniciado...
+[STEP] [2022-12-30 14:34:20] Preparando asignación de archivos...
+[SUCCESS] [2022-12-30 14:34:20] Archivos listos.
+[INFO] [2022-12-30 14:34:20] Iniciando proceso de compresión...
+[STEP] [2022-12-30 14:34:20] Cálculo de memoria inteligente...
+[INFO] [2022-12-30 14:34:20] Hay 512 MBs de memoria utilizable
+[INFO] [2022-12-30 14:34:20] Límite de memoria de WordPress: 512 MB
+[SUCCESS] [2022-12-30 14:34:20] Estableciendo el límite seguro en 115 MB
+[INFO] [2022-12-30 14:34:20] Usando el módulo PclZip para crear la copia de seguridad
+[INFO] [2022-12-30 14:34:20] Ajuste heredado: uso de módulos por defecto dependiendo del servidor del usuario
+[STEP] [2022-12-30 14:34:20] Making database backup (using v3 engine, requires at least v1.2.2 to restore)
+[INFO] [2022-12-30 14:34:20] Iterando la base de datos...
+[INFO] [2022-12-30 14:34:20] Memory usage after initialization: 55.94 MB
+[INFO] [2022-12-30 14:34:20] Scan found 14 tables (3425 rows), estimated total size: 4.43 MB.
+[INFO] [2022-12-30 14:34:20] Memory usage after getting table names: 55.94 MB 
+[INFO] [2022-12-30 14:34:20] Getting table recipes...
+[INFO] [2022-12-30 14:34:20] Table recipes have been exported.
+[INFO] [2022-12-30 14:34:20] Memory usage after loading recipes: 55.96 MB 
+[INFO] [2022-12-30 14:34:20] Saving recipes...
+[INFO] [2022-12-30 14:34:20] Recipes saved.
+[INFO] [2022-12-30 14:34:20] Memory usage after recipe off-load: 55.94 MB
+[INFO] [2022-12-30 14:34:20] Exporting table data...
+[STEP] [2022-12-30 14:34:20] Getting data of table: wp_commentmeta (1/14, 0.05 MB)
+[INFO] [2022-12-30 14:34:20] Table wp_commentmeta is empty, saving only recipe.
+[STEP] [2022-12-30 14:34:20] Getting data of table: wp_comments (2/14, 0.09 MB)
+[INFO] [2022-12-30 14:34:20] Table wp_comments is empty, saving only recipe.
+[STEP] [2022-12-30 14:34:20] Getting data of table: wp_links (3/14, 0.03 MB)
+[INFO] [2022-12-30 14:34:20] Table wp_links is empty, saving only recipe.
+[STEP] [2022-12-30 14:34:20] Getting data of table: wp_options (4/14, 3.14 MB)
+[SUCCESS] [2022-12-30 14:34:20] Table export for: wp_options finished (0.04360s)
+[STEP] [2022-12-30 14:34:20] Getting data of table: wp_postmeta (5/14, 0.58 MB)
+[SUCCESS] [2022-12-30 14:34:20] Table export for: wp_postmeta finished (0.06770s)
+[STEP] [2022-12-30 14:34:20] Getting data of table: wp_posts (6/14, 0.17 MB)
+[SUCCESS] [2022-12-30 14:34:20] Table export for: wp_posts finished (0.02216s)
+[STEP] [2022-12-30 14:34:20] Getting data of table: wp_sm_sessions (7/14, 0.02 MB)
+[INFO] [2022-12-30 14:34:20] Table wp_sm_sessions is empty, saving only recipe.
+[STEP] [2022-12-30 14:34:20] Getting data of table: wp_term_relationships (8/14, 0.03 MB)
+[SUCCESS] [2022-12-30 14:34:20] Table export for: wp_term_relationships finished (0.00337s)
+[STEP] [2022-12-30 14:34:20] Getting data of table: wp_term_taxonomy (9/14, 0.05 MB)
+[SUCCESS] [2022-12-30 14:34:20] Table export for: wp_term_taxonomy finished (0.00370s)
+[STEP] [2022-12-30 14:34:20] Getting data of table: wp_termmeta (10/14, 0.05 MB)
+[INFO] [2022-12-30 14:34:20] Table wp_termmeta is empty, saving only recipe.
+[STEP] [2022-12-30 14:34:20] Getting data of table: wp_terms (11/14, 0.05 MB)
+[SUCCESS] [2022-12-30 14:34:20] Table export for: wp_terms finished (0.00381s)
+[STEP] [2022-12-30 14:34:20] Getting data of table: wp_um_metadata (12/14, 0.06 MB)
+[INFO] [2022-12-30 14:34:20] Table wp_um_metadata is empty, saving only recipe.
+[STEP] [2022-12-30 14:34:20] Getting data of table: wp_usermeta (13/14, 0.05 MB)
+[SUCCESS] [2022-12-30 14:34:20] Table export for: wp_usermeta finished (0.00508s)
+[STEP] [2022-12-30 14:34:20] Getting data of table: wp_users (14/14, 0.06 MB)
+[SUCCESS] [2022-12-30 14:34:20] Table export for: wp_users finished (0.00360s)
+[INFO] [2022-12-30 14:34:20] Table data exported.
+[INFO] [2022-12-30 14:34:20] Memory usage after data export: 56.05 MB
+[INFO] [2022-12-30 14:34:20] Entire process took: 0.2656 s
+[SUCCESS] [2022-12-30 14:34:20] Finalizó la copia de seguridad de la base de datos
+[STEP] [2022-12-30 14:34:20] Creando archivo
+[INFO] [2022-12-30 14:34:20] Comprimiendo...
+[WARN] [2022-12-30 14:34:20] La copia de seguridad se ejecutará como solicitud única, podría ser inestable...
+[STEP] [2022-12-30 14:34:20] Adding database SQL file(s) to the backup file.
+[SUCCESS] [2022-12-30 14:34:20] Database added to the backup successfully.
+[STEP] [2022-12-30 14:34:20] Performing site files backup...
+[INFO] [2022-12-30 14:34:20] Los trozos contienen 500 archivos.
+[INFO] [2022-12-30 14:34:21] Objetivo: 500/8767
+[INFO] [2022-12-30 14:34:22] Objetivo: 1000/8767
+[INFO] [2022-12-30 14:34:22] Objetivo: 1500/8767
+[INFO] [2022-12-30 14:34:23] Objetivo: 2000/8767
+[INFO] [2022-12-30 14:34:23] Objetivo: 2500/8767
+[INFO] [2022-12-30 14:34:24] Objetivo: 3000/8767
+[INFO] [2022-12-30 14:34:25] Objetivo: 3500/8767
+[INFO] [2022-12-30 14:34:27] Objetivo: 4000/8767
+[INFO] [2022-12-30 14:34:28] Objetivo: 4500/8767
+[INFO] [2022-12-30 14:34:29] Objetivo: 5000/8767
+[INFO] [2022-12-30 14:34:30] Objetivo: 5500/8767
+[INFO] [2022-12-30 14:34:31] Objetivo: 6000/8767
+[ERROR] [2022-12-30 14:34:33] Mensaje de error: Out of memory (allocated 104144896 bytes) (tried to allocate 39183920 bytes)
+[ERROR] [2022-12-30 14:34:33] Puedes obtener más información en el archivo del registro de diagnóstico.
+[ERROR] [2022-12-30 14:34:33] Ha ocurrido algo malo en el lado de PHP.
+[ERROR] [2022-12-30 14:34:33] Lamentablemente, hemos tenido que eliminar la copia de seguridad (si se ha creado parcialmente).
+[ERROR] [2022-12-30 14:34:33] Mensaje de error: Out of memory (allocated 104144896 bytes) (tried to allocate 39183920 bytes)
+[ERROR] [2022-12-30 14:34:33] Archivo/línea del error:/home/www/circum.cl/wp-admin/includes/class-pclzip.php|2700
+[STEP] [2022-12-30 14:34:33] Abortando la copia de seguridad...
