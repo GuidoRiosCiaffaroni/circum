@@ -1,0 +1,3 @@
+UPDATE wp_posts SET guid = REPLACE (guid, 'http://circum.cl/', 'http://localhost/circum/');
+UPDATE wp_options SET option_value = REPLACE (option_value, 'http://circum.cl', 'http://localhost/circum');
+UPDATE wp_postmeta SET meta_value = REPLACE (meta_value, 'http://circum.cl', 'http://localhost/circum');
