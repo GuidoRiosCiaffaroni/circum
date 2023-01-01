@@ -1721,3 +1721,16 @@ a.wp-block-file__button:focus {
 .has-text-color * {
     color: inherit;
 }
+
+.has-text-color a:hover, 
+.has-text-color a:focus {
+    color: inherit;
+}
+
+.wp-block-pullquote.has-text-color blockquote {
+    border-color: inherit;
+}	
+
+blockquote {
+    border-color: inherit !important;
+}

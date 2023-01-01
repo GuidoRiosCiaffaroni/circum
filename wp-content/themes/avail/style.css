@@ -5,7 +5,7 @@ Author: Nayra Themes
 Author URI: https://www.nayrathemes.com/
 Description: Avail is flexible, super fast, easily customizable, lightweight, modern multipurpose theme. Avail comes with everything you could ever need to build an amazing website, and It's perfect for any type of business. View the demo of Avail Pro https://www.nayrathemes.com/demo/pro/?theme=avail
 Template: avril
-Version: 1.0.89
+Version: 1.0.92
 Tested up to: 6.1
 Requires PHP: 5.6
 License: GPLv3 or later
@@ -332,4 +332,17 @@ a.wp-block-file__button:focus {
 
 .has-text-color * {
     color: inherit;
+}
+
+.has-text-color a:hover, 
+.has-text-color a:focus {
+    color: inherit;
+}
+
+.wp-block-pullquote.has-text-color blockquote {
+    border-color: inherit;
+}    
+
+blockquote {
+    border-color: inherit !important;
 }

@@ -40,6 +40,12 @@ class Cleverfox_Activator {
 				require CLEVERFOX_PLUGIN_DIR . 'inc/envira/default-widgets/default-widget.php';
 			}	
 			
+			if ( 'Startify' == $theme->name){
+				require CLEVERFOX_PLUGIN_DIR . 'inc/startify/default-pages/upload-media.php';
+				require CLEVERFOX_PLUGIN_DIR . 'inc/startkit/default-pages/home-page.php';
+				require CLEVERFOX_PLUGIN_DIR . 'inc/startify/default-widgets/default-widget.php';
+			}
+			
 			if ( 'Hantus' == $theme->name){
 				require CLEVERFOX_PLUGIN_DIR . 'inc/hantus/default-pages/upload-media.php';
 				require CLEVERFOX_PLUGIN_DIR . 'inc/hantus/default-pages/home-page.php';
@@ -165,6 +171,12 @@ class Cleverfox_Activator {
 				require CLEVERFOX_PLUGIN_DIR . 'inc/eduvert/default-pages/upload-media.php';
 				require CLEVERFOX_PLUGIN_DIR . 'inc/eduvert/default-pages/home-page.php';
 				require CLEVERFOX_PLUGIN_DIR . 'inc/eduvert/default-widgets/default-widget.php';
+			}
+			
+			if ( 'Cosmics' == $theme->name){
+				require CLEVERFOX_PLUGIN_DIR . 'inc/cosmics/default-pages/upload-media.php';
+				require CLEVERFOX_PLUGIN_DIR . 'inc/cosmics/default-pages/home-page.php';
+				require CLEVERFOX_PLUGIN_DIR . 'inc/cosmics/default-widgets/default-widget.php';
 			}
 			
 			update_option( 'item_details_page', 'Done' );

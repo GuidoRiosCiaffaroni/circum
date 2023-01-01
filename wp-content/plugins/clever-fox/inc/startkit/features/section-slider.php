@@ -76,12 +76,14 @@ $selective_refresh = isset( $wp_customize->selective_refresh ) ? 'postMessage' :
 	/**
 	 * Customizer Repeater for add slides
 	 */
-		if ( class_exists( 'Startkit_Repeater' ) ) {	
+		if ( class_exists( 'Startkit_Repeater' ) ) {
+		 $theme = wp_get_theme(); // gets the current theme
+		if ( 'Startify' == $theme->name){			
 		$wp_customize->add_setting( 'slider', 
 			array(
 			 'sanitize_callback' => 'startkit_repeater_sanitize',
 			 'priority' => 6,
-			 'default' => startkit_get_slider_default(),
+			 'default' => startify_get_slider_default(),
 			)
 		);
 		
@@ -96,15 +98,47 @@ $selective_refresh = isset( $wp_customize->selective_refresh ) ? 'postMessage' :
 						
 						'customizer_repeater_title_control' => true,
 						'customizer_repeater_subtitle_control' => true,
+						'customizer_repeater_subtitle2_control' => true,
 						'customizer_repeater_text_control' => true,
 						'customizer_repeater_text2_control'=> true,
 						'customizer_repeater_link_control' => true,
 						'customizer_repeater_slide_align' => true,
+						'customizer_repeater_icon_control' => true,
 						'customizer_repeater_image_control' => true,	
 						'customizer_repeater_image2_control' => true,
 					) 
 				) 
 			);
+		}else{
+			$wp_customize->add_setting( 'slider', 
+				array(
+				 'sanitize_callback' => 'startkit_repeater_sanitize',
+				 'priority' => 6,
+				 'default' => startkit_get_slider_default(),
+				)
+			);
+			
+			$wp_customize->add_control( 
+				new Startkit_Repeater( $wp_customize, 
+					'slider', 
+						array(
+							'label'   => esc_html__('Slide','clever-fox'),
+							'section' => 'slider_setting',
+							'add_field_label'                   => esc_html__( 'Add New Slider', 'clever-fox' ),
+							'item_name'                         => esc_html__( 'Slider', 'clever-fox' ),
+							
+							'customizer_repeater_title_control' => true,
+							'customizer_repeater_subtitle_control' => true,
+							'customizer_repeater_text_control' => true,
+							'customizer_repeater_text2_control'=> true,
+							'customizer_repeater_link_control' => true,
+							'customizer_repeater_slide_align' => true,
+							'customizer_repeater_image_control' => true,	
+							'customizer_repeater_image2_control' => true,
+						) 
+					) 
+				);
+		}	
 		}	
 		
 		//Pro feature

@@ -41,6 +41,50 @@ if ( ! function_exists( 'startkit_get_slider_default' ) ) :
 endif;
 
 
+
+if ( ! function_exists( 'startify_get_slider_default' ) ) : 
+ function startify_get_slider_default() {
+	return apply_filters(
+		'startify_get_slider_default', json_encode(
+			 array(
+					array("image_url" => CLEVERFOX_PLUGIN_URL .'inc/startkit/images/slider/slider02.jpg',
+					"link" => "#", 
+					"title" => "Marketing", 
+					"subtitle" => "Achiving",
+					"subtitle2" => "Success",
+					"text" => "Idea is the ipsum consecte tempor incididuntan andolore tumber tur adipisicing elit.", 
+					"text2" => "Explore More",
+					"slide_align" => "left", 
+					'icon_value'	  =>  'fa-tv',
+					"id" => "customizer_repeater_00071" ), 
+					
+					array("image_url" => CLEVERFOX_PLUGIN_URL .'inc/startkit/images/slider/slider01.jpg',
+					"link" => "#", 
+					"title" => "Finance", 
+					"subtitle" => "Achiving",
+					"subtitle2" => "Success",
+					"text" => "Idea is the ipsum consecte tempor incididuntan andolore tumber tur adipisicing elit.", 
+					"text2" => "Explore More",
+					"slide_align" => "center", 
+					'icon_value'	  =>  'fa-cc-diners-club',
+					"id" => "customizer_repeater_00072" ),
+					
+					array("image_url" => CLEVERFOX_PLUGIN_URL .'inc/startkit/images/slider/slider03.jpg',
+					"link" => "#", 
+					"title" => "Consultation", 
+					"subtitle" => "Achiving",
+					"subtitle2" => "Success",
+					"text" => "Idea is the ipsum consecte tempor incididuntan andolore tumber tur adipisicing elit.", 
+					"text2" => "Explore More",
+					"slide_align" => "right", 
+					'icon_value'	  =>  'fa-user',
+					"id" => "customizer_repeater_00073" ),
+			)
+		)
+	);
+}
+endif;
+
 /*
  *
  * Service

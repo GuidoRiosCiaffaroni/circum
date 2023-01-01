@@ -4,7 +4,7 @@ Tags: homepage, companion, demo, sections, customizer, widget, settings
 Requires at least: 4.0
 Tested up to: 6.1
 Requires PHP: 5.6
-Stable tag: 15.6
+Stable tag: 15.9
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.en.html
 
@@ -140,6 +140,15 @@ Clever Fox WordPress plugin is licensed under the GPL3 (https://www.gnu.org/lice
 
 == Changelog ==
 
+
+= 15.9 =
+* Startify Theme Files Updated
+
+= 15.8 =
+* Startify Theme Files Added
+
+= 15.7 =
+* Cosmics Theme Files Added
 
 = 15.6 =
 * Readme Updated

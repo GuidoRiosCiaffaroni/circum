@@ -3,7 +3,7 @@
 Plugin Name: Clever Fox
 Plugin URI:
 Description: Clever Fox plugin to enhance the functionality of free themes made by Nayra Themes. More than 60000+ trusted websites with Nayra Themes. It provides intuitive features to your website. 20+ Themes compatible with Clever Fox. See below free themes listed here. Avril is one of Popular themes in our collections.
-Version: 15.6
+Version: 15.9
 Author: nayrathemes
 Author URI: https://nayrathemes.com
 Text Domain: clever-fox
@@ -156,6 +156,13 @@ function cleverfox_activate() {
 			require_once('inc/varuda/varuda.php');
 		}
 		
+		if( 'Cosmics' == $theme->name){
+			require_once('inc/cosmics/cosmics.php');
+		}
+		
+		if( 'Startify' == $theme->name){
+			require_once('inc/startify/startify.php');
+		}
 	}
 add_action( 'init', 'cleverfox_activate' );
 
