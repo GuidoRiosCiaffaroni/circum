@@ -19561,3 +19561,111 @@
 [2022-12-30 16:53:33] [ERROR] Ha habido un error antes del cierre de la solicitud (pero no se ha registrado en el registro de copia de seguridad/restauración)
 [2022-12-30 16:53:33] [ERROR] Mensaje de error: Creation of dynamic property BMI\Plugin\BMI_Ajax::$lock_cli is deprecated
 [2022-12-30 16:53:33] [ERROR] Archivo/línea del error:/home/www/circum.cl/wp-content/plugins/backup-backup/includes/ajax.php|1171
+[2023-01-01 22:33:33] [ERROR] Se ha apagado
+[2023-01-01 22:33:33] [ERROR] Array
+(
+    [type] => 2
+    [message] => ini_set(): A session is active. You cannot change the session module's ini settings at this time
+    [file] => C:\xampp\htdocs\circum\wp-content\plugins\backup-backup\includes\initializer.php
+    [line] => 276
+)
+
+[2023-01-01 22:33:33] [ERROR] Ha habido un error antes del cierre de la solicitud (pero no se ha registrado en el registro de copia de seguridad/restauración)
+[2023-01-01 22:33:33] [ERROR] Mensaje de error: ini_set(): A session is active. You cannot change the session module's ini settings at this time
+[2023-01-01 22:33:33] [ERROR] Archivo/línea del error:C:\xampp\htdocs\circum\wp-content\plugins\backup-backup\includes\initializer.php|276
+[2023-01-01 22:33:33] [ERROR] Se ha apagado
+[2023-01-01 22:33:33] [ERROR] Array
+(
+    [type] => 2
+    [message] => ini_set(): A session is active. You cannot change the session module's ini settings at this time
+    [file] => C:\xampp\htdocs\circum\wp-content\plugins\backup-backup\includes\initializer.php
+    [line] => 276
+)
+
+[2023-01-01 22:33:33] [ERROR] Ha habido un error antes del cierre de la solicitud (pero no se ha registrado en el registro de copia de seguridad/restauración)
+[2023-01-01 22:33:33] [ERROR] Mensaje de error: ini_set(): A session is active. You cannot change the session module's ini settings at this time
+[2023-01-01 22:33:33] [ERROR] Archivo/línea del error:C:\xampp\htdocs\circum\wp-content\plugins\backup-backup\includes\initializer.php|276
+[2023-01-01 22:33:34] [ERROR] Se ha apagado
+[2023-01-01 22:33:34] [ERROR] Array
+(
+    [type] => 2
+    [message] => ini_set(): A session is active. You cannot change the session module's ini settings at this time
+    [file] => C:\xampp\htdocs\circum\wp-content\plugins\backup-backup\includes\initializer.php
+    [line] => 276
+)
+
+[2023-01-01 22:33:34] [ERROR] Ha habido un error antes del cierre de la solicitud (pero no se ha registrado en el registro de copia de seguridad/restauración)
+[2023-01-01 22:33:34] [ERROR] Mensaje de error: ini_set(): A session is active. You cannot change the session module's ini settings at this time
+[2023-01-01 22:33:34] [ERROR] Archivo/línea del error:C:\xampp\htdocs\circum\wp-content\plugins\backup-backup\includes\initializer.php|276
+[2023-01-01 22:33:35] [ERROR] Se ha apagado
+[2023-01-01 22:33:35] [ERROR] Array
+(
+    [type] => 2
+    [message] => ini_set(): A session is active. You cannot change the session module's ini settings at this time
+    [file] => C:\xampp\htdocs\circum\wp-content\plugins\backup-backup\includes\initializer.php
+    [line] => 276
+)
+
+[2023-01-01 22:33:35] [ERROR] Ha habido un error antes del cierre de la solicitud (pero no se ha registrado en el registro de copia de seguridad/restauración)
+[2023-01-01 22:33:35] [ERROR] Mensaje de error: ini_set(): A session is active. You cannot change the session module's ini settings at this time
+[2023-01-01 22:33:35] [ERROR] Archivo/línea del error:C:\xampp\htdocs\circum\wp-content\plugins\backup-backup\includes\initializer.php|276
+[2023-01-01 22:33:41] [ERROR] Se ha apagado
+[2023-01-01 22:33:41] [ERROR] Array
+(
+    [type] => 2
+    [message] => ini_set(): A session is active. You cannot change the session module's ini settings at this time
+    [file] => C:\xampp\htdocs\circum\wp-content\plugins\backup-backup\includes\initializer.php
+    [line] => 276
+)
+
+[2023-01-01 22:33:41] [ERROR] Ha habido un error antes del cierre de la solicitud (pero no se ha registrado en el registro de copia de seguridad/restauración)
+[2023-01-01 22:33:41] [ERROR] Mensaje de error: ini_set(): A session is active. You cannot change the session module's ini settings at this time
+[2023-01-01 22:33:41] [ERROR] Archivo/línea del error:C:\xampp\htdocs\circum\wp-content\plugins\backup-backup\includes\initializer.php|276
+[2023-01-01 22:33:46] [ERROR] Se ha apagado
+[2023-01-01 22:33:46] [ERROR] Array
+(
+    [type] => 2
+    [message] => ini_set(): A session is active. You cannot change the session module's ini settings at this time
+    [file] => C:\xampp\htdocs\circum\wp-content\plugins\backup-backup\includes\initializer.php
+    [line] => 276
+)
+
+[2023-01-01 22:33:46] [ERROR] Ha habido un error antes del cierre de la solicitud (pero no se ha registrado en el registro de copia de seguridad/restauración)
+[2023-01-01 22:33:46] [ERROR] Mensaje de error: ini_set(): A session is active. You cannot change the session module's ini settings at this time
+[2023-01-01 22:33:46] [ERROR] Archivo/línea del error:C:\xampp\htdocs\circum\wp-content\plugins\backup-backup\includes\initializer.php|276
+[2023-01-01 22:33:46] [ERROR] Se ha apagado
+[2023-01-01 22:33:46] [ERROR] Array
+(
+    [type] => 2
+    [message] => ini_set(): A session is active. You cannot change the session module's ini settings at this time
+    [file] => C:\xampp\htdocs\circum\wp-content\plugins\backup-backup\includes\initializer.php
+    [line] => 276
+)
+
+[2023-01-01 22:33:46] [ERROR] Ha habido un error antes del cierre de la solicitud (pero no se ha registrado en el registro de copia de seguridad/restauración)
+[2023-01-01 22:33:46] [ERROR] Mensaje de error: ini_set(): A session is active. You cannot change the session module's ini settings at this time
+[2023-01-01 22:33:46] [ERROR] Archivo/línea del error:C:\xampp\htdocs\circum\wp-content\plugins\backup-backup\includes\initializer.php|276
+[2023-01-01 22:33:50] [ERROR] Se ha apagado
+[2023-01-01 22:33:50] [ERROR] Array
+(
+    [type] => 2
+    [message] => ini_set(): A session is active. You cannot change the session module's ini settings at this time
+    [file] => C:\xampp\htdocs\circum\wp-content\plugins\backup-backup\includes\initializer.php
+    [line] => 276
+)
+
+[2023-01-01 22:33:50] [ERROR] Ha habido un error antes del cierre de la solicitud (pero no se ha registrado en el registro de copia de seguridad/restauración)
+[2023-01-01 22:33:50] [ERROR] Mensaje de error: ini_set(): A session is active. You cannot change the session module's ini settings at this time
+[2023-01-01 22:33:50] [ERROR] Archivo/línea del error:C:\xampp\htdocs\circum\wp-content\plugins\backup-backup\includes\initializer.php|276
+[2023-01-01 22:33:58] [ERROR] Se ha apagado
+[2023-01-01 22:33:58] [ERROR] Array
+(
+    [type] => 2
+    [message] => ini_set(): A session is active. You cannot change the session module's ini settings at this time
+    [file] => C:\xampp\htdocs\circum\wp-content\plugins\backup-backup\includes\initializer.php
+    [line] => 276
+)
+
+[2023-01-01 22:33:58] [ERROR] Ha habido un error antes del cierre de la solicitud (pero no se ha registrado en el registro de copia de seguridad/restauración)
+[2023-01-01 22:33:58] [ERROR] Mensaje de error: ini_set(): A session is active. You cannot change the session module's ini settings at this time
+[2023-01-01 22:33:58] [ERROR] Archivo/línea del error:C:\xampp\htdocs\circum\wp-content\plugins\backup-backup\includes\initializer.php|276
