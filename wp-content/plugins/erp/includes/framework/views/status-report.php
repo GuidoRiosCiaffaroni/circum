@@ -4,7 +4,7 @@
  */
 global $wpdb;
 
-$system_status    = new \WeDevs\ERP\Framework\System_Status();
+$system_status    = new \WeDevs\ERP\Framework\SystemStatus();
 $environment      = $system_status->get_environment_info();
 $database         = $system_status->get_database_info();
 $post_type_counts = $system_status->get_post_type_counts();
@@ -71,12 +71,12 @@ $security         = $system_status->get_security_info();
 		<tr>
 			<td data-export-label="Leave requests"><?php esc_html_e( 'Leave requests', 'erp' ); ?>:</td>
 			<td class="help"><?php echo wp_kses_post( erp_help_tip( esc_html__( 'Total leave requests count.', 'erp' ) ) ); ?></td>
-			<td><?php echo esc_html( \WeDevs\ERP\HRM\Models\Leave_Request::count() ); ?></td>
+			<td><?php echo esc_html( \WeDevs\ERP\HRM\Models\LeaveRequest::count() ); ?></td>
 		</tr>
 		<tr>
 			<td data-export-label="Leave policies"><?php esc_html_e( 'Leave policies', 'erp' ); ?>:</td>
 			<td class="help"><?php echo wp_kses_post( erp_help_tip( esc_html__( 'Total leave policies count.', 'erp' ) ) ); ?></td>
-			<td><?php echo esc_html( \WeDevs\ERP\HRM\Models\Leave_Policy::count() ); ?></td>
+			<td><?php echo esc_html( \WeDevs\ERP\HRM\Models\LeavePolicy::count() ); ?></td>
 		</tr>
 		<tr>
 			<td data-export-label="CRM">
@@ -200,7 +200,7 @@ $security         = $system_status->get_security_info();
 			<td><?php echo esc_html( erp_get_option( 'erp_ac_currency_position', false, 'left' ) ); ?></td>
 		</tr>
 
-		<?php if ( erp_is_module_active( 'accounting' ) ) { ?>
+		<?php if ( erp_is_module_active( 'Accounting' ) ) { ?>
 		<tr>
 			<td data-export-label="Thousand Separator"><?php esc_html_e( 'Thousand Separator', 'erp' ); ?>:</td>
 			<td class="help"></td>

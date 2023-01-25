@@ -40,10 +40,10 @@ class Cleverfox_Activator {
 				require CLEVERFOX_PLUGIN_DIR . 'inc/envira/default-widgets/default-widget.php';
 			}	
 			
-			if ( 'Startify' == $theme->name){
-				require CLEVERFOX_PLUGIN_DIR . 'inc/startify/default-pages/upload-media.php';
+			if ( 'StartWeb' == $theme->name){
+				require CLEVERFOX_PLUGIN_DIR . 'inc/startweb/default-pages/upload-media.php';
 				require CLEVERFOX_PLUGIN_DIR . 'inc/startkit/default-pages/home-page.php';
-				require CLEVERFOX_PLUGIN_DIR . 'inc/startify/default-widgets/default-widget.php';
+				require CLEVERFOX_PLUGIN_DIR . 'inc/startweb/default-widgets/default-widget.php';
 			}
 			
 			if ( 'Hantus' == $theme->name){

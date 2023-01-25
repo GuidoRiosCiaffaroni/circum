@@ -475,12 +475,12 @@
     public function admin_notices() {
       if (get_current_screen()->id != 'toplevel_page_backup-migration' && get_option('bmi_display_email_issues', false)) {
         ?>
-        <div class="notice notice-warning">
-          <p>
+        <div class="notice notice-warning">
+          <p>
             <?php _e('There was an error during automated backup, please', 'backup-backup'); ?>
             <?php echo '<a href="' . admin_url('/admin.php?page=backup-migration') . '">' . __('check that.', 'backup-backup') . '</a>'; ?>
-          </p>
-        </div>
+          </p>
+        </div>
         <?php
       }
     }

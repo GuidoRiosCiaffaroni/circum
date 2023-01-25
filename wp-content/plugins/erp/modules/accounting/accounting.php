@@ -1,6 +1,16 @@
 <?php
 
-namespace WeDevs\ERP\Accounting;
+namespace WeDevs\ERP\Accounting\Main;
+
+use WeDevs\ERP\Accounting\API\REST_API;
+use WeDevs\ERP\Accounting\Classes\Admin;
+use WeDevs\ERP\Accounting\Classes\Assets;
+use WeDevs\ERP\Accounting\Classes\Emailer;
+use WeDevs\ERP\Accounting\Classes\LedgerMap;
+use WeDevs\ERP\Accounting\Classes\PDFInstall;
+use WeDevs\ERP\Accounting\Classes\SendEmail;
+use WeDevs\ERP\Accounting\Classes\Settings;
+use WeDevs\ERP\Accounting\Classes\UserProfile;
 
 // don't call the file directly
 if ( ! defined( 'ABSPATH' ) ) {
@@ -75,7 +85,7 @@ final class Accounting {
         if ( current_user_can( 'install_plugins' ) ) {
             $action      = empty( $_GET['erp-pdf'] ) ? '' : \sanitize_text_field( wp_unslash( $_GET['erp-pdf'] ) );
             $plugin      = 'erp-pdf-invoice/wp-erp-pdf.php';
-            $pdf_install = new \WeDevs\ERP\Accounting\Includes\Classes\PDF_Install();
+            $pdf_install = new PDFInstall();
 
             if ( $action === 'install' ) {
                 $pdf_install->install_plugin( 'https://downloads.wordpress.org/plugin/erp-pdf-invoice.zip' );
@@ -216,15 +226,10 @@ final class Accounting {
      * Includes Classes
      */
     public function include_classes() {
-        require_once ERP_ACCOUNTING_API . '/class-controller-rest-api.php';
-        require_once ERP_ACCOUNTING_INCLUDES . '/classes/class-assets.php';
-        require_once ERP_ACCOUNTING_INCLUDES . '/classes/class-ledger-map.php';
-        require_once ERP_ACCOUNTING_INCLUDES . '/classes/class-send-email.php';
-        require_once ERP_ACCOUNTING_INCLUDES . '/classes/class-user-profile.php';
-
-        if ( $this->is_request( 'admin' ) ) {
-            require_once ERP_ACCOUNTING_INCLUDES . '/classes/class-admin.php';
-        }
+        new REST_API();
+        new Assets();
+        new SendEmail();
+        new UserProfile();
     }
 
     /**
@@ -254,7 +259,7 @@ final class Accounting {
      * @return array
      */
     public function add_settings_page( $settings = [] ) {
-        $settings[] = include __DIR__ . '/includes/classes/class-settings.php';
+        $settings[] = new Settings();
 
         return $settings;
     }
@@ -266,12 +271,12 @@ final class Accounting {
      */
     public function init_classes() {
         if ( $this->is_request( 'admin' ) ) {
-            $this->container['admin'] = new \WeDevs\ERP\Accounting\Includes\Classes\Admin();
+            $this->container['admin'] = new Admin();
         }
 
-        $this->container['rest']    = new \WeDevs\ERP\Accounting\API\REST_API();
-        $this->container['assets']  = new \WeDevs\ERP\Accounting\Includes\Classes\Assets();
-        $this->container['profile'] = new \WeDevs\ERP\Accounting\Includes\Classes\User_Profile();
+        $this->container['rest']    = new REST_API();
+        $this->container['assets']  = new Assets();
+        $this->container['profile'] = new UserProfile();
     }
 
     /**

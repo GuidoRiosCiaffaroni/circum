@@ -1,15 +1,25 @@
 <?php
-namespace WeDevs\ERP\HRM;
+namespace WeDevs\ERP\HRM\Main;
 
-use WeDevs\ERP\Framework\Traits\Hooker;
+use WeDevs\ERP\HRM\Employee;
+use WeDevs\ERP\HRM\LeaveEntitlementBGProcess;
+use WeDevs\ERP\HRM\Settings;
 use WeDevs_ERP;
+use WeDevs\ERP\HRM\HrLog;
+use WeDevs\ERP\HRM\Emailer;
+use WeDevs\ERP\HRM\AjaxHandler;
+use WeDevs\ERP\HRM\FormHandler;
+use WeDevs\ERP\HRM\Announcement;
+use WeDevs\ERP\HRM\Admin\AdminMenu;
+use WeDevs\ERP\HRM\Admin\UserProfile;
+use WeDevs\ERP\Framework\Traits\Hooker;
 
 /**
  * The HRM Class
  *
  * This is loaded in `init` action hook
  */
-class Human_Resource {
+class HRM {
     use Hooker;
 
     private $plugin;
@@ -77,8 +87,8 @@ class Human_Resource {
         require_once WPERP_HRM_PATH . '/includes/functions-reporting.php';
         require_once WPERP_HRM_PATH . '/includes/functions-announcement.php';
         require_once WPERP_HRM_PATH . '/includes/actions-filters.php';
-        require_once WPERP_HRM_PATH . '/includes/class-leave-entitlement-bg-process.php';
-
+//        require_once WPERP_HRM_PATH . '/includes/class-leave-entitlement-bg-process.php';
+        new LeaveEntitlementBGProcess();
         // cli command
         if ( defined( 'WP_CLI' ) && WP_CLI ) {
             include WPERP_HRM_PATH . '/includes/cli/commands.php';
@@ -111,12 +121,12 @@ class Human_Resource {
      * @return void
      */
     private function init_classes() {
-        new Ajax_Handler();
-        new Form_Handler();
+        new AjaxHandler();
+        new FormHandler();
         new Announcement();
-        new Admin\Admin_Menu();
-        new Admin\User_Profile();
-        new Hr_Log();
+        new AdminMenu();
+        new UserProfile();
+        new HrLog();
         new Emailer();
     }
 
@@ -126,7 +136,7 @@ class Human_Resource {
      * @param array
      */
     public function add_settings_page( $settings = [] ) {
-        $settings[] = include __DIR__ . '/includes/class-settings.php';
+        $settings[] = new Settings();
 
         return $settings;
     }
@@ -200,6 +210,7 @@ class Human_Resource {
             'emp_set_photo'          => __( 'Set Photo', 'erp' ),
             'confirm'                => __( 'Are you sure?', 'erp' ),
             'delConfirmDept'         => __( 'Are you sure to delete this department?', 'erp' ),
+            'delConfirmDesignation'  => __( 'Are you sure to delete this designation?', 'erp' ),
             'delConfirmPolicy'       => __( 'If you delete this policy, the leave entitlements and requests related to it will also be deleted. Are you sure to delete this policy?', 'erp' ),
             'delConfirmHoliday'      => __( 'Are you sure to delete this Holiday?', 'erp' ),
             'delConfirmEmployee'     => __( 'Are you sure to delete this employee?', 'erp' ),
@@ -414,17 +425,17 @@ class Human_Resource {
      */
     public function load_hrm_rest_controllers( $controller ) {
         $hrm_controller = [
-            '\WeDevs\ERP\HRM\API\Employees_Controller',
-            '\WeDevs\ERP\HRM\API\Departments_Controller',
-            '\WeDevs\ERP\HRM\API\Designations_Controller',
+            '\WeDevs\ERP\HRM\API\EmployeesController',
+            '\WeDevs\ERP\HRM\API\DepartmentsController',
+            '\WeDevs\ERP\HRM\API\DesignationsController',
             '\WeDevs\ERP\HRM\API\Birthdays_Controller',
-            '\WeDevs\ERP\HRM\API\HRM_Reports_Controller',
-            '\WeDevs\ERP\HRM\API\Leave_Entitlements_Controller',
-            '\WeDevs\ERP\HRM\API\Leave_Holidays_Controller',
-            '\WeDevs\ERP\HRM\API\Leave_Policies_Controller',
-            '\WeDevs\ERP\HRM\API\Leave_Requests_Controller',
-            '\WeDevs\ERP\HRM\API\Announcements_Controller',
-            '\WeDevs\ERP\HRM\API\Company_Controller',
+            '\WeDevs\ERP\HRM\API\HRMReportsController',
+            '\WeDevs\ERP\HRM\API\LeaveEntitlementsController',
+            '\WeDevs\ERP\HRM\API\LeaveHolidaysController',
+            '\WeDevs\ERP\HRM\API\LeavePoliciesController',
+            '\WeDevs\ERP\HRM\API\LeaveRequestsController',
+            '\WeDevs\ERP\HRM\API\AnnouncementsController',
+            '\WeDevs\ERP\HRM\API\CompanyController',
         ];
         $hrm_controller = apply_filters( 'erp_hrm_rest_api_controllers', $hrm_controller );
 

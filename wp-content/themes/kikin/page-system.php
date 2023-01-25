@@ -132,7 +132,7 @@ function toogleDataSeries(e){
               <div class="card-body ">
             
             <div class="table-full-width table-responsive">
-              <iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vTpbgD9LUuK_7Jta-4YpsUMJSYMVqTPUNxhhLr1YdAlgoR-glCaJbDFFffUuXxatemmiAyvMvrUFay8/pubhtml?gid=0&amp;single=true&amp;widget=true&amp;headers=false" width="450" height="400"></iframe>
+              <iframe src="https://docs.google.com/spreadsheets/d/1W4QSGQU9c1Gy5gTkrXG7sfHum7qA6IKBzMswpM8EfQ0/gviz/tq?tqx=out:html&gid=0" frameborder="0" scrolling="no" width="450" height="450"></iframe>
              </div>
               </div>
 
@@ -179,7 +179,7 @@ function toogleDataSeries(e){
               </div>
               <div class="card-body ">
                 <div class="table-full-width table-responsive">
-                  <iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vTpbgD9LUuK_7Jta-4YpsUMJSYMVqTPUNxhhLr1YdAlgoR-glCaJbDFFffUuXxatemmiAyvMvrUFay8/pubhtml?gid=285399633&amp;single=true&amp;widget=true&amp;headers=false" width="450" height="400"></iframe>
+                  <iframe src="https://docs.google.com/spreadsheets/d/1W4QSGQU9c1Gy5gTkrXG7sfHum7qA6IKBzMswpM8EfQ0/gviz/tq?tqx=out:html&gid=285399633" frameborder="0" scrolling="no" width="450" height="450" ></iframe>
                 </div>
               </div>
               <div class="card-footer ">
@@ -204,7 +204,7 @@ function toogleDataSeries(e){
                 <div class="table-full-width table-responsive">
     
 
-<iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vTpbgD9LUuK_7Jta-4YpsUMJSYMVqTPUNxhhLr1YdAlgoR-glCaJbDFFffUuXxatemmiAyvMvrUFay8/pubhtml?gid=504304078&amp;single=true&amp;widget=true&amp;headers=false" width="1550" height="400"></iframe>
+<iframe src="https://docs.google.com/spreadsheets/d/1W4QSGQU9c1Gy5gTkrXG7sfHum7qA6IKBzMswpM8EfQ0/gviz/tq?tqx=out:html&gid=504304078"  frameborder="0" scrolling="no"  width="1550" height="400"></iframe>
 
 
                 </div>

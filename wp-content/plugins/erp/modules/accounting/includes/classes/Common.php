@@ -1,5 +1,5 @@
 <?php
-namespace WeDevs\ERP\Accounting\Includes\Classes;
+namespace WeDevs\ERP\Accounting\Classes;
 
 /**
  * Class for common methods
